@@ -1,0 +1,35 @@
+describe("forgot password", () => {
+    it("tests forgot password 1", () => {
+      cy.viewport(1263, 571);
+      cy.visit("https://givenergy.cloud/login");
+      cy.get("p:nth-of-type(1) > a").click();
+      cy.get("#input-40").click();
+      cy.get("#input-40").type("rosscoates1");
+      cy.get("a").click();
+      cy.get("#input-49").type("chemical_lane");
+      cy.get("#input-52").type("passwordplease!");
+      cy.get("p:nth-of-type(1) > a").click();
+      cy.get("#input-67").click();
+      cy.get("#input-67").type("rosscoates");
+      cy.get("div.container span").click();
+      cy.visit("chrome://new-tab-page/");
+      cy.visit("https://www.google.com/search?q=outlook+login&rlz=1C1ONGR_en-gbGB1047GB1047&oq=outl&aqs=chrome.1.0i131i433i512l2j69i57j5j69i60l4.5957j0j7&sourceid=chrome&ie=UTF-8");
+      cy.get("#rso > div:nth-of-type(2) > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) h3").click();
+      cy.location("href").should("eq", "https://outlook.office.com/mail/?JitExp=1");
+      cy.get("#id__13").click();
+      cy.get("#id__10").click();
+      cy.visit("https://givenergy.cloud/login");
+      cy.get("p:nth-of-type(1) > a").click();
+      cy.get("#input-40").click();
+      cy.get("#input-40").type("rosscoates1");
+      cy.get("a").click();
+      cy.get("p:nth-of-type(1) > a").click();
+      cy.get("#input-67").click();
+      cy.get("#input-67").type("rosscoates");
+      cy.get("div.container span").click();
+      cy.visit("edge://new-tab-page/");
+      cy.visit("https://www.edge.com/search?q=outlook+login&rlz=1C1ONGR_en-gbGB1047GB1047&oq=outl&aqs=chrome.1.0i131i433i512l2j69i57j5j69i60l4.5957j0j7&sourceid=chrome&ie=UTF-8");
+      cy.get("#rso > div:nth-of-type(2) > div:nth-of-type(2) > div > div > div > div:nth-of-type(1) h3").click();
+      cy.location("href").should("eq", "https://outlook.office.com/mail/?JitExp=1");
+    });
+  });
