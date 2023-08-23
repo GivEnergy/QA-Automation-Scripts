@@ -1,4 +1,4 @@
-import { adminLogin } from "../../../funcs";
+import { adminLogin } from "../../../logins";
 
 describe("Account settings work", () => {
       it("Uncaught Exception - Due to application error", () => {
