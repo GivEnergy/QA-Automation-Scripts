@@ -3,7 +3,6 @@ import { adminLogin } from "../../../logins";
 describe("notifications", () => {
     it("tests notifications", () => {
       cy.viewport(1920, 1080);
-      cy.visit("https://givenergy.cloud/dashboard");
       adminLogin()
 
       //navigates to notifications

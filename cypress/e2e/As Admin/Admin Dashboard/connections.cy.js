@@ -3,7 +3,6 @@ import { adminLogin } from "../../../logins";
 describe("connections", () => {
     it("tests connections on admin dashboard", () => {
       cy.viewport(1920, 1080);
-      cy.visit("https://givenergy.cloud/dashboard");
       adminLogin()
       //navigates to connections
       cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
