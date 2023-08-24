@@ -1,12 +1,12 @@
-import { adminLogin } from "../../../funcs";
+import { adminLogin } from "../../../logins";
 
 describe("call queues", () => {
     it("tests call queues", () => {
       cy.viewport(1920, 1080);
       adminLogin()
-      cy.get("#admin\\.dashboard\\.index").click();
-      cy.get("div.overflow-y-auto > div:nth-of-type(4) div.spacer").click();
-      cy.get("div.container > div > div > div > div > div:nth-of-type(1)").contains('Current');
-      cy.get("div.container div:nth-of-type(7)").contains('Today');
+      cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
+      cy.get('div').contains('Call Queues').click();
+      cy.get("div").contains('Current');
+      cy.get("div").contains('Today');
     });
   });

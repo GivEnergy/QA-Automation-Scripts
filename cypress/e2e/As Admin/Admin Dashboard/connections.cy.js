@@ -1,33 +1,46 @@
-import { adminLogin } from "../../../funcs";
+import { adminLogin } from "../../../logins";
 
-//DOESNT WORK CANNOT SELECT INPUT FIELD TO SEARCH
 describe("connections", () => {
     it("tests connections on admin dashboard", () => {
       cy.viewport(1920, 1080);
       cy.visit("https://givenergy.cloud/dashboard");
       adminLogin()
-      cy.get("div:nth-of-type(4) > div.v-list-group__items > div:nth-of-type(4) i").click();
-      cy.get("div:nth-of-type(2) div:nth-of-type(5) div.v-card__subtitle").click();
-      cy.get("#input-167").type("WO2249");
-      //HERE^
-      cy.type("{enter}");
-      cy.get("#input-171").click();
-      cy.get("#list-item-861-98 > div.v-list-item__content > div").click();
-      cy.get("#main > div > div.container > div > div:nth-of-type(1)").click();
-      cy.get("tr:nth-of-type(1) > td:nth-of-type(1)").click();
-      cy.get("div.v-card__text > div > div:nth-of-type(2) button").click();
-      cy.get("div:nth-of-type(3) div.v-input__slot > div > div").click();
-      cy.get("tr:nth-of-type(1) > td:nth-of-type(2)").click();
-      cy.get("tr:nth-of-type(1) > td:nth-of-type(3)").click();
-      cy.get("div:nth-of-type(3) div.v-input__slot > div > div").click();
-      cy.get("div.menuable__content__active div.v-card__title").click();
-      cy.get("tr:nth-of-type(1) > td:nth-of-type(3)").click();
-      cy.get("tr:nth-of-type(1) div > span:nth-of-type(1) i").click();
-      cy.get("div.v-dialog__content > div > div > div > div:nth-of-type(1)").click();
-      cy.get("div.v-dialog__content > div > div > div > div:nth-of-type(3)").click();
-      cy.get("#app > div.v-overlay > div.v-overlay__scrim").click();
-      cy.get("li:nth-of-type(12) i").click();
-      cy.get("li:nth-of-type(12) i").click();
+      //navigates to connections
+      cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
+      cy.get('div').contains('View active connections to comms').click();
+      
+      //checks page has loaded
+      cy.get('div').contains('Connections');
+
+      //checks table is showing correct data
+      cy.get('tr').find('td').first().contains(/^[0-9]{3,}/);
+      cy.get('tr').find('td').first().next().next().contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);
+
+      //checks page navigation
+      cy.get('ul').find('li').last().click();
+      cy.get('.spacer').next().contains('16-30');
+      cy.get('ul').find('li').first().click();
+      cy.get('.spacer').next().contains('1-15');
+      cy.get('ul').find('li').first().next().next().next().click();
+      cy.get('.spacer').next().contains('31-45');
+      cy.get('label').contains('Jump to Page').next().clear();
+
+      //check actions
+      //cy.get('tr').find('td').last().find('span').first().next().click(); drops connection
+      cy.get('tr').find('td').last().find('span').first().click();
+      cy.get('div').contains('Server Logs');
+      cy.visit('https://givenergy.cloud/admin/connections');
+
+      //unticks established connections only
+      cy.get('div').find('label').contains('Established Connections Only').click();
+      cy.get('tr').find('td').first().next().contains('--');
+
+      //needs a search function but no dongle is constantly on??
+
+      //checks dropdown filter
+      cy.get('label').contains('Server IDs').next().next().next().click();
+      cy.get('.v-application--wrap').next().find('div').last().click();
+      cy.get('td').contains('No data available');
     });
   });
   
