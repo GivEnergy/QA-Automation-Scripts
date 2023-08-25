@@ -1,0 +1,10 @@
+{
+  "suites": 1,
+  "tests": 1,
+  "passes": 1,
+  "pending": 0,
+  "failures": 0,
+  "start": "2023-08-25T14:57:37.072Z",
+  "duration": 53134,
+  "file": "cypress\\e2e\\As Admin\\Accounts\\account-settings-works.cy.js"
+}

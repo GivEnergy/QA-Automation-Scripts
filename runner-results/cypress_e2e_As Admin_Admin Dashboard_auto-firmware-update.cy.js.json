@@ -1,0 +1,10 @@
+{
+  "suites": 1,
+  "tests": 1,
+  "passes": 1,
+  "pending": 0,
+  "failures": 0,
+  "start": "2023-08-25T14:58:45.626Z",
+  "duration": 45308,
+  "file": "cypress\\e2e\\As Admin\\Admin Dashboard\\auto-firmware-update.cy.js"
+}
