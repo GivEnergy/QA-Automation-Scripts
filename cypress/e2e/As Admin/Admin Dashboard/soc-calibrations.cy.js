@@ -52,7 +52,7 @@ describe("soc calibrations", () => {
         cy.get('tbody').children().eq(i).find('td').eq(5)
             .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/);
         cy.get('tbody').children().eq(i).find('td').eq(6)
-            .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}\s[(]\d{1,}\s[a-z]{5,}\s[a-z]{3,}[)]$/);
+            .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}\s[(]\d{1,}\s[a-z]{4,}\s[a-z]{3,}[)]$/);
     };
     });
 });
