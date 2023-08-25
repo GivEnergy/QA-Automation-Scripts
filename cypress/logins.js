@@ -13,7 +13,6 @@ export function adminLogin(){
     cy.get("#input-22").type(Cypress.env('adminUsername'));
     cy.get("#input-25").click();
     cy.get("#input-25").type(Cypress.env('adminPassword'));
-    cy.get("#app div:nth-of-type(5) span").click();
-    cy.get("div.d-flex div.v-responsive__content").click();
+    cy.get('button').find('span').contains('Login').click();
 }
 
