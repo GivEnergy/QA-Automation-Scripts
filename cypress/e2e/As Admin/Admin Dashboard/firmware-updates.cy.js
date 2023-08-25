@@ -21,9 +21,9 @@ describe("firmware updates", () => {
     
     //checks table format
     cy.get('tr').find('td').first().contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);
-    cy.get('tr').find('td').first().next().contains(/^[A-Za-z]{7,}\s[A-Z]{3,}/);
-    cy.get('tr').find('td').first().next().next().next().contains(/^[0-9]{3,}/);
-    cy.get('tr').find('td').first().next().next().next().next().next().next().next().next().next()
+    cy.get('tr').find('td').eq(1).contains(/^[A-Za-z]{7,}\s[A-Z]{3,}/);
+    cy.get('tr').find('td').eq(3).contains(/^[0-9]{3,}/);
+    cy.get('tr').find('td').eq(9)
       .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/);
 
     //checks search and checks format again

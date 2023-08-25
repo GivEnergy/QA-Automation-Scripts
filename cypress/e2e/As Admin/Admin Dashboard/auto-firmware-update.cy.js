@@ -21,8 +21,8 @@ describe("Auto firmware updates", () => {
 
     //check format of table
     cy.get('tr').find('td').first().contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);
-    cy.get('tr').find('td').first().next().next().contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/);
-    cy.get('tr').find('td').first().next().next().next().next().next().next().next()
+    cy.get('tr').find('td').eq(2).contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/);
+    cy.get('tr').find('td').eq(7)
         .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/)
     //cy.get('tr').find('td').last().click(); not sure if this can be checked?
     

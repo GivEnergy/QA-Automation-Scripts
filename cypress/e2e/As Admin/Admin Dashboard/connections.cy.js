@@ -13,7 +13,7 @@ describe("connections", () => {
 
       //checks table is showing correct data
       cy.get('tr').find('td').first().contains(/^[0-9]{3,}/);
-      cy.get('tr').find('td').first().next().next().contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);
+      cy.get('tr').find('td').eq(2).contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);
 
       //checks page navigation
       cy.get('ul').find('li').last().click();
