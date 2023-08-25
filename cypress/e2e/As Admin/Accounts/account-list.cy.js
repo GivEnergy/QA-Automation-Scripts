@@ -18,7 +18,7 @@ describe("account list", () => {
       cy.get('.spacer').next().contains('1-15');
       cy.get('ul').find('li').first().next().next().next().click();
       cy.get('.spacer').next().contains('31-45');
-      cy.get('label').contains('Jump to Page').next().clear();
+      cy.get('label').contains('Jump to Page').next().clear().type('1').type("{enter}");;
 
     //   //clicks create account and cancels it
       cy.get("button").contains('Create Distributor Account').click();

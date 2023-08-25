@@ -17,7 +17,7 @@ describe("soc calibrations", () => {
     cy.get('.spacer').next().contains('1-15');
     cy.get('ul').find('li').first().next().next().next().click();
     cy.get('.spacer').next().contains('31-45');
-    cy.get('label').contains('Jump to Page').next().clear();
+    cy.get('label').contains('Jump to Page').next().clear().type('1').type("{enter}");;
 
     //checks format of table data
     cy.get('tr').find('td').first().contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);

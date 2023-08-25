@@ -18,7 +18,7 @@ describe("activate batteries", () => {
     cy.get('.spacer').next().contains('1-15');
     cy.get('ul').find('li').first().next().next().next().click();
     cy.get('.spacer').next().contains('31-45');
-    cy.get('label').contains('Jump to Page').next().clear();
+    cy.get('label').contains('Jump to Page').next().clear().type('1').type("{enter}");
     for (var i = 0; i < 15; i++){
         cy.get('tbody').children().eq(i).find('td').first().contains(/^[a-zA-Z]{2,}\w{5,}[0-9]{3,}/);
         cy.get('tbody').children().eq(i).find('td').eq(1).contains(/^[R][u][n][n][i][n][g]|^[C][a][n][c][e][l][l][e][d]$/);

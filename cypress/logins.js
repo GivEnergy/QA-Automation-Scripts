@@ -4,7 +4,7 @@ export function customerLogin(){
     cy.get("#input-22").type(Cypress.env.customerUsername);
     cy.get("#input-25").click();
     cy.get("#input-25").type(Cypress.env.customerPassword);
-    cy.get("#app div:nth-of-type(5) span").click();
+    cy.get('button').find('span').contains('Login').click();
 }
 
 export function adminLogin(){

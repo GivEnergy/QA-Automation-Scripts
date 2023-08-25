@@ -5,7 +5,7 @@ describe("installer training", () => {
       cy.viewport(1920, 1080);
       adminLogin()
 
-    //navigates to firmware updates
+    //navigates to installer training
     cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
     cy.get('div').contains('Installer Training').click();
     cy.get('div').contains('Previous Events').click();
@@ -18,7 +18,7 @@ describe("installer training", () => {
     cy.get('.spacer').next().contains('1-15');
     cy.get('ul').find('li').first().next().next().next().click();
     cy.get('.spacer').next().contains('31-45');
-    cy.get('label').contains('Jump to Page').next().clear();
+    cy.get('label').contains('Jump to Page').next().clear().type('1').type("{enter}");;
 
     //checks format
     for (var i = 0; i < 15; i++){
@@ -54,7 +54,7 @@ describe("installer training", () => {
     cy.get('.v-card__title').contains('Confirmed Attendees').parent().find('nav').find('ul')
         .children().eq(3).click();
     cy.get('.v-card__title').contains('Confirmed Attendees').parent().find('nav').next().find('div')
-        .find('label').contains('Jump to Page').next().clear();
+        .find('label').contains('Jump to Page').next().clear().type('1').type("{enter}");;
     cy.get('.v-card__title').contains('Unconfirmed Attendees').parent().find('.v-data-footer')
         .find('.v-data-footer__icons-after').find('button').click();
     cy.get('.v-card__title').contains('Unconfirmed Attendees').parent().find('.v-data-footer')
