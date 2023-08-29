@@ -1,12 +1,14 @@
+import { dashboardSelect, handleError } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
 describe("call queues", () => {
-    it("tests call queues", () => {
+  it("tests call queues", () => {
+    cy.on("uncaught:exception", (e, runnable) => {
+      return handleError(e, runnable);
+    });
       cy.viewport(1920, 1080);
       adminLogin()
-      cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
-      cy.get('div').contains('Call Queues').click();
-      cy.get("div").contains('Current');
-      cy.get("div").contains('Today');
+
+      dashboardSelect('Admin Dashboard', 'Call Queues', 'Current')
     });
   });

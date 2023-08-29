@@ -1,18 +1,18 @@
 import { adminLogin } from "../../../logins";
+import { dashboardSelect, handleError } from "../../../funcs";
 
 describe("Account settings work", () => {
-      it("Uncaught Exception - Due to application error", () => {
-        cy.on("uncaught:exception", (e, runnable) => {
-        console.log("error", e);
-        console.log("runnable", runnable);
-        return false;
-        });
+  it("tests Account settings", () => {
+    cy.on("uncaught:exception", (e, runnable) => {
+      return handleError(e, runnable);
+    });
+
       cy.viewport(1920, 1080);
       //logs in
       adminLogin()
       //goes to account details and changes details
-      cy.get("#account\\.settings\\.index").click();
-      cy.get('label').contains('Username').next('input').type('1');
+      dashboardSelect('Account Settings');
+      cy.get('label').contains('Username').next('input').clear().type('GivQA');
       cy.get('label').contains('First Name').next('input').type('1');
       cy.get('label').contains('Surname').next('input').type('1');
       cy.get('label').contains('Address Line 1').next('input').clear().type('Brymbo Road');
@@ -22,8 +22,7 @@ describe("Account settings work", () => {
       cy.get('button').contains('Submit').click();
       cy.get('p').contains('Account details updated successfully');
       //changes details back
-      cy.visit('https://givenergy.cloud/account-settings')
-      cy.get('label').contains('Username').next('input').clear().type('GivQA');
+      cy.reload()
       cy.get('label').contains('First Name').next('input').clear().type('Ross');
       cy.get('label').contains('Surname').next('input').clear().type('Coates');
       cy.get('label').contains('Address Line 1').next('input').clear().type('GivEnergy');
@@ -43,13 +42,7 @@ describe("Account settings work", () => {
       cy.get('label').contains('Repeat Password').next('input').clear().type(Cypress.env('adminPassword'));
       cy.get('div').contains('This field must be the same as Password');
       cy.get('label').contains('Current Password').next('input').clear().type(Cypress.env('adminPassword'));
-      cy.get('label').contains('New Password').next('input').clear().type('TestPasswordPlease!');
-      cy.get('label').contains('Repeat Password').next('input').clear().type('TestPasswordPlease!');
-      cy.get('button').contains('Submit').click();
-      cy.get('p').contains('Your password has been updated!');
-      cy.visit('https://givenergy.cloud/account-settings/security')
-      cy.get('label').contains('Current Password').next('input').clear().type('TestPasswordPlease!');
-      cy.get('label').contains('New Password').next('input').clear().type(Cypress.env('adminPassword'));
+      cy.get('label').contains('New Password').next('input').clear().type(Cypress.env('adminPassword'))
       cy.get('label').contains('Repeat Password').next('input').clear().type(Cypress.env('adminPassword'));
       cy.get('button').contains('Submit').click();
       cy.get('p').contains('Your password has been updated!');

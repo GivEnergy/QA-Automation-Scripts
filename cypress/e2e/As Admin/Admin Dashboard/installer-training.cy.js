@@ -1,24 +1,19 @@
+import { checkPageNav, dashboardSelect, handleError } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
 describe("installer training", () => {
     it("tests installer training", () => {
+        cy.on("uncaught:exception", (e, runnable) => {
+          return handleError(e, runnable);
+        });
       cy.viewport(1920, 1080);
       adminLogin()
 
     //navigates to installer training
-    cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
-    cy.get('div').contains('Installer Training').click();
-    cy.get('div').contains('Previous Events').click();
-    cy.get('div').contains('Next Event').click();
+    dashboardSelect('Admin Dashboard', 'Installer Training', 'Previous Events');
 
     //checks page navigation
-    cy.get('ul').find('li').last().click();
-    cy.get('.spacer').next().contains('16-30');
-    cy.get('ul').find('li').first().click();
-    cy.get('.spacer').next().contains('1-15');
-    cy.get('ul').find('li').first().next().next().next().click();
-    cy.get('.spacer').next().contains('31-45');
-    cy.get('label').contains('Jump to Page').next().clear().type('1').type("{enter}");;
+    checkPageNav();
 
     //checks format
     for (var i = 0; i < 15; i++){

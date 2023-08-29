@@ -1,23 +1,19 @@
+import { checkPageNav, dashboardSelect, handleError } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
 describe("soc calibrations", () => {
     it("tests soc calibrations", () => {
+        cy.on("uncaught:exception", (e, runnable) => {
+          return handleError(e, runnable);
+        });
       cy.viewport(1920, 1080);
       adminLogin()
 
     //navigates to firmware updates
-    cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
-    cy.get('div').contains('SOC Calibrations').click();
-    cy.get('div').contains('SOC Calibrations').click();
+    dashboardSelect('Admin Dashboard','SOC Calibrations', 'SOC Calibrations');
 
     //checks page navigation
-    cy.get('ul').find('li').last().click();
-    cy.get('.spacer').next().contains('16-30');
-    cy.get('ul').find('li').first().click();
-    cy.get('.spacer').next().contains('1-15');
-    cy.get('ul').find('li').first().next().next().next().click();
-    cy.get('.spacer').next().contains('31-45');
-    cy.get('label').contains('Jump to Page').next().clear().type('1').type("{enter}");;
+    checkPageNav();
 
     //checks format of table data
     cy.get('tr').find('td').first().contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);
@@ -42,7 +38,7 @@ describe("soc calibrations", () => {
         cy.get('tbody').children().eq(i).find('td').eq(6)
             .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}\s[(]\d{1,}\s[a-z]{5,}\s[a-z]{3,}[)]$/);
     };
-    cy.visit('https://givenergy.cloud/admin/soc');
+    cy.reload();
     cy.get('label').contains('Inverter Serial').next().type('CE');
     for (var i = 0; i < 15; i++){
         cy.get('tbody').children().eq(i).find('td').first().contains(/^[C][E]\w{5,}[0-9]{3,}/);

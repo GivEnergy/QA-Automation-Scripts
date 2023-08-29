@@ -1,8 +1,11 @@
 import { adminLogin } from "../../../logins"
-
+import { handleError } from '../../../funcs'
 
 describe("dashboard search", () => {
-    it("tests dashboard search", () => {
+  it("tests dashboard search", () => {
+    cy.on("uncaught:exception", (e, runnable) => {
+      return handleError(e, runnable);
+    });
       cy.viewport(1920, 1080);
       adminLogin()
 

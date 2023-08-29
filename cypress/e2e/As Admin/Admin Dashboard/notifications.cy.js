@@ -1,14 +1,18 @@
+import { dashboardSelect, handleError } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
 describe("notifications", () => {
-    it("tests notifications", () => {
+  it("tests notifications", () => {
+    cy.on("uncaught:exception", (e, runnable) => {
+      return handleError(e, runnable);
+    });
       cy.viewport(1920, 1080);
       adminLogin()
 
       //navigates to notifications
-      cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
-      cy.get('div').contains('Send an letterheaded email to one or more customers via the portal').click();
-      cy.get('div').contains('Pending Notifications');
+      dashboardSelect('Admin Dashboard',
+      'Send an letterheaded email to one or more customers via the portal',
+      'Pending Notifications');
 
       //send notification
       cy.get('span').contains('Create Notification').click();

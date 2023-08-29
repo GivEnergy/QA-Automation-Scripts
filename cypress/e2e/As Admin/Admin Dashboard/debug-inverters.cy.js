@@ -1,16 +1,18 @@
 import { adminLogin } from "../../../logins";
+import { dashboardSelect, handleError } from "../../../funcs";
 
 describe("debug inverters", () => {
-    it("tests debug inverters", () => {
+  it("tests debug inverters", () => {
+    cy.on("uncaught:exception", (e, runnable) => {
+      return handleError(e, runnable);
+    });
       cy.viewport(1920, 1080);
       adminLogin()
 
       //navigates to the debug inverter page
-      cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
-      cy.get('div').contains('Debug Inverters').click();
+      dashboardSelect('Admin Dashboard', 'Debug Inverters', 'Debug Inverters');
 
       //checks first entry in table and ensure format is correct and button works
-      cy.get('div').contains('Debug Inverters');
       cy.get('tr').find('td').first().contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);
       cy.get('tr').find('td').eq(1).contains(/^[0-9]{1,2}\s[a-zA-Z]{7,}/);
       cy.get('tr').find('td').eq(2).contains(/^[a-zA-Z]{1,}\s[a-zA-Z]{1,}/);

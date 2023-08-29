@@ -1,24 +1,19 @@
 import { adminLogin } from "../../../logins";
-import { addRNG } from "../../../funcs";
+import { addRNG, handleError, dashboardSelect, checkPageNav } from "../../../funcs";
 
 describe("account list", () => {
-    it("tests account list", () => {
+  it("tests Account list", () => {
+    cy.on("uncaught:exception", (e, runnable) => {
+      return handleError(e, runnable);
+    });
       cy.viewport(1920, 1080);
       //logs in as admin
       adminLogin()
 
       //opens account list and reloads page to hide nav bar
-      cy.get(".v-navigation-drawer__content").click().get('div').contains('Account List').click();
-      cy.visit('https://givenergy.cloud/user');
-
+      dashboardSelect('Account List');
       //checks page navigation
-      cy.get('ul').find('li').last().click();
-      cy.get('.spacer').next().contains('16-30');
-      cy.get('ul').find('li').first().click();
-      cy.get('.spacer').next().contains('1-15');
-      cy.get('ul').find('li').first().next().next().next().click();
-      cy.get('.spacer').next().contains('31-45');
-      cy.get('label').contains('Jump to Page').next().clear().type('1').type("{enter}");;
+      checkPageNav();
 
     //   //clicks create account and cancels it
       cy.get("button").contains('Create Distributor Account').click();
@@ -41,8 +36,7 @@ describe("account list", () => {
       cy.get('label').contains('Postcode').next('input').clear().type('T3ST');
       cy.get('label').contains('Address Line 1').next('input').clear().type('123 test street');
       cy.get('label').contains('Phone Number').next('input').clear().type('11111 111111');
-      //cy.get("button").contains('Create').click(); //needs to be added in when dev works
-      cy.get("button").contains('Cancel').click();
+      cy.get(".v-card__actions").find('button').contains('Create').click();
 
       //checks search, hover pop ups and account buttons
       cy.get('label').contains('Search').next('input').type('Chemical Lane');

@@ -1,15 +1,15 @@
+import { dashboardSelect, handleError } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
 describe("connections", () => {
-    it("tests connections on admin dashboard", () => {
+  it("tests connections", () => {
+    cy.on("uncaught:exception", (e, runnable) => {
+      return handleError(e, runnable);
+    });
       cy.viewport(1920, 1080);
       adminLogin()
       //navigates to connections
-      cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
-      cy.get('div').contains('View active connections to comms').click();
-      
-      //checks page has loaded
-      cy.get('div').contains('Connections');
+      dashboardSelect('Admin Dashboard', 'View active connections to comms', 'Connections');
 
       //checks table is showing correct data
       cy.get('tr').find('td').first().contains(/^[0-9]{3,}/);
@@ -28,7 +28,7 @@ describe("connections", () => {
       //cy.get('tr').find('td').last().find('span').first().next().click(); drops connection
       cy.get('tr').find('td').last().find('span').first().click();
       cy.get('div').contains('Server Logs');
-      cy.visit('https://givenergy.cloud/admin/connections');
+      cy.reload()
 
       //unticks established connections only
       cy.get('div').find('label').contains('Established Connections Only').click();

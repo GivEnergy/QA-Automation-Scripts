@@ -1,23 +1,21 @@
+import { checkPageNav, dashboardSelect, handleError } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
 describe("firmware updates", () => {
-    it("tests firmware updates", () => {
+  it("tests firmware updates", () => {
+    cy.on("uncaught:exception", (e, runnable) => {
+      return handleError(e, runnable);
+    });
       cy.viewport(1920, 1080);
       adminLogin()
 
     //navigates to firmware updates
-    cy.get(".v-navigation-drawer__content").click().get('div').contains('Admin Dashboard').click();
-    cy.get('div').contains('View active and historic inverter firmware updates').click();
-    cy.get('div').contains('Firmware Update Records').click();
+    dashboardSelect('Admin Dashboard', 
+    'View active and historic inverter firmware updates',
+    'Firmware Update Records');
 
     //page navigation
-    cy.get('ul').find('li').last().click();
-    cy.get('.spacer').next().contains('16-30');
-    cy.get('ul').find('li').first().click();
-    cy.get('.spacer').next().contains('1-15');
-    cy.get('ul').find('li').first().next().next().next().click();
-    cy.get('.spacer').next().contains('31-45');
-    cy.get('label').contains('Jump to Page').next().clear().type('1').type("{enter}");
+    checkPageNav();
     
     //checks table format
     cy.get('tr').find('td').first().contains(/^[A-Z]{2,}\w{5,}[0-9]{3,}/);
