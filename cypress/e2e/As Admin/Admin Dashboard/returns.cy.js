@@ -53,11 +53,13 @@ describe("returns", () => {
     cy.get('span').contains('Confirm Ticket #').click();
     cy.get('a').contains('View On Freshdesk').click();
     cy.get('label').contains('Send Email To').next().click();
+    cy.get('span').contains('Create Return').parent().should('be.disabled');
     cy.get('.v-list-item__title').contains('Installer').click();
     cy.get('label').contains('Find Customer').next().type('Chemical Lane');
     cy.get('.v-list-item__title').contains('Chemical Lane | chemical_lane').click();
     cy.get('label').contains('Find Engineer or Installation Company').next().type('GivEnergy03');
     cy.get('.v-list-item__title').contains('GivEnergy03 | SUB_CONTRACTOR').click();
+    cy.get('span').contains('Create Return').parent().should('be.disabled');
     cy.get('label').contains('Category').next().click();
     cy.get('.v-list-item__title').contains('Dongle').click();
     cy.get('label').contains('Type/Model').next().click();
