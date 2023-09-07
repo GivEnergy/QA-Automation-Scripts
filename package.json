@@ -177,7 +177,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cypress:open": "cypress open",
-    "cy:run":"cypress run --record --key 12781dd3-f37a-45df-b890-28695461329d"
+    "cy:run": "cypress run --record --key 12781dd3-f37a-45df-b890-28695461329d"
   },
   "author": "",
   "license": "ISC"

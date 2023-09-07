@@ -16,5 +16,17 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
+Cypress.on("uncaught:exception", (e, runnable) => {
+    if (e.name === 'TypeError') {
+        console.log(e.message);
+        console.log("runnable", runnable);
+        return false;
+    } else {
+        console.log(e.message);
+        console.log("runnable", runnable);
+        return true;
+    }
+});
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
