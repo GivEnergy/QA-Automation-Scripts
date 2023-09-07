@@ -1,8 +1,11 @@
 describe("forgot password", () => {
     it("tests forgot password", () => {
-      cy.visit("http://dev.givenergy.cloud/login");
+
+      //visits page and sets viewport
+      cy.visit("http://localhost/login");
       cy.viewport(1920, 1080);
-      cy.get("p:nth-of-type(1) > a").click();
+
+      cy.get('[data-cy="login.link.forgotpw"]').click();
       cy.get("#input-40").click();
       cy.get("div.v-card__actions").click();
       cy.get("div.v-card__text").contains('This field is required')

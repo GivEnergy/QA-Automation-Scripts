@@ -20,7 +20,7 @@ export function checkPageNav() {
     cy.get('[data-cy="navigation.buttoncontainer.pagenav"]').find('li').first().click();
     cy.get('[data-cy="footer.container.navigation"]').find('div').next().contains('1-15');
     cy.get('[data-cy="navigation.buttoncontainer.pagenav"]').find('li').first().next().next().next().click();
-    //cy.get('[data-cy="footer-page-nav"]').find('div').next().contains('31-45');
+    cy.get('[data-cy="footer-page-nav"]').find('div').next().contains('31-45');
     cy.get('[data-cy="navigation.input.page"]').type('1').type("{downArrow}").type("{enter}");;
 };
 
@@ -51,5 +51,54 @@ export function loginCheck(username, password, check){
             .contains('These credentials do not match our records');
         cy.get('[data-cy="loginform.field.password"]').parents('.v-input__control').find('.v-messages__message')
             .contains('These credentials do not match our records');
+    }
+}
+
+export function changeDetails(correct) {
+    if (correct) {
+        cy.get('[data-cy="detailschange.input.username"]').clear().type('GivQA');
+        cy.get('[data-cy="detailschange.input.firstname"]').clear().type('Ross');
+        cy.get('[data-cy="detailschange.input.surname"]').clear().type('Coates');
+        cy.get('[data-cy="detailschange.input.address"]').clear().type('GivEnergy');
+        cy.get('[data-cy="detailschange.input.postcode"]').clear().type('ST6');
+        cy.get('[data-cy="detailschange.input.phonenumber"]').clear().type('01234567897');
+        cy.get('[data-cy="detailschange.input.email"]').clear().type('ross.coates@givenergy.co.uk');
+        cy.get('[data-cy="detailschange.button.submit"]').contains('Submit').click();
+        cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
+    } else {
+        cy.get('[data-cy="detailschange.input.username"]').type('1');
+        cy.get('[data-cy="detailschange.input.firstname"]').type('s');
+        cy.get('[data-cy="detailschange.input.surname"]').type('s');
+        cy.get('[data-cy="detailschange.input.address"]').clear().type('Brymbo Road');
+        cy.get('[data-cy="detailschange.input.postcode"]').clear().type('ST9');
+        cy.get('[data-cy="detailschange.input.phonenumber"]').type('7');
+        cy.get('[data-cy="detailschange.input.email"]').clear().type('ross.coates@givenergy.com');
+        cy.get('[data-cy="detailschange.button.submit"]').contains('Submit').click();
+        cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
+    }
+}
+
+export function changePassword(current, newP, repeatP, first, second) {
+    if (first) {
+        cy.get('[data-cy="changeform.input.currentpassword"]').clear().type(current);
+        cy.get('[data-cy="changeform.input.newpassword"]').clear().type(newP);
+        cy.get('[data-cy="changeform.input.repeatpassword"]').clear().type(repeatP);
+        cy.get('[data-cy="changeform.button.submit"]').contains('Submit').should('not.be.enabled');
+        cy.get('[data-cy="changeform.input.repeatpassword"]').parents('.v-input__control').find('.v-messages__message')
+            .contains('This field must be the same as Password');
+        cy.reload();
+    } else if (second) {
+        cy.get('[data-cy="changeform.input.currentpassword"]').clear().type(current);
+        cy.get('[data-cy="changeform.input.newpassword"]').clear().type(newP);
+        cy.get('[data-cy="changeform.input.repeatpassword"]').clear().type(repeatP);
+        cy.get('[data-cy="changeform.button.submit"]').contains('Submit').click();
+        cy.get('i[class*="mdi-alert"]').parent().find('p').contains('The current password is incorrect.');
+        cy.reload();
+    } else {
+        cy.get('[data-cy="changeform.input.currentpassword"]').clear().type(current);
+        cy.get('[data-cy="changeform.input.newpassword"]').clear().type(newP);
+        cy.get('[data-cy="changeform.input.repeatpassword"]').clear().type(repeatP);
+        cy.get('[data-cy="changeform.button.submit"]').contains('Submit').click();
+        cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Your password has been updated!');
     }
 }
