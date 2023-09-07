@@ -6,16 +6,16 @@ describe("forgot password", () => {
       cy.viewport(1920, 1080);
 
       cy.get('[data-cy="login.link.forgotpw"]').click();
-      cy.get("#input-40").click();
-      cy.get("div.v-card__actions").click();
-      cy.get("div.v-card__text").contains('This field is required')
-      cy.get("#input-40").click();
-      cy.get("#input-40").type("cbucaweouyvbvubewwovw");
-      cy.get("div.container span").click();
-      cy.get("p").contains('If this account exists, instructions on how to reset the password have been sent its registered email address.')
-      cy.get("#input-40").click();
-      cy.get("#input-40").type(Cypress.env('adminUsername'));
-      cy.get("div.container span").click();
-      cy.get("p").contains('If this account exists, instructions on how to reset the password have been sent its registered email address.')
+      cy.get('[data-cy="forgotpassword.title.text"]').contains('Forgot your password?');
+      cy.get('[data-cy="forgotform.field.username"]').click();
+      cy.get('[data-cy="forgotform.button.submit"]').should('be.disabled');
+      cy.get('[data-cy="forgotform.field.username"]').type('byvbuyebwsvuiev124');
+      cy.get('[data-cy="forgotform.button.submit"]').click();
+      cy.get('i[class*="mdi-check-circle"]').parent().find('p')
+        .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
+        cy.get('[data-cy="forgotform.field.username"]').type(Cypress.env('adminUsername'));
+        cy.get('[data-cy="forgotform.button.submit"]').click();
+      cy.get('i[class*="mdi-check-circle"]').parent().find('p')
+      .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
     });
   });
