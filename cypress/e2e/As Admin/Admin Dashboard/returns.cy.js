@@ -1,13 +1,10 @@
-import { checkPageNav, dashboardSelect, handleError } from "../../../funcs";
+import { checkPageNav, checkReturnsActions, checkReturnsFormat, dashboardSelect } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
 describe("returns", () => {
     it("tests returns", () => {
-        cy.on("uncaught:exception", (e, runnable) => {
-          return handleError(e, runnable);
-        });
-      cy.viewport(1920, 1080);
-      adminLogin()
+    cy.viewport(1920, 1080);
+    adminLogin()
 
     //navigates to returns
     dashboardSelect('Admin Dashboard', 'Returns', 'Returns');
@@ -16,61 +13,88 @@ describe("returns", () => {
     checkPageNav();
 
     //checks format of table data
-    for (var i = 0; i < 15; i++){
-        cy.get('tbody').children().eq(i).find('td').eq(5).contains(/^\d{5,}$/);
-        cy.get('tbody').children().eq(i).find('td').eq(6).contains(/^[A-Za-z]{8,}$/);
-        cy.get('tbody').children().eq(i).find('td').eq(7)
-            .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/);
-    };
-    //cy.get('tbody').children().eq(0).find('td').last().find('div').find('div').children().eq(0).click();
-    cy.get('tbody').children().eq(0).find('td').last().find('div').find('div').children().eq(1).click();
-    //cy.get('tbody').children().eq(0).find('td').last().find('div').find('div').children().eq(2).click();
+    checkReturnsFormat();
+    
+    checkReturnsActions();
 
     //check search, pop up, format
     cy.get('label').contains('Search').next().type('Adam');
-    for (var i = 0; i < 15; i++){
-        cy.get('tbody').children().eq(i).find('td').eq(0).contains('Adam Reynolds');
-        cy.get('tbody').children().eq(i).find('td').eq(5).contains(/^\d{4,}$/);
-        cy.get('tbody').children().eq(i).find('td').eq(6).contains(/^[A-Za-z]{8,}$/);
-        cy.get('tbody').children().eq(i).find('td').eq(7)
-            .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/);
-    };
+    cy.get('tbody').find('td').eq(0).contains('Adam Reynolds');
+    checkReturnsFormat();
+
     cy.get('td').contains('Adam Reynolds').click();
     cy.get('b').contains('Username:').should('be.visible');
-    //cy.get('tbody').children().eq(0).find('td').last().find('div').find('div').children().eq(0).click();
-    cy.get('tbody').children().eq(0).find('td').last().find('div').find('div').children().eq(1).click();
-    //cy.get('tbody').children().eq(0).find('td').last().find('div').find('div').children().eq(2).click();
+    checkReturnsActions();
 
     //use create new return
-    cy.get('span').contains('Create New Return').click();
-    cy.get('span').contains('Check Ticket #').parent().should('be.disabled');
-    cy.get('label').contains('Ticket #').next().type('53142');
-    cy.get('span').contains('Check Ticket #').click();
-    cy.get('span').contains('Confirm Ticket #').click();
-    cy.get('a').contains('View On Freshdesk').click();
-    cy.get('label').contains('Send Email To').next().click();
-    cy.get('span').contains('Create Return').parent().should('be.disabled');
-    cy.get('.v-list-item__title').contains('Installer').click();
-    cy.get('label').contains('Find Customer').next().type('Chemical Lane');
-    cy.get('.v-list-item__title').contains('Chemical Lane | chemical_lane').click();
-    cy.get('label').contains('Find Engineer or Installation Company').next().type('GivEnergy03');
-    cy.get('.v-list-item__title').contains('GivEnergy03 | SUB_CONTRACTOR').click();
-    cy.get('span').contains('Create Return').parent().should('be.disabled');
-    cy.get('label').contains('Category').next().click();
-    cy.get('.v-list-item__title').contains('Dongle').click();
-    cy.get('label').contains('Type/Model').next().click();
-    cy.get('.v-list-item__title').contains('WiFi').click();
-    cy.get('span').contains('Validate').click();
-    cy.get('div').contains('The identifier field is required.');
-    cy.get('label').contains('ID/Serial Number').next().type('WZ2108G037');
-    cy.get('span').contains('Validate').click();
-    cy.get('span').contains('Edit Item').click();
-    cy.get('label').contains('ID/Serial Number').next().clear().type('WZ2108G037');
-    cy.get('span').contains('Validate').click();
-    cy.get('span').contains('Create Return').parent().should('be.disabled');
-    cy.get('label').contains('Reason for return').next().type('Broken');
-    cy.get('span').contains('Create Return').click();
-    
+    cy.get('[data-cy="returns.button.create"]').contains('Create New Return').click();
+    cy.get('[data-cy="freshdeskform.button.checkticket"]').should('be.disabled');
+    cy.get('[data-cy="freshdeskform.field.ticketinput"]').type('53142');
+    cy.get('[data-cy="freshdeskform.button.checkticket"]').contains('Check Ticket #').click();
+    cy.get('[data-cy="freshdeskform.button.confirmticket"]').contains('Confirm Ticket #').click();
+    cy.get('[data-cy="freshdeskform.link.viewticket"]').contains('View On Freshdesk').click();
+    cy.get('[data-cy="returns.button.createreturn"]').contains('Create Return').should('not.be.enabled');
+    cy.get('[data-cy="returns.select.recipients"]').click();
+    cy.get('div[class*="v-select-list"]').children().contains('Installer').click();
+    cy.get('div[class*="v-select-list"]').children().contains('Customer').click();
+    cy.get('[data-cy="returns.button.createreturn"]').contains('Create Return').should('not.be.enabled');
+    cy.get('[data-cy="returns.search.customer"]').parent().find('label').next('input').click();
+    cy.get('div[class*="v-select-list"]').children().contains('Brymbo Road | BrymboRoad').click();
+    cy.get('[data-cy="return.search.installer"]').parent().find('label').next('input').click().type('GivEnergy');
+    cy.get('div[class*="v-select-list"]').children().contains('Givenergy engineer3 | ENGINEER').click();
+    cy.get('[data-cy="returns.button.createreturn"]').contains('Create Return').should('not.be.enabled');
+    cy.get('[data-cy="returns.form.create"]').should('be.visible');
+    cy.get('[data-cy="returns.checkbox.distributor"]').parent().click();
+    cy.get('[data-cy="returns.form.create"]').should('not.be.visible');
+    cy.get('[data-cy="returns.search.distributor"]').parent().find('label').next('input').click().type('GivEnergy');
+    cy.get('div[class*="v-select-list"]').children().contains('Givenergy02 | OWNER').click();
+    cy.get('[data-cy="returns.form.create"]').should('be.visible');
+
+    //creates first return item
+    cy.get('[data-cy="returns.button.createreturn"]').contains('Create Return').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.dropdownfield.typemodel"]').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.button.validate"]').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.dropdownfield.category"]').click();
+    cy.get('div[class*="v-select-list"]').children().contains('Dongle').click();
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.button.validate"]').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.dropdownfield.typemodel"]').click();
+    cy.get('div[class*="v-select-list"]').children().contains('WiFi').click();
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').type('67GHET78D!');
+    cy.get('[data-cy="createreturn.button.validate"]').click();
+    cy.get('[data-cy="createreturn.button.validate"]').should('not.be.enabled');
+    cy.get('div[class*="v-text-field__details"]').contains('This serial number is not valid');
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').clear().type('WO2249G375');
+    cy.get('[data-cy="createreturn.button.validate"]').click();
+    cy.get('[data-cy="createreturn.button.edit"]').click();
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').clear().type('WO2249G374');
+    cy.get('[data-cy="createreturn.button.validate"]').click();
+    cy.get('[data-cy="createreturn.textarea.reason"]').type('Dongle is broken.');
+    cy.get('[data-cy="returnitems.button.add"]').click();
+    cy.get('[data-cy="returnitems.button.delete"]').eq(1).click();
+    cy.get('[data-cy="returnitems.button.add"]').click();
+
+    //creates a second return item
+    cy.get('[data-cy="returns.button.createreturn"]').contains('Create Return').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.dropdownfield.typemodel"]').eq(1).should('not.be.enabled');
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').eq(1).should('not.be.enabled');
+    cy.get('[data-cy="createreturn.button.validate"]').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.dropdownfield.category"]').eq(1).click().type('{downArrow}').type('{downArrow}').type('{enter}');
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').eq(1).should('not.be.enabled');
+    cy.get('[data-cy="createreturn.button.validate"]').should('not.be.enabled');
+    cy.get('[data-cy="createreturn.dropdownfield.typemodel"]').eq(1).click().type('{downArrow}').type('{downArrow}').type('{enter}');
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').eq(1).type('67GHET78D!');
+    cy.get('[data-cy="createreturn.button.validate"]').click();
+    cy.get('[data-cy="createreturn.button.validate"]').should('not.be.enabled');
+    cy.get('div[class*="v-text-field__details"]').contains('This serial number is not valid');
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').eq(1).clear().type('WO2249G376');
+    cy.get('[data-cy="createreturn.button.validate"]').click();
+    cy.get('[data-cy="createreturn.button.edit"]').eq(1).click();
+    cy.get('[data-cy="createreturn.dropdownfield.idserialnumber"]').eq(1).clear().type('WO2249G377');
+    cy.get('[data-cy="createreturn.button.validate"]').click();
+    cy.get('[data-cy="createreturn.textarea.reason"]').eq(1).type('Dongle is broken.');
+    cy.get('[data-cy="returns.button.createreturn"]').contains('Create Return').click();
 
     });
 });

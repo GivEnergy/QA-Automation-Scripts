@@ -1,25 +1,36 @@
-import { adminLogin } from "../../../../funcs";
+import { dashboardSelect } from "../../../../funcs";
+import { adminLogin } from "../../../../logins";
 
 describe("leave feedback", () => {
     it("tests leave feedback", () => {
+
+      //sets viewport and logs in
       cy.viewport(1920, 1080);
-      adminLogin()
-      cy.get("div:nth-of-type(7) > div.v-list-group__items > div:nth-of-type(2) div.v-list-item__content > div").click();
-      cy.get("div:nth-of-type(7) > div.v-list-group__items > div:nth-of-type(2) div.v-list-item__content > div").click();
-      cy.get("#input-452").click();
-      cy.get("#input-452").type("F");
-      cy.get("#input-452").type("Feedback test");
-      cy.get("#input-455").click();
-      cy.get("#input-455").type("vbuebsiuvbsivubuivbueoibwvbv vubwiuvbwovubwviwuvbwvwv");
-      cy.get("#input-441").click();
-      cy.get("#list-item-479-2").click();
-      cy.get("#input-447").click();
-      cy.get("#list-item-497-1").click();
-      cy.get("div.container span").click();
-      cy.get("p:nth-of-type(2) > a").click();
-      cy.get("div.v-card__title > div > div:nth-of-type(1)").contains('Known Issues');
-      cy.get("p:nth-of-type(3) > a").click();
-      cy.get("div.justify-md-start").contains('Frequently Asked Questions');
+      adminLogin();
+
+      //navigates to leave feedback
+      dashboardSelect('Leave Feedback');
+
+      cy.get('[data-cy="create.title.feedback"]').contains('Leave Feedback');
+      cy.get('[data-cy="feedback.link.faq"]').click();
+      cy.get('[data-cy="feedback.link.knownissues"]').click();
+      cy.get('[data-cy="feedback.text.contact"]').contains('support@givenergy.co.uk')
+      cy.get('[data-cy="feedback.text.contact"]').contains('01377 254 874')
+  
+      //create feedback
+      cy.get('[data-cy="feedbackform.select.product"]').click();
+      cy.get('div[class*="v-menu__content"]').children().contains('App').click();
+      cy.get('[data-cy="feedbackform.select.feedbacktype"]').click();
+      cy.get('div[class*="v-menu__content"]').children().contains('Bug Report').click();
+      cy.get('[data-cy="feedbackform.field.title"]').type('Feedback Test');
+      cy.get('[data-cy="feedbackform.field.content"]').type('Test content.');
+      cy.get('[data-cy="feedbackform.checkbox.contacted"]').parent().click();
+      cy.get('[data-cy="feedbackform.checkbox.contacted"]').parent().click();
+      cy.get('[data-cy="feedbackform.checkbox.mentioned"]').parent().click();
+      cy.get('[data-cy="feedbackform.checkbox.mentioned"]').parent().click();
+      cy.get('[data-cy="feedbackform.button.submit"').click();
+      cy.get('i[class*="mdi-check-circle"]').parent().contains('Your feedback has been successfully submitted!');
+
     });
   });
   

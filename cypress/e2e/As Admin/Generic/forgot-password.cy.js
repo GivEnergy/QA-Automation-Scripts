@@ -1,9 +1,26 @@
+import { dashboardSelect } from "../../../funcs";
+import { adminLogin } from "../../../logins";
+
 describe("forgot password", () => {
     it("tests forgot password", () => {
+      //setups up temp email and inbox
+      // cy.createInbox().then((inbox) => {
+        
+      // assert.isDefined(inbox)
+
+      // let inboxId = inbox.id
+      // let emailAddress = inbox.emailAddress;
 
       //visits page and sets viewport
-      cy.visit("http://localhost/login");
       cy.viewport(1920, 1080);
+      cy.visit("http://localhost/login"); //remove this when mailslurp is added
+     // adminLogin();
+
+      // dashboardSelect('Account Settings');
+      // cy.get('[data-cy="detailschange.input.email"]').clear().type(emailAddress);
+      // cy.get('[data-cy="detailschange.button.submit"]').contains('Submit').click();
+      // cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
+      // cy.visit('https://staging.givenergy.cloud/login');
 
       cy.get('[data-cy="login.link.forgotpw"]').click();
       cy.get('[data-cy="forgotpassword.title.text"]').contains('Forgot your password?');
@@ -17,5 +34,15 @@ describe("forgot password", () => {
         cy.get('[data-cy="forgotform.button.submit"]').click();
       cy.get('i[class*="mdi-check-circle"]').parent().find('p')
       .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
-    });
+
+    //   cy.waitForLatestEmail(inboxId).then(email => {
+        
+    //     assert.isDefined(email);
+    //     // verify that email contains the code
+
+    //   });
+
+    //   //NEEDS TO SIGN BACK IN AND CHANGE EMAIL AFTER
+    // });
   });
+});

@@ -107,6 +107,8 @@
     "log-symbols": "^4.1.0",
     "log-update": "^4.0.0",
     "lru-cache": "^6.0.0",
+    "mailslurp": "^0.0.1-security",
+    "mailslurp-client": "^15.17.2",
     "merge-stream": "^2.0.0",
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
@@ -172,7 +174,7 @@
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
-    "cypress": "^12.17.4"
+    "cypress": "^13.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

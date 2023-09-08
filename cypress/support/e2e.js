@@ -28,5 +28,20 @@ Cypress.on("uncaught:exception", (e, runnable) => {
     }
 });
 
+const { MailSlurp } = require('mailslurp-client');
+
+const apiKey = Cypress.env('mailslurpAPI')
+const mailslurp = new MailSlurp({ apiKey });
+
+Cypress.Commands.add("createInbox", () => {
+  return mailslurp.createInbox();
+});
+
+Cypress.Commands.add("waitForLatestEmail", (inboxId) => {
+
+  const timeoutMillis = 30_000;
+  return mailslurp.waitForLatestEmail(inboxId, timeoutMillis)
+});
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

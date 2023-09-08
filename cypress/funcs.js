@@ -8,8 +8,8 @@ export function addRNG(string) {
 export function dashboardSelect(navItem, adminItem, adminMessage) {
     cy.get('[data-cy="main.navbar.side"]').click().get('div').contains(navItem).click();
     if (adminItem && adminMessage) {
-        cy.get('div').contains(adminItem).click();
-        cy.get('div').contains(adminMessage).click();
+        cy.get('[data-cy="navigation.title.card"]').contains(adminItem).click();
+        cy.get('[data-cy="returns.title.header"]').contains(adminMessage).click();
     }
 };
 
@@ -101,4 +101,17 @@ export function changePassword(current, newP, repeatP, first, second) {
         cy.get('[data-cy="changeform.button.submit"]').contains('Submit').click();
         cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Your password has been updated!');
     }
+}
+
+export function checkReturnsFormat() {
+    cy.get('tbody').children().eq(0).find('td').eq(5).contains(/^\d{4,}$/);
+    cy.get('tbody').children().eq(0).find('td').eq(6).contains(/^[A-Za-z]{8,}$/);
+    cy.get('tbody').children().eq(0).find('td').eq(7)
+      .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/);
+}
+
+export function checkReturnsActions() {
+    cy.get('i[class*="mdi-email-sync"]').first().click();
+    cy.get('a[href*="admin/returns labels"]').first().click();
+    cy.get('i[class*="mdi-delete"]').first().click();
 }
