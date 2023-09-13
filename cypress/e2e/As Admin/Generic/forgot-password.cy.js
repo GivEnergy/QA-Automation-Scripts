@@ -17,21 +17,21 @@ describe("forgot password", () => {
      // adminLogin();
 
       // dashboardSelect('Account Settings');
-      // cy.get('[data-cy="detailschange.input.email"]').clear().type(emailAddress);
-      // cy.get('[data-cy="detailschange.button.submit"]').contains('Submit').click();
+      // cy.get('[data-qa="detailschange.input.email"]').clear().type(emailAddress);
+      // cy.get('[data-qa="detailschange.button.submit"]').contains('Submit').click();
       // cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
       // cy.visit('https://staging.givenergy.cloud/login');
 
-      cy.get('[data-cy="login.link.forgotpw"]').click();
-      cy.get('[data-cy="forgotpassword.title.text"]').contains('Forgot your password?');
-      cy.get('[data-cy="forgotform.field.username"]').click();
-      cy.get('[data-cy="forgotform.button.submit"]').should('be.disabled');
-      cy.get('[data-cy="forgotform.field.username"]').type('byvbuyebwsvuiev124');
-      cy.get('[data-cy="forgotform.button.submit"]').click();
+      cy.get('[data-qa="link.forgotpw"]').click();
+      cy.get('[data-qa="title.text"]').contains('Forgot your password?');
+      cy.get('[data-qa="form.field.username"]').click();
+      cy.get('[data-qa="form.button.submit"]').should('be.disabled');
+      cy.get('[data-qa="form.field.username"]').type('byvbuyebwsvuiev124');
+      cy.get('[data-qa="form.button.submit"]').click();
       cy.get('i[class*="mdi-check-circle"]').parent().find('p')
         .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
-        cy.get('[data-cy="forgotform.field.username"]').type(Cypress.env('adminUsername'));
-        cy.get('[data-cy="forgotform.button.submit"]').click();
+        cy.get('[data-qa="form.field.username"]').type(Cypress.env('adminUsername'));
+        cy.get('[data-qa="form.button.submit"]').click();
       cy.get('i[class*="mdi-check-circle"]').parent().find('p')
       .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
 

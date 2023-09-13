@@ -4,9 +4,7 @@ import { handleError, dashboardSelect } from "../../../funcs";
 //doesnt work search input cannot be selected
 describe("my inverter card", () => {
   it("tests soc calibrations", () => {
-      cy.on("uncaught:exception", (e, runnable) => {
-        return handleError(e, runnable);
-      });
+
       cy.viewport(1920, 1080);
       adminLogin();
 

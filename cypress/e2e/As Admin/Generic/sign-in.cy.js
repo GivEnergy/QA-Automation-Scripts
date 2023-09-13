@@ -18,7 +18,7 @@ describe("Admin Sign In", () => {
 
       //attempts login with admin username and password and checks dashboard loads
       loginCheck(Cypress.env('adminUsername'), Cypress.env('adminPassword'))
-      cy.get('[data-cy="admin.heading.title"]').contains('Admin Navigation');
+      cy.get('[data-qa="title.heading"]').contains('Admin Navigation');
       
     });
   });

@@ -19,7 +19,7 @@ describe("Account settings work", () => {
       changeDetails(true);
 
       //goes to manage security and changes password
-      cy.get('[data-cy="detailschange.button.accsecurity"]').contains('Manage Account Security').click();
+      cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();
       changePassword(Cypress.env('adminPassword'), 'password123!', 'password123456!', true, false);
       changePassword('notarealpassword?','password123!', 'password123!', false, true);
       changePassword(Cypress.env('adminPassword'), Cypress.env('adminPassword'), Cypress.env('adminPassword'), false, false);
