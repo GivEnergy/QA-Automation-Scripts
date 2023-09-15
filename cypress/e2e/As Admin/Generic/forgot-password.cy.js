@@ -3,7 +3,9 @@ import { adminLogin } from "../../../logins";
 
 describe("forgot password", () => {
     it("tests forgot password", () => {
-      //setups up temp email and inbox
+      //Cypress.config('defaultCommandTimeout', 30000);
+      //Cypress.config('requestTimeout', 30000);
+      // //setups up temp email and inbox
       // cy.createInbox().then((inbox) => {
         
       // assert.isDefined(inbox)
@@ -11,22 +13,24 @@ describe("forgot password", () => {
       // let inboxId = inbox.id
       // let emailAddress = inbox.emailAddress;
 
-      //visits page and sets viewport
-      cy.viewport(1920, 1080);
+      //visits page
       cy.visit("http://localhost/login"); //remove this when mailslurp is added
-     // adminLogin();
 
+      //logs in and changes email to temp email
+      // adminLogin();
       // dashboardSelect('Account Settings');
-      // cy.get('[data-qa="detailschange.input.email"]').clear().type(emailAddress);
-      // cy.get('[data-qa="detailschange.button.submit"]').contains('Submit').click();
+      // cy.get('[data-qa="form.field.email"]').clear().type(emailAddress);
+      // cy.get('[data-qa="form.button.submit"]').contains('Submit').click();
       // cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
       // cy.visit('https://staging.givenergy.cloud/login');
 
       cy.get('[data-qa="link.forgotpw"]').click();
+      cy.get('[data-qa="form.link.back"]').click();
+      cy.get('[data-qa="link.forgotpw"]').click();
       cy.get('[data-qa="title.text"]').contains('Forgot your password?');
       cy.get('[data-qa="form.field.username"]').click();
       cy.get('[data-qa="form.button.submit"]').should('be.disabled');
-      cy.get('[data-qa="form.field.username"]').type('byvbuyebwsvuiev124');
+      cy.get('[data-qa="form.field.username"]').type(Cypress.env('incorrectUsername'));
       cy.get('[data-qa="form.button.submit"]').click();
       cy.get('i[class*="mdi-check-circle"]').parent().find('p')
         .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
@@ -35,14 +39,20 @@ describe("forgot password", () => {
       cy.get('i[class*="mdi-check-circle"]').parent().find('p')
       .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
 
-    //   cy.waitForLatestEmail(inboxId).then(email => {
+      // cy.waitForLatestEmail(inboxId).then(email => {
         
-    //     assert.isDefined(email);
-    //     // verify that email contains the code
+      //   assert.isDefined(email);
+        
+      //   console.log(email, email.body);
 
-    //   });
-
-    //   //NEEDS TO SIGN BACK IN AND CHANGE EMAIL AFTER
-    // });
+            //changes email back
+      //   cy.get('[data-qa="form.link.back"]').click();
+      //   adminLogin();
+      //   dashboardSelect('Account Settings');
+      //   cy.get('[data-qa="form.field.email"]').clear().type(Cypress.env('adminEmail'));
+      //   cy.get('[data-qa="form.button.submit"]').contains('Submit').click();
+      //   cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
+      //});
+    //});
   });
 });

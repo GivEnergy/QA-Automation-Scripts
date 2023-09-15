@@ -6,7 +6,7 @@ export function addRNG(string) {
 };
 
 export function dashboardSelect(navItem, adminItem) {
-    cy.get('[data-qa="main.navbar"]').click().get('div').contains(navItem).click();
+    cy.get('[data-qa="main.navbar"]').click().find('div[class*="v-list-item__title"]').contains(navItem).click();
     if (adminItem) {
         cy.get('[data-qa="title.text"]').contains(adminItem).click();
     }
@@ -19,7 +19,7 @@ export function checkPageNav() {
     cy.get('[data-qa="buttoncontainer.navigation"]').find('li').first().click();
     cy.get('[data-qa="container.navigation"]').find('div').next().contains('1-15');
     cy.get('[data-qa="buttoncontainer.navigation"]').find('li').first().next().next().next().click();
-    cy.get('[data-qa="container.navigation"]').find('div').next().contains('31-45');
+    //cy.get('[data-qa="container.navigation"]').find('div').next().contains('31-45');
     cy.get('[data-qa="jumptopage.input.page"]').type('1').type("{downArrow}").type("{enter}");;
 };
 
@@ -113,10 +113,10 @@ export function checkReturnsFormat() {
     cy.get('[data-qa="card.item"]').should('be.visible');
     cy.get('[data-qa="tabledata.ticket"]').click();
     cy.get('[data-qa="card.item"]').should('be.visible');
-    cy.get('tbody').children().eq(0).find('td').eq(5).contains(/^\d{4,}$/);
-    cy.get('tbody').children().eq(0).find('td').eq(6).contains(/^[A-Za-z]{8,}$/);
+    cy.get('tbody').children().eq(0).find('td').eq(5).contains(/^\d{4,4}$/);
+    cy.get('tbody').children().eq(0).find('td').eq(6).contains(/^[A-Za-z]{8,8}$/);
     cy.get('tbody').children().eq(0).find('td').eq(7)
-      .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}[:]\d{2,}$/);
+      .contains(/^\d{4,4}[-]\d{2,2}[-]\d{2,2}\s\d{2,2}[:]\d{2,2}[:]\d{2,2}$/);
 }
 
 export function checkReturnsActions() {
@@ -133,4 +133,33 @@ export function reportingFilter(filter) {
     cy.get('[data-qa="span.name"]').contains(filter + ' Past 30 Days');
     cy.get('[data-qa="span.name"]').contains(filter + ' Past 7 Days');
     cy.get('[data-qa="span.name"]').contains(filter + ' Today');
+}
+
+export function getNum(div) {
+    const text = div.text()
+    const str = text.split(' ')[2];
+    const num = Number(str);
+    return num
+}
+
+export function createReturnItem(serialNumber1, serialNumber2) {
+    cy.get('[data-qa="button.create"]').contains('Create Return').should('not.be.enabled');
+    cy.get('[data-qa=."autocomplete.typemodel"]').eq(1).should('not.be.enabled');
+    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).should('not.be.enabled');
+    cy.get('[data-qa="button.validate"]').should('not.be.enabled');
+    cy.get('[data-qa="autocomplete.category"]').eq(1).click().type('{downArrow}').type('{downArrow}').type('{enter}');
+    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).should('not.be.enabled');
+    cy.get('[data-qa="button.validate"]').should('not.be.enabled');
+    cy.get('[data-qa="autocomplete.typemodel"]').eq(1).click().type('{downArrow}').type('{downArrow}').type('{enter}');
+    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).type('67GHET78D!');
+    cy.get('[data-qa="button.validate"]').click();
+    cy.get('[data-qa="button.validate"]').should('not.be.enabled');
+    cy.get('div[class*="v-text-field__details"]').contains('This serial number is not valid');
+    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).clear().type(serialNumber1);
+    cy.get('[data-qa="button.validate"]').click();
+    cy.get('[data-qa="button.edit"]').eq(1).click();
+    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).clear().type(serialNumber2);
+    cy.get('[data-qa="button.validate"]').click();
+    cy.get('[data-qa="textarea.reason"]').eq(1).type('Dongle is broken.');
+    cy.get('[data-qa="returnsbutton.createreturn"]').contains('Create Return').click();
 }

@@ -5,7 +5,6 @@ describe("leave feedback", () => {
     it("tests leave feedback", () => {
 
       //sets viewport and logs in
-      cy.viewport(1920, 1080);
       adminLogin();
 
       //navigates to leave feedback
@@ -14,8 +13,8 @@ describe("leave feedback", () => {
       cy.get('[data-qa="title.text"]').contains('Leave Feedback');
       cy.get('[data-qa="link.faq"]').click();
       cy.get('[data-qa="link.knownissues"]').click();
-      cy.get('[data-qa="text.contact"]').contains('support@givenergy.co.uk')
-      cy.get('[data-qa="text.contact"]').contains('01377 254 874')
+      cy.get('[data-qa="text.contact"]').contains('support@givenergy.co.uk');
+      cy.get('[data-qa="text.contact"]').contains('01377 254 874');
   
       //create feedback
       cy.get('[data-qa="select.product"]').click();

@@ -5,7 +5,6 @@ describe("Admin Sign In", () => {
 
       //directs to local host and sets viewport
       cy.visit("http://localhost/login");
-      cy.viewport(1920, 1080);
 
       //attempts login with incorrect username and password
       loginCheck(Cypress.env('incorrectUsername'), Cypress.env('incorrectPassword'), 'check');
@@ -17,7 +16,7 @@ describe("Admin Sign In", () => {
       loginCheck(Cypress.env('incorrectUsername'), Cypress.env('adminPassword'), 'check');
 
       //attempts login with admin username and password and checks dashboard loads
-      loginCheck(Cypress.env('adminUsername'), Cypress.env('adminPassword'))
+      loginCheck(Cypress.env('adminUsername'), Cypress.env('adminPassword'));
       cy.get('[data-qa="title.heading"]').contains('Admin Navigation');
       
     });

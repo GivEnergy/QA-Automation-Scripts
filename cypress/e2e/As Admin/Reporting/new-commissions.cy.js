@@ -5,7 +5,6 @@ describe("reporting new commissions filter", () => {
     it("tests reporting new commissions filter", () => {
 
         //sets viewport and logs in
-        cy.viewport(1920, 1080);
         adminLogin();
 
         //navigates to leave feedback
@@ -24,8 +23,8 @@ describe("reporting new commissions filter", () => {
         cy.get('[data-qa="container"]').find('g[class*="highcharts-legend-item"]').should('have.lengthOf', 1);
 
         //checks x axis before changing date
-        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}/)
-        //cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,}[-]\d{2,}/)
+        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
+        //cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
 
         //checks date selector
         cy.get('[data-qa="calendar.field.text"]').click();
@@ -45,17 +44,17 @@ describe("reporting new commissions filter", () => {
         cy.get('[data-qa="container"]').find('tspan').contains('No data to display');
         cy.get('[data-qa="container"]').find('g[class*="highcharts-legend-item"]').click();
         cy.get('[data-qa="container"]').find('rect[class*="highcharts-point"]').should('be.visible');
-        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(1).type('Day')
+        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(1).type('Day');
         cy.get('div[class*="v-list-item__content"]').contains('Day').click();
-        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}[-]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(1).clear().type('Hour')
+        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}[-]\d{2,2}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(1).clear().type('Hour');
         cy.get('div[class*="v-list-item__content"]').contains('Hour').click();
         cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0)
-            .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(1).clear().type('Year')
+            .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(1).clear().type('Year');
         cy.get('div[class*="v-list-item__content"]').contains('Year').click();
-        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}/)
+        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}/);
         
     });
 });

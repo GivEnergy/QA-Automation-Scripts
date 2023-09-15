@@ -5,7 +5,6 @@ describe("reporting new notifications filter", () => {
     it("tests reporting new notifications filter", () => {
 
         //sets viewport and logs in
-        cy.viewport(1920, 1080);
         adminLogin();
 
         //navigates to leave feedback
@@ -35,12 +34,12 @@ describe("reporting new notifications filter", () => {
         cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-legend-item"]').should('have.lengthOf', 1); 
 
         //checks x axis before changing date feedback by type bar chart
-        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}/)
-        //cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,}[-]\d{2,}/)
+        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
+        //cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
 
         //checks x axis before changing date feedback by product bar chart
-        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}/)
-        //cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,}[-]\d{2,}/)
+        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
+        //cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
 
         //checks date selector, enters value and then cancels
         cy.get('[data-qa="calendar.field.text"]').click();
@@ -65,17 +64,17 @@ describe("reporting new notifications filter", () => {
         cy.get('[data-qa="container"]').eq(0).find('rect[class*="highcharts-point"]').should('be.visible');
 
         //changes group graby by and checks date shown on x axis
-        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(2).type('Day')
+        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(2).type('Day');
         cy.get('div[class*="v-list-item__content"]').contains('Day').click();
-        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}[-]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(2).clear().type('Hour')
+        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}[-]\d{2,2}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(2).clear().type('Hour');
         cy.get('div[class*="v-list-item__content"]').contains('Hour').click();
         cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0)
-            .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(2).clear().type('Year')
+            .contains(/^\d{4,4}[-]\d{2,2}[-]\d{2,2}\s\d{2,2}[:]\d{2,2}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(2).clear().type('Year');
         cy.get('div[class*="v-list-item__content"]').contains('Year').click();
-        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}/)
+        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}/);
 
         //checks feedback by product bar chart
         //toggles the product on the by product graph and checks the graph changes with this
@@ -86,23 +85,23 @@ describe("reporting new notifications filter", () => {
         cy.get('[data-qa="container"]').eq(1).find('rect[class*="highcharts-point"]').should('be.visible');
 
         //changes group graby by and checks date shown on x axis
-        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(3).type('Day')
+        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(3).type('Day');
         cy.get('[data-qa="autocomplete.filter"]').eq(3).type('{downArrow}').type('{enter}');
-        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}[-]\d{2,}[-]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(3).clear().type('Hour')
+        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}[-]\d{2,2}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(3).clear().type('Hour');
         cy.get('[data-qa="autocomplete.filter"]').eq(3).type('{downArrow}').type('{enter}');
         cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0)
-            .contains(/^\d{4,}[-]\d{2,}[-]\d{2,}\s\d{2,}[:]\d{2,}/)
-        cy.get('[data-qa="autocomplete.filter"]').eq(3).clear().type('Year')
+            .contains(/^\d{4,4}[-]\d{2,2}[-]\d{2,2}\s\d{2,2}[:]\d{2,2}/);
+        cy.get('[data-qa="autocomplete.filter"]').eq(3).clear().type('Year');
         cy.get('[data-qa="autocomplete.filter"]').eq(3).type('{downArrow}').type('{enter}');
-        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,}/)
+        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}/);
 
         //clears filters
         //changes group graph by back to month and removes feedback type value
-        cy.get('[data-qa="autocomplete.filter"]').eq(2).clear().type('Month')
+        cy.get('[data-qa="autocomplete.filter"]').eq(2).clear().type('Month');
         cy.get('div[class*="v-list-item__content"]').contains('Month').click();
-        cy.get('[data-qa="autocomplete.filter"]').eq(3).clear().type('Month')
+        cy.get('[data-qa="autocomplete.filter"]').eq(3).clear().type('Month');
         cy.get('[data-qa="autocomplete.filter"]').eq(3).type('{downArrow}').type('{enter}');
         cy.get('[data-qa="autocomplete.filter"]').eq(0).clear();
         cy.get('[data-qa="autocomplete.filter"]').eq(1).click().clear();

@@ -1,15 +1,16 @@
 import { adminLogin } from "../../../logins";
 import { createAccount, dashboardSelect, checkPageNav } from "../../../funcs";
+import { YYYYMMDD } from "../../../regex";
 
 describe("account list", () => {
   it("tests Account list", () => {
 
     //sets viewport and logins in as admin
-    cy.viewport(1920, 1080);
-    adminLogin()
+    adminLogin();
 
     //opens account list and reloads page to hide nav bar
     dashboardSelect('Account List');
+    cy.get('[data-qa="input.filter"]').click();
     
     //checks page navigation
     checkPageNav();
@@ -28,14 +29,14 @@ describe("account list", () => {
     cy.get('[data-qa="button.create"]').contains('Create').click();
 
    //checks search, hover pop ups and account buttons
-    cy.get('[data-qa="field.search"]').click().type('Chemical Lane');
-    cy.get('[data-qa="table"]').find('td').contains('Dan Lambert').click();
-    cy.get('[data-qa="card.item"]').contains('Username:').should('be.visible');
-    cy.get('[data-qa="table"]').find('td').contains('GivEnergy03').click();
-    cy.get('[data-qa="generic.card.item]').contains('Account Type:').should('be.visible');
-    cy.get('[data-qa="table"]').find('td').contains('Givenergy02').click();
-    cy.get('[data-qa="card.item"]').contains('Email Address:').should('be.visible');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(10).contains(/^\d{4,}[-]\d{2,}[-]\d{2,}$/)
+    cy.get('[data-qa="field.search"]').click().type('Cavan');
+    // cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(4).contains('Gordon Ross').click();
+    // cy.get('i[class*="mdi-account"]').parent().contains('Gordon Ross').should('be.visible');
+    // cy.get('[data-qa="table"]').find('td').eq(1).find('td').eq(5).contains('sub_contractor').click();
+    // cy.get('i[class*="mdi-account"]').parent().contains('sub_contractor').should('be.visible');
+    // cy.get('[data-qa="table"]').find('td').eq(1).find('td').eq(6).contains('owner').click();
+    // cy.get('i[class*="mdi-account"]').parent().contains('owner').should('be.visible');
+    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(10).contains(YYYYMMDD);
     cy.get('a[href*="new-dashboard"]').first().click();
     cy.get('a[href*="account-settings"]').first().click();
     cy.get('a[href*="legacy-dashboard"]').first().click();

@@ -5,8 +5,7 @@ describe("Account settings work", () => {
   it("tests Account settings", () => {
 
       //sets viewport and logs in
-      cy.viewport(1920, 1080);
-      adminLogin()
+      adminLogin();
 
       //navigates to account settings page
       dashboardSelect('Account Settings');
@@ -20,8 +19,8 @@ describe("Account settings work", () => {
 
       //goes to manage security and changes password
       cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();
-      changePassword(Cypress.env('adminPassword'), 'password123!', 'password123456!', true, false);
-      changePassword('notarealpassword?','password123!', 'password123!', false, true);
+      changePassword(Cypress.env('adminPassword'), Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword') + '456', true, false);
+      changePassword(Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword'), false, true);
       changePassword(Cypress.env('adminPassword'), Cypress.env('adminPassword'), Cypress.env('adminPassword'), false, false);
     });
   });
