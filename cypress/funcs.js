@@ -163,3 +163,62 @@ export function createReturnItem(serialNumber1, serialNumber2) {
     cy.get('[data-qa="textarea.reason"]').eq(1).type('Dongle is broken.');
     cy.get('[data-qa="returnsbutton.createreturn"]').contains('Create Return').click();
 }
+
+export function tableCheck(heading, regex, errorMessage) {
+    cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
+      
+        const text1 = $elm.text()
+  
+        if (text1 === heading) {
+  
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
+  
+            const text2 = $td.text()
+          
+            const result = regex.test(text2)
+
+            if (!result) {
+              throw new Error(errorMessage)
+            }
+          })
+        }
+    })
+}
+
+export function tableContains(heading, value, errorMessage) {
+    cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
+      
+        const text1 = $elm.text()
+  
+        if (text1 === heading) {
+  
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
+  
+            const text2 = $td.text()
+
+            if (text2 !== value) {
+              throw new Error(errorMessage)
+            }
+          })
+        }
+    })
+}
+
+export function tableCSS(heading, CSS, errorMessage) {
+    cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
+      
+        const text1 = $elm.text()
+  
+        if (text1 === heading) {
+  
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('i').then(($i) => {
+                
+                const css = $i.css('color')
+                
+                if (css !== CSS) {
+                    throw new Error(errorMessage)
+                }
+          })
+        }
+    })
+}

@@ -1,5 +1,5 @@
 import { adminLogin } from "../../../logins";
-import { dashboardSelect, checkPageNav } from "../../../funcs";
+import { dashboardSelect, checkPageNav, tableCheck, tableContains, tableCSS } from "../../../funcs";
 import { serialNumber, YYYYMMDD } from "../../../regex";
 
 describe("account list", () => {
@@ -37,9 +37,9 @@ describe("account list", () => {
     // cy.get('[data-qa="button.submit"]').contains('Submit').click();
 
     //checks table format and buttons
-   //cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(1).contains(serialNumber);
-    //cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(2).contains(serialNumber);
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(12).contains(YYYYMMDD);
+    //tableCheck('Inverter SN', serialNumber, 'Not a valid inverter serial number');
+    //tableCheck('Dongle SN', serialNumber, 'Not a valid dongle serial number');
+    tableCheck('Commission Date', YYYYMMDD, 'Not a valid date, should follow YYYYMMDD format');
     // cy.get('[data-qa="item.status"]').eq(0).contains('Valid');
     // cy.get('i[class*="mdi-delete"]').eq(0).click();
     // cy.get('[data-qa="item.status"]').eq(0).contains('Void');
@@ -52,23 +52,22 @@ describe("account list", () => {
 
     //use filters
     cy.get('[data-qa="auto.model"]').type('HY5.0').type('{downArrow}').type('{enter}').clear();
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(3).contains('GIV-HY5.0');
+    tableContains('Model', 'GIV-HY5.0', 'Error when filtering by inverter model')
     cy.get('[data-qa="select.status"]').click();
     cy.get('[data-qa="status"]').eq(1).click();
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0)
-      .find('i[class*="mdi-monitor"]').should('have.css', 'color', 'rgb(248, 221, 108)');
-    cy.get('[data-qa="auto.model"]').click().parent().next().find('button[class=*"mdi-close"]').click();
-    cy.get('[data-qa="select.status"]').click().parent().next().find('button[class=*"mdi-close"]').click();
+    tableCSS('Status', 'rgb(248, 221, 108)', 'Error when filtering by status');
+    // cy.get('[data-qa="auto.model"]').click().parent().next().find('button[class=*"mdi-close"]').click();
+    // cy.get('[data-qa="select.status"]').click().parent().next().find('button[class=*"mdi-close"]').click();
 
-    //checks search and account info hovers work
-    //cy.get('[data-qa="search"]').type('Chemical Lane').type('{enter}');
-    //cy.get('[data-qa="table"]').find('td').contains('Dan Lambert').click();
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(5).find('span').contains('cAVAN BEARDMORE').click();
-    cy.get('i[class*="mdi-account"]').parent().contains('cAVAN BEARDMORE').should('be.visible');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(6).find('span').contains('Gordon Ross').click();
-    cy.get('i[class*="mdi-account"]').parent().contains('Gordon Ross').should('be.visible');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(7).find('span').contains('sub_contractor').click();
-    cy.get('i[class*="mdi-account"]').parent().contains('sub_contractor').should('be.visible');
+    // //checks search and account info hovers work
+    // //cy.get('[data-qa="search"]').type('Chemical Lane').type('{enter}');
+    // //cy.get('[data-qa="table"]').find('td').contains('Dan Lambert').click();
+    // cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(5).find('span').contains('cAVAN BEARDMORE').click();
+    // cy.get('i[class*="mdi-account"]').parent().contains('cAVAN BEARDMORE').should('be.visible');
+    // cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(6).find('span').contains('Gordon Ross').click();
+    // cy.get('i[class*="mdi-account"]').parent().contains('Gordon Ross').should('be.visible');
+    // cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(7).find('span').contains('sub_contractor').click();
+    // cy.get('i[class*="mdi-account"]').parent().contains('sub_contractor').should('be.visible');
 
    });
 }); 

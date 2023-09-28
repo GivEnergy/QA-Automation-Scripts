@@ -1,4 +1,4 @@
-import { checkPageNav, dashboardSelect, getNum } from "../../../../funcs";
+import { checkPageNav, dashboardSelect, getNum, tableCheck, tableContains } from "../../../../funcs";
 import { adminLogin } from "../../../../logins";
 import { dateAndTime } from "../../../../regex";
 
@@ -16,12 +16,14 @@ describe("view feedback", () => {
       //checkPageNav();
 
       //check table format
+      tableCheck('Reported At', dateAndTime, 'Invalid date and time format');
+      tableCheck('Last Action Time', dateAndTime, 'Invalid date and time format');
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(6).contains(dateAndTime);
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(8).contains(dateAndTime);
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(5).find('span').eq(0).click();
-      //cheks pop up
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(7).find('span').eq(0).click();
-      //checks pop up 
+      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(5).find('span').eq(0).click(); // <- this can be a function like above
+      //needs to be check pop up here <-
+      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(7).find('span').eq(0).click(); // <- this can be a function like above
+      //needs to be check pop up here <-
 
       //check show closed works (fails if number of feedbacks does not increase when close is clicked)
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
