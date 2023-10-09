@@ -1,5 +1,5 @@
 import { adminLogin } from "../../../logins";
-import { createAccount, dashboardSelect, checkPageNav } from "../../../funcs";
+import { createAccount, dashboardSelect, checkPageNav, tableClick, tableContains, tableRegex } from "../../../funcs";
 import { YYYYMMDD } from "../../../regex";
 
 describe("account list", () => {
@@ -28,15 +28,12 @@ describe("account list", () => {
     createAccount('TestDistributor', 'clear');
     cy.get('[data-qa="button.create"]').contains('Create').click();
 
-   //checks search, hover pop ups and account buttons
-    cy.get('[data-qa="field.search"]').click().type('Cavan');
-    // cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(4).contains('Gordon Ross').click();
-    // cy.get('i[class*="mdi-account"]').parent().contains('Gordon Ross').should('be.visible');
-    // cy.get('[data-qa="table"]').find('td').eq(1).find('td').eq(5).contains('sub_contractor').click();
-    // cy.get('i[class*="mdi-account"]').parent().contains('sub_contractor').should('be.visible');
-    // cy.get('[data-qa="table"]').find('td').eq(1).find('td').eq(6).contains('owner').click();
-    // cy.get('i[class*="mdi-account"]').parent().contains('owner').should('be.visible');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(10).contains(YYYYMMDD);
+    //checks search, hover pop ups and account buttons
+    cy.get('[data-qa="field.search"]').click().type('Cavan'); //changed to chemical lane and below to its details
+    tableClick('Engineer', 'Dan Lambert');
+    tableClick('Company', 'GivEnergy03');
+    tableClick('Distributor', 'Givenergy02');
+    tableRegex('Create Date', YYYYMMDD, 'Error: date does not match yyyy-mm-dd format')
     cy.get('a[href*="new-dashboard"]').first().click();
     cy.get('a[href*="account-settings"]').first().click();
     cy.get('a[href*="legacy-dashboard"]').first().click();
@@ -51,6 +48,6 @@ describe("account list", () => {
     //checks filter
     cy.get('[data-qa="input.filter"]').click();
     cy.get('div[class*="v-list-item"]').contains('Super Engineer').click();
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(3).contains('Super Engineer');
+    tableContains('Type', 'Super Engineer', 'Error when filtering by account type')
   });
 });

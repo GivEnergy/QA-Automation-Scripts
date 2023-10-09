@@ -1,4 +1,4 @@
-import { checkPageNav, dashboardSelect, getNum, tableCheck, tableContains } from "../../../../funcs";
+import { checkPageNav, dashboardSelect, getNum, tableCheck, tableContains, tableClick } from "../../../../funcs";
 import { adminLogin } from "../../../../logins";
 import { dateAndTime } from "../../../../regex";
 
@@ -13,17 +13,15 @@ describe("view feedback", () => {
 
       cy.get('[data-qa="title"]').contains('Feedback').click();
 
-      //checkPageNav();
+      checkPageNav();
 
       //check table format
       tableCheck('Reported At', dateAndTime, 'Invalid date and time format');
       tableCheck('Last Action Time', dateAndTime, 'Invalid date and time format');
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(6).contains(dateAndTime);
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(8).contains(dateAndTime);
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(5).find('span').eq(0).click(); // <- this can be a function like above
-      //needs to be check pop up here <-
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(7).find('span').eq(0).click(); // <- this can be a function like above
-      //needs to be check pop up here <-
+      tableClick('Reported By');
+      tableClick('Last Action By');
 
       //check show closed works (fails if number of feedbacks does not increase when close is clicked)
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
@@ -51,66 +49,133 @@ describe("view feedback", () => {
       cy.get('[data-qa="button.recordOpen"]').click();
 
       //tests search and filter
-      cy.get('[data-qa="select.product"]').type('App').type('{enter}');
-      //cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(1).contains('App');
-      cy.get('[data-qa="select.type"]').type('Bug').type('{enter}');
-      //cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(2).contains('Bug Report');
+      cy.get('[data-qa="select.product"]').click();
+      cy.get('div[class*="v-select-list"]').children().contains('App').click();
+      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
+        
+          const text1 = $elm.text()
+    
+          if (text1 === 'Product') {
+    
+              cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
+              
+              const text2 = $td.text().split(' ')[2]
+
+              if (text2 !== 'App') {
+                throw new Error('Error found when using product filter')
+              }
+            })
+          }
+      })
+      cy.get('button[class*="mdi-close"]').click();
+
+
+      cy.get('[data-qa="select.type"]').click();
+      cy.get('div[class*="v-select-list"]').children().contains('Feedback').click();
+      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
+        
+          const text1 = $elm.text()
+    
+          if (text1 === 'Type') {
+    
+              cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
+              
+              const text2 = $td.text().split(' ')[2]
+
+              if (text2 !== 'Bug') {
+                throw new Error('Error found when using type filter')
+              }
+            })
+          }
+      })
+      cy.get('button[class*="mdi-close"]').click();
+
+
       cy.get('[data-qa="search"]').type('Test').type('{enter}');
+      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
+        const text = $th.text()
+
+        if (text === 'Title') {
+
+          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).contains('Test');
+
+        } 
+      })
       cy.get('button[class*="mdi-close"]').click();
 
       //uses select record options
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
       cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
       cy.get('[data-qa="button.recordClose"]').click();
+      cy.get('[data-qa="button.showClosed"]').parent().click();
       cy.wait(1000);
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(9).contains('Yes');
+      tableContains('Closed', 'Yes', 'Error found when checking if a ticket shows if it is closed');
       cy.wait(1000);
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
       cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
       cy.get('[data-qa="button.recordOpen"]').click();
       cy.wait(1000);
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(9).contains('No');
+      tableContains('Closed', 'No', 'Error found when checking if a ticket shows if it is closed');
 
       //check view feedback title
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(3).then(($td) => {
+      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
 
-        const text = $td.text() 
+        const text = $th.text()
 
-        cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(10).click();
+        if (text === 'Title') {
 
-        cy.get('[data-qa="title.text"]').then(($div) => {
+          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
 
-          const text2 = $div.text()
+            const text1 = $td.text()
 
-          if (text !== text2) {
-            throw new Error('View feedback title is different to title shown in table')
-          }
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().click();
 
-        })
+            cy.get('[data-qa="title.text"]').then(($div) => {
 
+              const text2 = $div.text()
+    
+              if (text1 !== text2) {
+                throw new Error('View feedback title is different to title shown in table')
+              }
+    
+            })
+
+          })
+        }
       });
 
       //goes back to view feedback and check view feedback content
       dashboardSelect('View Feedback');
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(4).then(($td) => {
+      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
 
-        const text = $td.text() 
+        const text = $th.text()
 
-        cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(10).click();
+        if (text === 'Title') {
 
-        cy.get('[data-qa="textarea"]').then(($textarea) => {
+          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
 
-          const str = $textarea.val()
-          const text2 = str.substring(0, 50) + '...'
+            const text1 = $td.text()
 
-          if (text !== text2) {
-            throw new Error('View feedback content substring is different to content substring shown in table')
-          }
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().click();
 
-        })
+            cy.get('[data-qa="title.text"]').then(($textarea) => {
+
+              
+              const str = $textarea.val()
+              const text2 = str.substring(0, 50) + '...'
+
+    
+              if (text1 !== text2) {
+                throw new Error('View feedback content substring is different to content substring shown in table')
+              }
+    
+            })
+
+          })
+        }
       });
 
-      //need to add in commenting on marking as closed and checkuing repoted and last action by 
+     // need to add in commenting on marking as closed and checking reported and last action by 
 
 
     });

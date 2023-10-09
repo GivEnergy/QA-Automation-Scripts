@@ -1,4 +1,4 @@
-import { checkPageNav, checkReturnsActions, checkReturnsFormat, dashboardSelect } from "../../../funcs";
+import { checkPageNav, checkReturnsActions, checkReturnsFormat, dashboardSelect, tableContains, tableClick, tableRegex } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 import { dateAndTime } from "../../../regex";
 
@@ -12,44 +12,44 @@ describe("returns", () => {
     cy.get('[data-qa="title.header"]').contains('Returns');
 
     //checks page navigation
-    //checkPageNav();
+    checkPageNav();
 
     //checks format of table data
-    //checkReturnsFormat();
+    checkReturnsFormat();
     
-    //checkReturnsActions();
+    checkReturnsActions();
 
-    // //check search, pop up, format
-    // cy.get('label').contains('Search').next().type('Adam');
-    // cy.get('tbody').find('td').eq(0).contains('Adam Reynolds');
-    // checkReturnsFormat();
+    //check search, pop up, format
+    cy.get('label').contains('Search').next().type('Adam');
+    tableContains('Created By', 'Adam Reynolds', 'Error when searching for criteria')
+    checkReturnsFormat();
 
-    // cy.get('td').contains('Adam Reynolds').click();
-    // cy.get('b').contains('Username:').should('be.visible');
-    // checkReturnsActions();
+    cy.get('td').contains('Adam Reynolds').click();
+    cy.get('b').contains('Username:').should('be.visible');
+    checkReturnsActions();
 
     //use create new return
     cy.get('[data-qa="button.start"]').contains('Create New Return').click();
     cy.get('[data-qa="button.check"]').should('be.disabled');
-    cy.get('[data-qa="field.ticketinput"]').type('53142');
+    cy.get('[data-qa="field.ticketinput"]').type('53431');
     cy.get('[data-qa="button.check"]').contains('Check Ticket #').click();
     cy.get('[data-qa="button.confirm"]').contains('Confirm Ticket #').click();
     cy.get('[data-qa="link.view"]').contains('View On Freshdesk').click();
     cy.get('[data-qa="button.create"]').contains('Create Return').should('not.be.enabled');
     cy.get('[data-qa="select.recipients"]').click();
-    //cy.get('div[class*="v-select-list"]').children().contains('Installer').click();
+    cy.get('div[class*="v-select-list"]').children().contains('Installer').click();
     cy.get('div[class*="v-list-item__title"]').contains('Customer').click();
     cy.get('[data-qa="button.create"]').contains('Create Return').should('not.be.enabled');
-    cy.get('[data-qa="search.customer"]').parent().find('label').next('input').click().type('cavan');
-    cy.get('div[class*="v-list-item__title"]').contains('cAVAN BEARDMORE | Cavan').click();
-    //cy.get('[data-qa="search.installer"]').parent().find('label').next('input').click().type('GivEnergy');
-    //cy.get('div[class*="v-select-list"]').children().contains('Givenergy engineer3 | ENGINEER').click();
+    cy.get('[data-qa="search.customer"]').parent().find('label').next('input').click().type('brymbo');
+    cy.get('div[class*="v-list-item__title"]').contains('Brymbo Road | BrymboRoad').click();
+    cy.get('[data-qa="search.installer"]').parent().find('label').next('input').click().type('Dan');
+    cy.get('div[class*="v-select-list"]').children().contains('Dan Lambert | ENGINEER').click();
     cy.get('[data-qa="button.create"]').contains('Create Return').should('not.be.enabled');
     cy.get('[data-qa="form.create"]').should('be.visible');
-    //cy.get('[data-qa="checkbox.distributor"]').parent().click();
-   // cy.get('[data-qa="form.create"]').should('not.be.visible');
-   // cy.get('[data-qa="search.distributor"]').parent().find('label').next('input').click().type('GivEnergy');
-    //cy.get('div[class*="v-select-list"]').children().contains('Givenergy02 | OWNER').click();
+    cy.get('[data-qa="checkbox.distributor"]').parent().click();
+    cy.get('[data-qa="form.create"]').should('not.be.visible');
+    cy.get('[data-qa="search.distributor"]').parent().find('label').next('input').click().type('GivEnergy');
+    cy.get('div[class*="v-select-list"]').children().contains('Givenergy02 | OWNER').click();
     cy.get('[data-qa="form.create"]').should('be.visible');
 
     //creates first return item
@@ -100,19 +100,25 @@ describe("returns", () => {
 
     //verifies the return is created and is showing correct info in the table
     cy.get('i[class*="mdi-check-circle"]').parent().contains('Return created successfully!');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).contains('You');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(1).contains('cAVAN BEARDMORE').click();
-    cy.get('i[class*="mdi-account"]').parent().contains('cAVAN BEARDMORE');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(3).contains('owner').click();
-    cy.get('i[class*="mdi-account"]').parent().contains('owner');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(4)
-        .contains('Dongle - WiFi - WO2249G374 Dongle - WiFi - WO2249G377');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(5).contains('53142').click();
+    tableContains('Created By', 'You', 'Error when checking returns data');
+    tableClick('Customer', 'Brymbo Road');
+    tableContains('Items', 'Dongle - WiFi - WO2249G374 Dongle - WiFi - WO2249G377', 'Error return items in created return are not listed');
+    tableContains('Ticket #', '53431', 'Error returns ticket # is not correctly stated')
+    cy.get('[data-qa="table"]').find('tr').eq(1).find('th').each(($th, index) => {
+
+        const text = $th.text()
+
+        if (text === 'Ticket #') {
+
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).click()
+
+        }
+    });
     cy.get('[data-qa="card.item"]').find('div').find('span').contains('Ticket #53142');
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(7).contains(dateAndTime);
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(8).find('i[class*="mdi-delete"]').click();
+    tableRegex('Created At', dateAndTime, 'Error created at does not match yyyy-mm--dd hh:mm:ss format')
+    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click();
     cy.get('[data-qa="button.cancel"]').click();
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(8).find('i[class*="mdi-delete"]').click();
+    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click();
     cy.get('[data-qa="button.yes"]').click()
     });
 });

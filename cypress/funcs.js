@@ -19,7 +19,7 @@ export function checkPageNav() {
     cy.get('[data-qa="buttoncontainer.navigation"]').find('li').first().click();
     cy.get('[data-qa="container.navigation"]').find('div').next().contains('1-15');
     cy.get('[data-qa="buttoncontainer.navigation"]').find('li').first().next().next().next().click();
-    //cy.get('[data-qa="container.navigation"]').find('div').next().contains('31-45');
+    cy.get('[data-qa="container.navigation"]').find('div').next().contains('31-45');
     cy.get('[data-qa="jumptopage.input.page"]').type('1').type("{downArrow}").type("{enter}");;
 };
 
@@ -113,10 +113,7 @@ export function checkReturnsFormat() {
     cy.get('[data-qa="card.item"]').should('be.visible');
     cy.get('[data-qa="tabledata.ticket"]').click();
     cy.get('[data-qa="card.item"]').should('be.visible');
-    cy.get('tbody').children().eq(0).find('td').eq(5).contains(/^\d{4,4}$/);
-    cy.get('tbody').children().eq(0).find('td').eq(6).contains(/^[A-Za-z]{8,8}$/);
-    cy.get('tbody').children().eq(0).find('td').eq(7)
-      .contains(/^\d{4,4}[-]\d{2,2}[-]\d{2,2}\s\d{2,2}[:]\d{2,2}[:]\d{2,2}$/);
+    tableRegex('Created At', /^\d{4,4}[-]\d{2,2}[-]\d{2,2}\s\d{2,2}[:]\d{2,2}[:]\d{2,2}$/, 'Error: created at does not meet yyyy-mm-dd hh:mm:ss');
 }
 
 export function checkReturnsActions() {
@@ -193,7 +190,7 @@ export function tableContains(heading, value, errorMessage) {
         if (text1 === heading) {
   
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
-  
+            
             const text2 = $td.text()
 
             if (text2 !== value) {
@@ -204,7 +201,7 @@ export function tableContains(heading, value, errorMessage) {
     })
 }
 
-export function tableCSS(heading, CSS, errorMessage) {
+export function tableCSS(heading, expectedCSS, errorMessage) {
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
       
         const text1 = $elm.text()
@@ -213,11 +210,44 @@ export function tableCSS(heading, CSS, errorMessage) {
   
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('i').then(($i) => {
                 
-                const css = $i.css('color')
+                const actualCSS = $i.css('color')
                 
-                if (css !== CSS) {
+                if (actualCSS !== expectedCSS) {
                     throw new Error(errorMessage)
                 }
+          })
+        }
+    })
+}
+
+export function tableClick(heading, value) {
+    cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
+
+        const text1 = $th.text()
+
+        if (text1 === heading) {
+          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('span').eq(0).click()
+          cy.get('i[class*="mdi-account"]').parent().contains(value).should('be.visible');
+        } 
+      })
+}
+
+export function tableRegex(heading, regex, errorMessage) {
+    cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
+      
+        const text1 = $elm.text()
+  
+        if (text1 === heading) {
+  
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
+            
+            const text2 = $td.text()
+
+            const result = regex.test(text2)
+
+            if (!result) {
+              throw new Error(errorMessage)
+            }
           })
         }
     })
