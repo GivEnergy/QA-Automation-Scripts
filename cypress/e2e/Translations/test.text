@@ -1,0 +1,214 @@
+import { adminLogin } from "../../logins";
+
+
+describe("admin navigation page english", () => {
+  it("checks english of the admin navigation page", () => {
+
+    adminLogin();
+    cy.get('[data-qa="title.heading"]').contains('Admin Navigation').click();
+    cy.get('[data-qa="title.text"]').each(($div, index) => {
+
+        const text = $div.text();
+
+        switch (index) {
+            case 0:
+                if (text !== 'Activate Batteries') {
+                    throw new Error('Activate Batteries title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 1:
+                if (text !== 'Audits') {
+                    throw new Error('Audits title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 2:
+                if (text !== 'Automatic Firmware Updates') {
+                    throw new Error('Automatic Firmware Updates title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 3:
+                if (text !== 'Automations') {
+                    throw new Error('Automations title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 4:
+                if (text !== 'Call Queues') {
+                    throw new Error('Call Queues title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 5:
+                if (text !== 'Connections') {
+                    throw new Error('Connections title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 6:
+                if (text !== 'Debug Inverters') {
+                    throw new Error('Debug Inverters title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                } 
+                break;
+            case 7:
+                if (text !== 'Firmware Updates') {
+                    throw new Error('Firmware Updates title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 8:
+                if (text !== 'Installer Training') {
+                    throw new Error('Installer Training title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 9:
+                if (text !== 'Manage Warranties') {
+                    throw new Error('Manage Warranties title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 10:
+                if (text !== 'Notifications') {
+                    throw new Error('Notifications title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 11:
+                if (text !== 'Returns') {
+                    throw new Error('Returns title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break;
+            case 12:
+                if (text !== 'SOC Calibrations') {
+                    throw new Error('SOC Calibrations title is not correct')
+                } else {
+                    cy.log(text + ' title is correct')
+                }
+                break; 
+            default:
+                cy.log('Please add new case');
+                break;
+        }
+    });
+
+    cy.get('[data-qa="title.description"]').each(($div, index) => {
+
+        const text = $div.text();
+
+        switch (index) {
+            case 0:
+                if (text !== 'View active and historic inverter activate battery logs') {
+                    throw new Error('Activate Batteries description is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 1:
+                if (text !== 'View any changes made to data via the portal, API or mobile app') {
+                    throw new Error('Audits description is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 2:
+                if (text !== 'View active and historic automatic inverter firmware updates') {
+                    throw new Error('Automatic Firmware Updates description is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 3:
+                if (text !== 'View any inverters running on the tariff automation scripts') {
+                    throw new Error('Automations description is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 4:
+                if (text !== 'View at-a-glance information about the Vonage call queues') {
+                    throw new Error('Call Queues description is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 5:
+                if (text !== 'View active connections to comms') {
+                    throw new Error('Connections description is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 6:
+                if (text !== 'Manage inverters that are in debug mode') {
+                    throw new Error('Debug Inverters title is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                } 
+                break;
+            case 7:
+                if (text !== 'View active and historic inverter firmware updates') {
+                    throw new Error('Firmware Updates title is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 8:
+                if (text !== 'Manage installer training events') {
+                    throw new Error('Installer Training title is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 9:
+                if (text !== 'Manage inverter extended warranties') {
+                    throw new Error('Manage Warranties title is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 10:
+                if (text !== 'Send an letterheaded email to one or more customers via the portal') {
+                    throw new Error('Notifications title is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 11:
+                if (text !== 'Manage RMAs') {
+                    throw new Error('Returns title is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break;
+            case 12:
+                if (text !== 'View active and historic inverter SOC calibrations') {
+                    throw new Error('SOC Calibrations title is not correct')
+                } else {
+                    cy.log(text + ' description is correct')
+                }
+                break; 
+            default:
+                cy.log('Please add new case');
+                break;
+        }
+    });
+
+  });
+});

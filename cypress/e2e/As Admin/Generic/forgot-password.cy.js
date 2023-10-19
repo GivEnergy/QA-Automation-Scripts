@@ -14,7 +14,7 @@ describe("forgot password", () => {
       // let emailAddress = inbox.emailAddress;
 
       //visits page
-      cy.visit("http://localhost/login"); //remove this when mailslurp is added
+      cy.visit("https://staging.givenergy.cloud/login"); //remove this when mailslurp is added
 
       //logs in and changes email to temp email
       // adminLogin();
@@ -22,11 +22,11 @@ describe("forgot password", () => {
       // cy.get('[data-qa="form.field.email"]').clear().type(emailAddress);
       // cy.get('[data-qa="form.button.submit"]').contains('Submit').click();
       // cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
-      // cy.visit('https://staging.givenergy.cloud/login');
+      // dashboardSelect('Logout');
 
-      cy.get('[data-qa="link.forgotpw"]').click();
+      cy.get('[data-qa="link.forgotPW"]').click();
       cy.get('[data-qa="form.link.back"]').click();
-      cy.get('[data-qa="link.forgotpw"]').click();
+      cy.get('[data-qa="link.forgotPW"]').click();
       cy.get('[data-qa="title.text"]').contains('Forgot your password?');
       cy.get('[data-qa="form.field.username"]').click();
       cy.get('[data-qa="form.button.submit"]').should('be.disabled');
@@ -44,6 +44,9 @@ describe("forgot password", () => {
       //   assert.isDefined(email);
         
       //   console.log(email, email.body);
+
+      /* follows link in email and changes password to Cypress.env('adminPassword') and then logs 
+      in using this password and then changes the email back to what it should be*/
 
             //changes email back
       //   cy.get('[data-qa="form.link.back"]').click();

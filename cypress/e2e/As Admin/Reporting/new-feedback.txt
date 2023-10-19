@@ -12,8 +12,8 @@ describe("reporting new notifications filter", () => {
 
         //uses new feedback filter
         reportingFilter('New Feedback');
-        //cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-legend-item highcharts-column-series"]').should('have.lengthOf', 3);
-        //cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-legend-item highcharts-column-series"]').should('have.lengthOf', 7);
+        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-legend-item highcharts-column-series"]').should('have.lengthOf', 3);
+        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-legend-item highcharts-column-series"]').should('have.lengthOf', 7);
 
         //uses feedback type filter
         //filters for bug reports and checks the feedback by type graph has responded correctly 
@@ -35,22 +35,22 @@ describe("reporting new notifications filter", () => {
 
         //checks x axis before changing date feedback by type bar chart
         cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
-        //cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
+        cy.get('[data-qa="container"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
 
         //checks x axis before changing date feedback by product bar chart
         cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
-        //cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
+        cy.get('[data-qa="container"]').eq(1).find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
 
         //checks date selector, enters value and then cancels
         cy.get('[data-qa="calendar.field.text"]').click();
-        //cy.get('div[class*="v-date-picker-header"]').find('button[label="Previous month"]').click();
+        cy.get('div[class*="v-date-picker-header"]').find('button[label="Previous month"]').click();
         cy.get('tbody').find('div[class*="v-btn__content"]').contains('8').click(); //needs to be 1 
         cy.get('tbody').find('div[class*="v-btn__content"]').contains('11').click(); //needs to be 28
         cy.get('[data-qa="calendar.button.cancel"]').click();
 
         //enters value and then saves
         cy.get('[data-qa="calendar.field.text"]').click();
-        //cy.get('div[class*="v-date-picker-header"]').find('button[label="Previous month"]').click();
+        cy.get('div[class*="v-date-picker-header"]').find('button[label="Previous month"]').click();
         cy.get('tbody').find('div[class*="v-btn__content"]').contains('8').click(); //needs to be 1
         cy.get('tbody').find('div[class*="v-btn__content"]').contains('11').click(); //needs to be 28
         cy.get('[data-qa="calendar.button.save"]').click();

@@ -12,7 +12,7 @@ describe("reporting new commissions filter", () => {
 
         //uses new notifications filter
         reportingFilter('New Commissions');
-        //cy.get('[data-qa="container"]').find('g[class*="highcharts-legend"]').should('have.lengthOf', 9);
+        cy.get('[data-qa="container"]').find('g[class*="highcharts-legend"]').should('have.lengthOf', 9);
 
         //uses distinct filter
         cy.get('[data-qa="autocomplete.filter"]').eq(0).type('Yes');
@@ -24,16 +24,16 @@ describe("reporting new commissions filter", () => {
 
         //checks x axis before changing date
         cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
-        //cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
+        cy.get('[data-qa="container"]').find('g[class*="highcharts-xaxis-labels"]').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
 
         //checks date selector
         cy.get('[data-qa="calendar.field.text"]').click();
-        //cy.get('div[class*="v-date-picker-header"]').find('button[label="Previous month"]').click();
+        cy.get('div[class*="v-date-picker-header"]').find('button[label="Previous month"]').click();
         cy.get('tbody').find('div[class*="v-btn__content"]').contains('7').click(); 
         cy.get('tbody').find('div[class*="v-btn__content"]').contains('10').click();
         cy.get('[data-qa="calendar.button.cancel"]').click();
         cy.get('[data-qa="calendar.field.text"]').click();
-        //cy.get('div[class*="v-date-picker-header"]').find('button[label="Previous month"]').click();
+        cy.get('div[class*="v-date-picker-header"]').find('button[label="Previous month"]').click();
         cy.get('tbody').find('div[class*="v-btn__content"]').contains('7').click(); //needs to be 1
         cy.get('tbody').find('div[class*="v-btn__content"]').contains('10').click(); //needs to be 28
         cy.get('[data-qa="calendar.button.save"]').click();

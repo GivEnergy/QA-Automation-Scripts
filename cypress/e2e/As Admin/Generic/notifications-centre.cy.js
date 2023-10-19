@@ -1,23 +1,49 @@
 import { dashboardSelect } from "../../../funcs";
-import { customerLogin } from "../../../logins";
+import { adminLogin, customerLogin } from "../../../logins";
 
 describe("Notifications centre", () => {
     it("tests Notifications centre", () => {
       cy.viewport(1920, 1080);
-      customerLogin()
+      adminLogin();
       
-      dashboardSelect('Notifications');
+      cy.get('[data-qa="icon.notification"]').scrollIntoView().click();
 
       //checks notification centre opens, and marks all as read and checks title exists and notification counter is at 0
+      cy.wait(2000);
+      cy.get('[data-qa="button.refresh"]').click();
+      cy.get('[data-qa="button.close"]').click();
+      cy.get('[data-qa="title.notifications"]').should('not.be.visible');
+      cy.get('[data-qa="icon.notification"]').scrollIntoView().click();
       cy.get('[data-qa="title.notifications"]').contains('Notifications');
-      cy.get('[data-qa="button.allRead"]').click();
-      cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').should('not.have.value');
-      cy.get('[data-qa="notification.title"]').should('exist',);
+      cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
+
+        const text1 = $span.text()
+        const num1 = Number(text1)
+
+        if (num1 > 0) {
+
+          cy.get('i[class*="mdi-email-outline"]').should('have.length', num1);
+          cy.get('[data-qa="button.allRead"]').click();
+          cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').should('not.have.value');
+
+        } else {
+
+          cy.get('i[class*="mdi-email-outline"]').should('have.length', 0);
+          cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-check-outline"]').click();
+          cy.wait(1000);
+          cy.get('[data-qa="button.allRead"]').click();
+          cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').should('not.have.value');
+        }
+
+      })
+
+      cy.get('[data-qa="notification.title"]').should('exist');
       cy.get('[data-qa="notification.content"]').should('exist');
 
       //checks that the number of notifications increases and decreases with the notifications being read and unread
       cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-check-outline"]').click();
       cy.wait(1000);
+
       cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
         
         const text = $span.text()
@@ -28,7 +54,9 @@ describe("Notifications centre", () => {
         }
 
         cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-outline"]').click();
+
         cy.wait(1000);
+
         cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
         
           const text2 = $span.text()
@@ -39,11 +67,11 @@ describe("Notifications centre", () => {
           }
         })
       })
-      cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-check-outline"]').click();
 
+      cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-check-outline"]').click();
       
       //checks that archiving a notification will add it to the top of the archived list
-      //gets the top notifications title and then archies it and navigate to the archived inbox
+      //gets the top notifications title and then archives it and navigate to the archived inbox
       cy.get('[data-qa="notification.title"]').eq(0).then(($div) => {
 
         const text = $div.text()
@@ -60,14 +88,11 @@ describe("Notifications centre", () => {
           }
 
           cy.get('[data-qa="notification.archive"]').eq(0).click();
+
         })
 
       });
 
 
-      //tests refresh and close button
-      cy.get('[data-qa="button.refresh"]').click();
-      cy.get('[data-qa="button.close"]').click();
-      cy.get('[data-qa="title.notifications"]').should('not.be.visible');
     })
   });

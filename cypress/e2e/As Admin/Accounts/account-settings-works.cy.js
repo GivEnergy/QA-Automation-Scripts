@@ -19,9 +19,9 @@ describe("Account settings work", () => {
 
       //goes to manage security and changes password
       cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();
-      changePassword(Cypress.env('adminPassword'), Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword') + '456', true, false);
-      changePassword(Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword'), false, true);
-      changePassword(Cypress.env('adminPassword'), Cypress.env('adminPassword'), Cypress.env('adminPassword'), false, false);
+      changePassword(Cypress.env('adminPassword'), Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword') + '456', 'first');
+      changePassword(Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword'), Cypress.env('incorrectPassword'), 'second');
+      changePassword(Cypress.env('adminPassword'), Cypress.env('adminPassword'), Cypress.env('adminPassword'), 'third');
     });
   });
   
