@@ -1,0 +1,22 @@
+import { adminLogin } from "../../../logins";
+import { dashboardSelect, changeDetails, changePassword } from "../../../funcs";
+
+describe("Account settings details", () => {
+  it("tests changing the account settings details works", () => {
+
+      //sets viewport and logs in
+      adminLogin();
+
+      //navigates to account settings page
+      dashboardSelect('Account Settings');
+
+      //changes details
+      changeDetails(false);
+
+      //changes details back
+      dashboardSelect('Account Settings');
+      cy.wait(3000);
+      changeDetails(true);
+    });
+  });
+  
