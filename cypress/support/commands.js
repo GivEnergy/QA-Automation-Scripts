@@ -23,3 +23,11 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('disableDebugBar', () => {
+
+    cy.intercept('**https://staging.givenergy.cloud/**', (req) => {
+      req.headers['X-DEBUGBAR-DISABLED'] = '1';
+    }).as('disableDebugBar');
+
+  });

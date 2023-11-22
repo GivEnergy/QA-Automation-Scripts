@@ -1,9 +1,8 @@
 export function addRNG(string) {
     let num = Math.floor(Math.random() * 100000);
     num.toString;
-    const newString = string + num
-    return newString;
-};
+    return string + num + "@gmail.com";
+}
 
 export function dashboardSelect(navItem, adminItem) {
     cy.wait(500);
@@ -11,7 +10,7 @@ export function dashboardSelect(navItem, adminItem) {
     if (adminItem) {
         cy.get('[data-qa="title.text"]').contains(adminItem).click();
     }
-};
+}
 
 export function checkPageNav() {
     cy.get('[data-qa="container.navigation"]').scrollIntoView();
@@ -21,16 +20,14 @@ export function checkPageNav() {
     cy.get('[data-qa="container.navigation"]').find('div').next().contains('1-15');
     cy.get('[data-qa="container.navigation"]').find('li').first().next().next().next().click();
     cy.get('[data-qa="container.navigation"]').find('div').next().contains('31-45');
-    cy.get('[data-qa="jumpToPage.input.page"]').type('1').type("{downArrow}").type("{enter}");;
-};
+    cy.get('[data-qa="jumpToPage.input.page"]').type('1').type("{downArrow}").type("{enter}");
+}
 
 export function createAccount(username, clear) {
     if (!clear) {
         cy.get('[data-qa="button.creation"]').contains('Create Distributor Account').click();
-        cy.get('[data-qa="form.field.username"]').prev().contains('Username');
-        cy.get('[data-qa="form.field.username"]').type(addRNG(username));
         cy.get('[data-qa="form.field.email"]').prev().contains('Email');
-        cy.get('[data-qa="form.field.email"]').type('test@test.test');
+        cy.get('[data-qa="form.field.email"]').type(addRNG('Distributor'));
         cy.get('[data-qa="form.field.postcode"]').prev().contains('Postcode');
         cy.get('[data-qa="form.field.postcode"]').type('T3ST');
         cy.get('[data-qa="form.field.address"]').prev().contains('Address Line 1');
@@ -39,8 +36,7 @@ export function createAccount(username, clear) {
         cy.get('[data-qa="form.field.phonenumber"]').type('11111 111111');
     } else {
         cy.get('[data-qa="button.creation"]').click();
-        cy.get('[data-qa="form.field.username"]').clear().type(addRNG(username));
-        cy.get('[data-qa="form.field.email"]').clear().type('test@test.test');
+        cy.get('[data-qa="form.field.email"]').clear().type(addRNG('Distributor'));
         cy.get('[data-qa="form.field.postcode"]').clear().type('T3ST');
         cy.get('[data-qa="form.field.address"]').clear().type('123 test street');
         cy.get('[data-qa="form.field.phonenumber"]').clear().type('11111 111111');
@@ -91,14 +87,16 @@ export function changePassword(current, newP, repeatP, order) {
         cy.get('[data-qa="button.submit"]').contains('Submit').should('not.be.enabled');
         cy.get('[data-qa="form.field.repeat"]').parents('.v-input__control').find('.v-messages__message')
             .contains('This field must be the same as Password');
-        cy.reload();
+        dashboardSelect('Account Settings');
+        cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();
     } else if (order === 'second') {
         cy.get('[data-qa="form.field.current"]').clear().type(current);
         cy.get('[data-qa="form.field.new"]').clear().type(newP);
         cy.get('[data-qa="form.field.repeat"]').clear().type(repeatP);
         cy.get('[data-qa="button.submit"]').contains('Submit').click();
         cy.get('i[class*="mdi-alert"]').parent().find('p').contains('The current password is incorrect.');
-        cy.reload();
+        dashboardSelect('Account Settings');
+        cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();
     } else if (order === 'third'){
         cy.get('[data-qa="form.field.current"]').clear().type(current);
         cy.get('[data-qa="form.field.new"]').clear().type(newP);
@@ -117,16 +115,6 @@ export function checkReturnsFormat() {
     cy.get('[data-qa="card.item"]').should('not.be.visible');
 
     cy.get('[data-qa="tableData.customer"]').first().click();
-    cy.get('[data-qa="card.item"]').should('be.visible');
-    cy.get('[data-qa="title.header"]').click();
-    cy.get('[data-qa="card.item"]').should('not.be.visible');
-
-    cy.get('[data-qa="tableData.installer"]').first().click();
-    cy.get('[data-qa="card.item"]').should('be.visible');
-    cy.get('[data-qa="title.header"]').click();
-    cy.get('[data-qa="card.item"]').should('not.be.visible');
-
-    cy.get('[data-qa="tableData.distributor"]').first().click();
     cy.get('[data-qa="card.item"]').should('be.visible');
     cy.get('[data-qa="title.header"]').click();
     cy.get('[data-qa="card.item"]').should('not.be.visible');
@@ -154,7 +142,7 @@ export function reportingFilter(filter) {
 }
 
 export function getNum(div) {
-    const text = div.text()
+    const text = div.text();
     const str = text.split(' ')[2];
     const num = Number(str);
     return num
@@ -185,91 +173,287 @@ export function createReturnItem(serialNumber1, serialNumber2) {
 export function tableCheck(heading, regex, errorMessage) {
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
       
-        const text1 = $elm.text()
+        const text1 = $elm.text();
   
         if (text1 === heading) {
   
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
   
-            const text2 = $td.text()
+            const text2 = $td.text();
           
-            const result = regex.test(text2)
+            const result = regex.test(text2);
 
             if (!result) {
-              throw new Error(errorMessage)
+              throw new Error(errorMessage);
             }
-          })
+          });
         }
-    })
+    });
 }
 
 export function tableContains(heading, value, errorMessage) {
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
       
-        const text1 = $elm.text()
+        const text1 = $elm.text();
   
         if (text1 === heading) {
   
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
             
-            const text2 = $td.text()
+            const text2 = $td.text();
 
             if (text2 !== value) {
-              throw new Error(errorMessage)
+              throw new Error(errorMessage);
             }
-          })
+          });
         }
-    })
+    });
 }
 
 export function tableCSS(heading, expectedCSS, errorMessage) {
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
       
-        const text1 = $elm.text()
+        const text1 = $elm.text();
   
         if (text1 === heading) {
   
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('i').then(($i) => {
                 
-                const actualCSS = $i.css('color')
+                const actualCSS = $i.css('color');
                 
                 if (actualCSS !== expectedCSS) {
-                    throw new Error(errorMessage)
+                    throw new Error(errorMessage);
                 }
-          })
+          });
         }
-    })
+    });
 }
 
 export function tableClick(heading, value) {
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
 
-        const text1 = $th.text()
+        const text1 = $th.text();
 
         if (text1 === heading) {
-          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('span').eq(0).click()
+          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('span').eq(0).click();
           cy.get('[data-qa="card.item"]').contains(value).should('be.visible');
         } 
-      })
+      });
 }
 
 export function tableRegex(heading, regex, errorMessage) {
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
       
-        const text1 = $elm.text()
+        const text1 = $elm.text();
   
         if (text1 === heading) {
   
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
             
-            const text2 = $td.text()
+            const text2 = $td.text();
 
-            const result = regex.test(text2)
+            const result = regex.test(text2);
 
             if (!result) {
-              throw new Error(errorMessage)
+              throw new Error(errorMessage);
             }
-          })
+          });
         }
+    });
+}
+
+export function selectDashboardCard(title, description, search, user) {
+    cy.get('[data-qa="card"]').each(($div1, index) => {
+
+        cy.get('[data-qa="card.title"]').eq(index).then(($div2) => {
+  
+            const text = $div2.text();
+
+          if (text === title) {
+            cy.get('[data-qa="card.description"]').eq(index).contains(description).click().scrollIntoView();
+            cy.get('[data-qa="button.search"]').eq(index).click();
+            cy.get('[data-qa="search"]').eq(1).type(search);
+            cy.get('div[class="v-list-item__title"]').contains(user).click();
+            cy.get('[data-qa="button.view"]').click();
+          }
+        });
+    });
+}
+
+export function myInverterTab(tab) {
+    cy.get('[data-qa="card.tab"]').contains(tab).click();
+}
+
+export function inverterSoftwareCheck(titles, subtitles) {
+    for (var i = 0; i < titles.length; i++) {
+        cy.get('[data-qa="tab.content"]').find('div[class="v-card__title"]').contains(titles[i]);
+    }
+    for (var i = 0; i < subtitles.length; i++) {
+        cy.get('[data-qa="tab.content"]').find('div[class="v-card__subtitle"]').contains(subtitles[i]);
+    }
+}
+
+export function myInverterNotificationsTable(header) {
+    for (var i = 0; i < header.length; i++ ) {
+        cy.get('[data-qa="table.notifications"]').find('th').contains(header[i]);
+    }
+}
+
+export function myInverterTable(header) {
+    for (var i = 0; i < header.length; i++ ) {
+        cy.get('[data-qa="tab.content"]').find('th').contains(header[i]);
+    }
+}
+
+export function checksCounterIncreasesAndDecreases() {
+    cy.get('[data-qa="notification.title"]').should('exist');
+    cy.get('[data-qa="notification.content"]').should('exist');
+
+    //checks that the number of notifications increases and decreases with the notifications being read and unread
+    cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-check-outline"]').click();
+    cy.wait(3000);
+
+    cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
+        
+        const text = $span.text();
+        const num = Number(text);
+
+        if (num === 0) {
+          throw new Error('Notifications counter has not updated');
+        }
+
+        cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-outline"]').click();
+
+        cy.wait(3000);
+
+        cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
+        
+          const text2 = $span.text();
+          const num2 = Number(text2);
+  
+          if (num2 !== 0) {
+            throw new Error('Notifications counter has not updated');
+          }
+        })
+    });
+
+    cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-check-outline"]').click();
+}
+
+export function checkMarkAsReadWorks(withElse) {
+    if (withElse) {
+        cy.get('[data-qa="button.allRead"]').click();
+        cy.wait(3000);
+        cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
+      
+          const text = $span.text();
+          const num = Number(text);
+  
+          if (num !== 0) {
+            throw new Error('Notifications counter has not updated');
+          } else {
+            checksCounterIncreasesAndDecreases();
+          }
+        })
+    } else {
+        cy.get('[data-qa="button.allRead"]').click();
+        cy.wait(3000);
+        cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
+      
+          const text = $span.text();
+          const num = Number(text);
+    
+          if (num !== 0) {
+            throw new Error('Notifications counter has not updated');
+          }
+        });
+    }
+}
+
+export function updateWarrantyAndCheck(warranty, num, tableDataIndex) {
+    cy.get('[data-qa="table"').find('tr').eq(tableDataIndex).find('[data-qa="button.warranty"]').click();
+    cy.get('[data-qa="card.warranty"]').should('be.visible');
+    cy.get('[data-qa="select.warranty"]').click();
+    cy.get('div[class="v-list-item__title"]').contains(warranty).click();
+    cy.get('[data-qa="button.confirm"]').click();
+    cy.get('[data-qa="table"]').find('tr').eq(tableDataIndex).find('td').last().find('div').find('div').children().eq(1).find('a').then(($a) => {
+
+      const url = $a.attr('href');
+      cy.visit(url);
+
+    });
+
+    cy.get('[data-qa="general.title"]').contains('Commission Date').next('[data-qa="general.subtitle"]').then(($div) => {
+
+      const text = $div.text();
+      const splitString = text.split('-');
+
+      splitString[0] = Number(splitString[0]) + num;
+      splitString[0] = splitString[0].toString();
+
+      const estimate = splitString.join("-");
+
+      cy.get('[data-qa="general.title"]').contains('Warranty Expiry Date').next('[data-qa="general.subtitle"]').then(($div2) => {
+
+        const text2 = $div2.text();
+
+        if (estimate !== text2) {
+            throw new Error('Error: warranty expiry date has not been correctly updated');
+        } else {
+            cy.log('Warranty correctly updated!');
+        }
+
+      })
     })
+}
+
+export function changeEnergyGraphData(type, dataTypes) {
+    cy.get('[data-qa="graphSelected"]').click();
+    cy.get('div[class="v-list-item__content"]').contains(type).click();
+
+    for (var i = 0; i < dataTypes.length; i++) {
+        cy.get('g[class*="highcharts-legend-item"]').eq(i).contains(dataTypes[i]);
+    }
+}
+
+export function checkWarranty(headingIndex, tableDataIndex) {
+    cy.get('[data-qa="table"]').find('tr').eq(tableDataIndex).find('td').eq(headingIndex).then(($td) => {
+
+        const text = $td.text().trim();
+
+        if (text === 'Standard') {
+
+            updateWarrantyAndCheck('Extended', 10, tableDataIndex);
+            dashboardSelect('My Inverters');
+
+            updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
+            dashboardSelect('My Inverters');
+
+            updateWarrantyAndCheck('Standard', 5, tableDataIndex);
+
+        } else if (text === 'Extended') {
+
+            updateWarrantyAndCheck('Standard', 5, tableDataIndex);
+            dashboardSelect('My Inverters');
+
+            updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
+            dashboardSelect('My Inverters');
+
+            updateWarrantyAndCheck('Extended', 10, tableDataIndex);
+
+        } else if (text === 'Twelve_Years') {
+
+            updateWarrantyAndCheck('Standard', 5, tableDataIndex);
+            dashboardSelect('My Inverters');
+
+            updateWarrantyAndCheck('Extended', 10, tableDataIndex);
+            dashboardSelect('My Inverters');
+
+            updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
+
+        } else {
+            let index = tableDataIndex + 1;
+            checkWarranty(headingIndex, index);
+        }
+    });
 }

@@ -174,7 +174,7 @@
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
-    "cypress": "^13.1.0"
+    "cypress": "^13.4.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
