@@ -22,4 +22,4 @@ jobs:
       - name: Install dependencies and run Cypress tests
         run: |
           npm install cypress
-          npx cypress run --record --key ${{env.CYPRESS_API_KEY}}110
+          npx cypress run --record --key ${{env.CYPRESS_API_KEY}}
