@@ -40,19 +40,19 @@ describe("forgot password", () => {
       .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
 
       // cy.waitForLatestEmail(inboxId).then(email => {
-        
+
       //   assert.isDefined(email);
-        
+
       //   console.log(email, email.body);
 
-      /* follows link in email and changes password to Cypress.env('adminPassword') and then logs 
+      /* follows link in email and changes password to Cypress.env('adminPassword') and then logs
       in using this password and then changes the email back to what it should be*/
 
             //changes email back
       //   cy.get('[data-qa="form.link.back"]').click();
       //   adminLogin();
       //   dashboardSelect('Account Settings');
-      //   cy.get('[data-qa="form.field.email"]').clear().type(Cypress.env('adminEmail'));
+      //   cy.get('[data-qa="form.field.email"]').clear().type());
       //   cy.get('[data-qa="form.button.submit"]').contains('Submit').click();
       //   cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
       //});
