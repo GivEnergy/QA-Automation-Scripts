@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  CYPRESS_RECORD_KEY: 4aa6a711-8f69-4d2d-8d49-64dd7adc3911
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  cypress-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run Cypress tests
+        run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}}
