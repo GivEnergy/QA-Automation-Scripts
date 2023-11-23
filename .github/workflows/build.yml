@@ -35,4 +35,4 @@ jobs:
         run: npm install cypress
 
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}} --env adminUsername=$ADMIN_USERNAME --env adminPassword=$ADMIN_PASSWORD --env customerUsername=$CUSTOMER_USERNAME --env customerPassword=$CUSTOMER_PASSWORD --env engineerUsername=$ENGINEER_USERNAME --env engineerPassword=$ENGINEER_PASSWORD
+        run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}} --env adminUsername=${{ secrets.ADMIN_USERNAME }},adminPassword=${{ secrets.ADMIN_PASSWORD }},customerUsername=${{ secrets.CUSTOMER_USERNAME }},customerPassword=${{ secrets.CUSTOMER_PASSWORD }},engineerUsername=${{ secrets.ENGINEER_USERNAME }},engineerPassword=${{ secrets.ENGINEER_PASSWORD }}
