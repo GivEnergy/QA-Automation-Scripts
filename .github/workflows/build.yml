@@ -5,7 +5,14 @@ on:
   workflow_dispatch:
 
 env:
-  CYPRESS_RECORD_KEY: 4aa6a711-8f69-4d2d-8d49-64dd7adc3911
+  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+  CUSTOMER_USERNAME: ${{ secrets.CUSTOMER_USERNAME }}
+  CUSTOMER_PASSWORD: ${{ secrets.CUSTOMER_PASSWORD }}
+  ENGINEER_USERNAME: ${{ secrets.ENGINEER_USERNAME }}
+  ENGINEER_PASSWORD: ${{ secrets.ENGINEER_PASSWORD }}
+  
 
 permissions:
   id-token: write
@@ -28,4 +35,4 @@ jobs:
         run: npm install cypress
 
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}}
+        run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}} --env adminUsername=$ADMIN_USERNAME --env adminPassword=$ADMIN_PASSWORD --env customerUsername=$CUSTOMER_USERNAME --env customerPassword=$CUSTOMER_PASSWORD --env engineerUsername=$ENGINEER_USERNAME --env engineerPassword=$ENGINEER_PASSWORD
