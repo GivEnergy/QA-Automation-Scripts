@@ -52,7 +52,7 @@ describe("my inverter page", () => {
 
             //opens register a dongle page and enters the details
             cy.get('[data-qa="button.register"]').contains('Register a New Inverter').click();
-            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').type(Cypress.env('incorrectUsername'));
+            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').type('NotARealUsername123');
             cy.get('div[class="v-select-list"]').should('not.exist');
             cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('!!!!!!!!!!');
             cy.get('[data-qa="field.sn"]').parent().find('div[class*="v-messages__message"]').contains('This field can only contain alphanumeric characters');
