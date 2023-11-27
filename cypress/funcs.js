@@ -371,6 +371,7 @@ export function checkMarkAsReadWorks(withElse) {
 }
 
 export function updateWarrantyAndCheck(warranty, num, tableDataIndex) {
+    cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
     cy.get('[data-qa="table"').find('tr').eq(tableDataIndex).find('[data-qa="button.warranty"]').click();
     cy.get('[data-qa="card.warranty"]').should('be.visible');
     cy.get('[data-qa="select.warranty"]').click();

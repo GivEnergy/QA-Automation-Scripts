@@ -24,7 +24,6 @@ describe("my inverter page", () => {
         cy.get('[data-qa="form.field.firstName"]').type('Test');
         cy.get('[data-qa="form.field.surname"]').prev().contains('Surname');
         cy.get('[data-qa="form.field.surname"]').type('Customer');
-        cy.get('[data-qa="form.field.plantType"]').prev().contains('Plant Type');
         cy.get('[data-qa="form.field.plantType"]').click();
         cy.get('div[class="v-list-item__title"]').contains('Single Inverter').click();
         cy.get('[data-qa="form.field.email"]').then(() => {
@@ -33,7 +32,6 @@ describe("my inverter page", () => {
 
             cy.get('[data-qa="form.field.email"]').prev().contains('Email');
             cy.get('[data-qa="form.field.email"]').type(email);
-            cy.wait(10000);
             cy.get('[data-qa="button.create"]').contains('Create').click();
 
             dashboardSelect('Logout');

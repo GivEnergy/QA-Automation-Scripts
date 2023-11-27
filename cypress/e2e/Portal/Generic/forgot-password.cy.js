@@ -34,8 +34,10 @@ describe("forgot password", () => {
       cy.get('[data-qa="form.button.submit"]').click();
       cy.get('i[class*="mdi-check-circle"]').parent().find('p')
         .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
-        cy.get('[data-qa="form.field.username"]').type(Cypress.env('adminUsername'));
-        cy.get('[data-qa="form.button.submit"]').click();
+      cy.get('[data-qa="form.link.back"]').click();
+      cy.get('[data-qa="link.forgotPW"]').click();
+      cy.get('[data-qa="form.field.username"]').type(Cypress.env('adminUsername'));
+      cy.get('[data-qa="form.button.submit"]').click();
       cy.get('i[class*="mdi-check-circle"]').parent().find('p')
       .contains('If this account exists, instructions on how to reset the password have been sent its registered email address.');
 

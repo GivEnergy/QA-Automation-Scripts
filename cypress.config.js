@@ -16,5 +16,12 @@ module.exports = defineConfig({
     },
     testIsolation: true,
   },
-  env: {}
+  env: {
+    customerUsername: "brymboroad",
+    customerPassword: "Password1!",
+    adminUsername: "GivQA",
+    adminPassword: "QApasswordplease!",
+    engineerUsername: "givenergy03_testengineer",
+    engineerPassword: "dGgOVsMcX6IrUFcnzSi"
+  }
 });

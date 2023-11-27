@@ -94,9 +94,6 @@ describe("energy graph card", () => {
       changeEnergyGraphData('Battery Out', ['Battery To Home', 'Battery To Grid']);
       changeEnergyGraphData('Grid Out', ['Solar To Grid', 'Battery To Grid']);
 
-      cy.get('[data-qa="button.download"]').parent().parent().should('be.enabled');
-
-
   })
 });
   

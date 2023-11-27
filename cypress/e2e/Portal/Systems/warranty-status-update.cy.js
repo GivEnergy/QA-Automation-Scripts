@@ -14,7 +14,6 @@ describe("warranty status", () => {
     cy.get('[data-qa="title.text"]').contains('My Inverters');
     cy.get('[data-qa="search"]').click();
 
-
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
 
         const text1 = $elm.text()
