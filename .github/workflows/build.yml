@@ -3,6 +3,7 @@ name: CI
 on:
   push:
   workflow_dispatch:
+  workflow_call:
 
 env:
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

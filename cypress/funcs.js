@@ -371,7 +371,6 @@ export function checkMarkAsReadWorks(withElse) {
 }
 
 export function updateWarrantyAndCheck(warranty, num, tableDataIndex) {
-    cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
     cy.get('[data-qa="table"').find('tr').eq(tableDataIndex).find('[data-qa="button.warranty"]').click();
     cy.get('[data-qa="card.warranty"]').should('be.visible');
     cy.get('[data-qa="select.warranty"]').click();
@@ -418,6 +417,9 @@ export function changeEnergyGraphData(type, dataTypes) {
 }
 
 export function checkWarranty(headingIndex, tableDataIndex) {
+    cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
+    cy.get('[data-qa="field.search"]').click();
+    cy.wait(5000);
     cy.get('[data-qa="table"]').find('tr').eq(tableDataIndex).find('td').eq(headingIndex).then(($td) => {
 
         const text = $td.text().trim();
@@ -427,9 +429,15 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
             dashboardSelect('My Inverters');
 
+            cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
+            cy.get('[data-qa="field.search"]').click();
+            cy.wait(5000);
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
             dashboardSelect('My Inverters');
 
+            cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
+            cy.get('[data-qa="field.search"]').click();
+            cy.wait(5000);
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
 
         } else if (text === 'Extended') {
@@ -437,9 +445,15 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
             dashboardSelect('My Inverters');
 
+            cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
+            cy.get('[data-qa="field.search"]').click();
+            cy.wait(5000);
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
             dashboardSelect('My Inverters');
 
+            cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
+            cy.get('[data-qa="field.search"]').click();
+            cy.wait(5000);
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
 
         } else if (text === 'Twelve_Years') {
@@ -447,9 +461,15 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
             dashboardSelect('My Inverters');
 
+            cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
+            cy.get('[data-qa="field.search"]').click();
+            cy.wait(5000);
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
             dashboardSelect('My Inverters');
 
+            cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
+            cy.get('[data-qa="field.search"]').click();
+            cy.wait(5000);
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
 
         } else {
