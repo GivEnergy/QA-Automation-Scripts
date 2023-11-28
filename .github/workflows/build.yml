@@ -3,7 +3,8 @@ name: CI
 on:
   push:
   workflow_dispatch:
-  workflow_call:
+  repository_dispatch:
+    types: [ trigger-cypress-tests ]
 
 env:
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
