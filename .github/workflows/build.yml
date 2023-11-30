@@ -7,12 +7,7 @@ on:
 
 env:
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
-  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-  CUSTOMER_USERNAME: ${{ secrets.CUSTOMER_USERNAME }}
-  CUSTOMER_PASSWORD: ${{ secrets.CUSTOMER_PASSWORD }}
-  ENGINEER_USERNAME: ${{ secrets.ENGINEER_USERNAME }}
-  ENGINEER_PASSWORD: ${{ secrets.ENGINEER_PASSWORD }}
+  CYPRESS_ENV: ${{ secrets.CYPRESS_ENV }}
   
 
 permissions:
@@ -36,4 +31,4 @@ jobs:
         run: npm install cypress
 
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}} --env adminUsername=${{ secrets.ADMIN_USERNAME }},adminPassword=${{ secrets.ADMIN_PASSWORD }},customerUsername=${{ secrets.CUSTOMER_USERNAME }},customerPassword=${{ secrets.CUSTOMER_PASSWORD }},engineerUsername=${{ secrets.ENGINEER_USERNAME }},engineerPassword=${{ secrets.ENGINEER_PASSWORD }}
+        run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}} --env adminUsername=${{ env.CYPRESS_ENV }}

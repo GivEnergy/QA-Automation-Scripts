@@ -13,6 +13,7 @@ describe("view feedback", () => {
       cy.get('[data-qa="title"]').contains('Feedback').click();
 
       checkPageNav();
+      cy.get('[data-qa="container.navigation"]').find('li').first().next().next().click();
 
       //check table format
       tableCheck('Reported At', dateAndTime, 'Invalid date and time format');
@@ -105,6 +106,7 @@ describe("view feedback", () => {
       // cy.get('button[class*="mdi-close"]').click();
 
       //uses select record options
+      cy.get('[data-qa="container.navigation"]').find('li').first().next().click();
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
       cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
       cy.get('[data-qa="button.recordClose"]').click();
@@ -173,9 +175,6 @@ describe("view feedback", () => {
           })
         }
       });
-
-     // need to add in commenting on marking as closed and checking reported and last action by 
-
 
     });
 });
