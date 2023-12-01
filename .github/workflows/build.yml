@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: 'QA-Automation-Scripts'
+          repository: GivEnergy/QA-Automation-Scripts
           path: 'givenergy-cloud-frontend'
           ref: main
 
