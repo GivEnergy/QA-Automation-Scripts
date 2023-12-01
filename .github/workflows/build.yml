@@ -20,15 +20,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          repository: 'QA-Automation-Scripts'
+          path: 'givenergy-cloud-frontend'
+          ref: main
 
       - name: Set up Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '20.10.0'
 
       - name: Install Cypress
-        run: npm install cypress
+        run: npm ci
 
       - name: Run Cypress tests
         run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}} --env adminUsername=${{ env.CYPRESS_ENV }}
