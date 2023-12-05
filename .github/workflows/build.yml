@@ -4,11 +4,11 @@ on:
   push:
   workflow_dispatch:
   workflow_call:
-
-env:
-  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  CYPRESS_ENV: ${{ secrets.CYPRESS_ENV }}
-
+    secrets:
+      CYPRESS_RECORD_KEY:
+        required: true
+      CYPRESS_ENV:
+        required: true
 
 permissions:
   id-token: write
@@ -33,4 +33,4 @@ jobs:
         run: npm ci
 
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{env.CYPRESS_RECORD_KEY}} --env adminUsername=${{ env.CYPRESS_ENV }}
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --env ${{ secrets.CYPRESS_ENV }}
