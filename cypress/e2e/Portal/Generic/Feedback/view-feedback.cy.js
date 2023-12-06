@@ -4,7 +4,7 @@ import { dateAndTime } from "../../../../regex";
 
 describe("view feedback", () => {
     it("tests view feedback", () => {
-
+      cy.failTestIfTooLong(80000);
       //sets viewport and logs in
       adminLogin();
 

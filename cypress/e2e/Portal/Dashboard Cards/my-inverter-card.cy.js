@@ -1,12 +1,11 @@
 import { adminLogin } from "../../../logins";
-import { dashboardSelect, selectDashboardCard, myInverterTab, inverterSoftwareCheck, myInverterNotificationsTable, myInverterTable, inverterTableRegex } from "../../../funcs";
+import { dashboardSelect, selectDashboardCard, myInverterTab, inverterSoftwareCheck, myInverterNotificationsTable, myInverterTable } from "../../../funcs";
 import { myInverterDescription } from "../../../dashboardCards";
-import { YYYYMMDD, batteryFW, dateAndTime, inverterFW, positiveOrNegativeNumber, serialNumber } from "../../../regex";
+import { YYYYMMDD, batteryFW, dateAndTime, inverterFW, serialNumber } from "../../../regex";
 
-//doesnt work search input cannot be selected
 describe("my inverter card", () => {
   it("tests my inverter card", () => {
-
+      cy.failTestIfTooLong(60000);
       adminLogin();
 
       dashboardSelect('Dashboard Cards');

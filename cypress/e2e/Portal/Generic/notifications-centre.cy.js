@@ -1,9 +1,9 @@
-import { checkMarkAsReadWorks, checksCounterIncreasesAndDecreases, dashboardSelect } from "../../../funcs";
+import { checkMarkAsReadWorks, checksCounterIncreasesAndDecreases } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
 describe("Notifications centre", () => {
     it("tests Notifications centre", () => {
-      cy.viewport(1920, 1080);
+      cy.failTestIfTooLong(60000);
       adminLogin();
       
       cy.get('[data-qa="icon.notification"]').scrollIntoView().click();

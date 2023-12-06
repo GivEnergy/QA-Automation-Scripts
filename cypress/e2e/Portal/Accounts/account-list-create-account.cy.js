@@ -3,7 +3,7 @@ import { createAccount, dashboardSelect, checkPageNav } from "../../../funcs";
 
 describe("account list create account", () => {
   it("tests Account list create account", () => {
-    
+    cy.failTestIfTooLong(120000);
     //sets viewport and logins in as admin
     adminLogin();
 
