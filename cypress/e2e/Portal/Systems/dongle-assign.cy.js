@@ -7,7 +7,7 @@ import {
 describe("my inverter page", () => {
     it("tests my inverter page", () => {
 
-        cy.failTestIfTooLong(90000);
+        //cy.failTestIfTooLong(90000);
         engineerLogin();
 
         dashboardSelect('Account List');

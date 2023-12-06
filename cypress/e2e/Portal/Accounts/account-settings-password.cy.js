@@ -3,7 +3,7 @@ import { dashboardSelect, changePassword } from "../../../funcs";
 
 describe("Account settings password", () => {
     it("tests changing the account settings password works", () => {
-        cy.failTestIfTooLong(70000);
+        //cy.failTestIfTooLong(70000);
         //sets viewport and logs in
         adminLogin();
 

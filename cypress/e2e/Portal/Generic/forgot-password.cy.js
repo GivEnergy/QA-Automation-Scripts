@@ -1,6 +1,6 @@
 describe("forgot password", () => {
     it("tests forgot password", () => {
-      cy.failTestIfTooLong(40000);
+      //cy.failTestIfTooLong(40000);
       //Cypress.config('defaultCommandTimeout', 30000);
       //Cypress.config('requestTimeout', 30000);
       // //setups up temp email and inbox

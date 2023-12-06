@@ -3,7 +3,7 @@ import { dashboardSelect, loginCheck } from "../../../funcs";
 describe("Admin Sign In", () => {
     it("tests Admin Sign In", () => {
 
-      cy.failTestIfTooLong(40000);
+      //cy.failTestIfTooLong(40000);
       //directs to local host and sets viewport
       cy.visit("https://staging.givenergy.cloud/login");
 

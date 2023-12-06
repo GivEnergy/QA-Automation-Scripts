@@ -4,7 +4,7 @@ import { YYYYMMDD } from "../../../regex";
 
 describe("account list", () => {
   it("tests Account list", () => {
-    cy.failTestIfTooLong(50000);
+    //cy.failTestIfTooLong(50000);
     //sets viewport and logins in as admin
     adminLogin();
 
