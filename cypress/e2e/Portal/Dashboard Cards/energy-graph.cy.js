@@ -26,9 +26,14 @@ describe("energy graph card", () => {
           const result = YYYYMMDD.test(date);
 
           let splitString = date.split('-');
-          splitString[2] = Number(splitString[2]) - 1;
-          splitString[2] = splitString[2].toString();
-          const estimate = splitString.join("-");
+          if (splitString[2].charAt(0) == 0) {
+              splitString[2] = Number(splitString[2]) - 1;
+              splitString[2] = '0' + splitString[2].toString();
+          } else {
+              splitString[2] = Number(splitString[2]) - 1;
+              splitString[2] = splitString[2].toString();
+          }
+          let estimate = splitString.join("-");
 
           if (!result) { throw new Error("Error: date in date picker does not match YYYY-MM-DD format"); }
 
@@ -37,8 +42,8 @@ describe("energy graph card", () => {
 
           cy.get('[data-qa="datePicker"]').find('label').then(($label2) => {
 
-              const date2 = $label.text();
-
+              const date2 = $label2.text();
+                console.log(date2, estimate);
               if (date2 !== estimate) { throw new Error("Error: updated date after going back a day isn't correct"); }
           })
       })
