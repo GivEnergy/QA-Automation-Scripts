@@ -4,7 +4,6 @@ import { dateAndTime } from "../../../regex";
 
 describe("returns", () => {
     it("tests returns", () => {
-    //cy.failTestIfTooLong(120000);
     adminLogin();
 
     //navigates to returns

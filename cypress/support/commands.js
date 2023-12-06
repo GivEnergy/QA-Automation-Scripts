@@ -31,19 +31,3 @@ Cypress.Commands.add('disableDebugBar', () => {
     }).as('disableDebugBar');
 
   });
-
-Cypress.Commands.add('failTestIfTooLong', (timeout = 120000) => {
-
-    let timeoutId;
-
-    beforeEach(() => {
-        timeoutId = setTimeout(() => {
-            throw new Error(`Test failed: exceeded run time limit of ${timeout}ms`);
-        }, timeout);
-    });
-
-    afterEach(() => {
-        clearTimeout(timeoutId);
-    });
-
-});

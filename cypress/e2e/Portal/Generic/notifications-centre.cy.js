@@ -3,7 +3,6 @@ import { adminLogin } from "../../../logins";
 
 describe("Notifications centre", () => {
     it("tests Notifications centre", () => {
-      //cy.failTestIfTooLong(60000);
       adminLogin();
       
       cy.get('[data-qa="icon.notification"]').scrollIntoView().click();

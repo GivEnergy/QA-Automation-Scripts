@@ -3,7 +3,6 @@ import { adminLogin } from "../../../../logins";
 
 describe("leave feedback", () => {
     it("tests leave feedback", () => {
-      //cy.failTestIfTooLong(40000);
       //sets viewport and logs in
       adminLogin();
 

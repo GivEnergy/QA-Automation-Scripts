@@ -6,7 +6,6 @@ import { Months } from "../../../Enum";
 
 describe("energy graph card", () => {
   it("tests energy graph card", () => {
-      //cy.failTestIfTooLong(60000);
       adminLogin();
 
       dashboardSelect('Dashboard Cards');

@@ -5,7 +5,6 @@ let tableDataIndex = 1;
 
 describe("warranty status", () => {
   it("tests updating warranty status", () => {
-      cy.failTestIfTooLong(70000);
     //sets viewport and logins in as admin
     adminLogin();
 

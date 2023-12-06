@@ -5,7 +5,6 @@ import { YYYYMMDD, batteryFW, dateAndTime, inverterFW, serialNumber } from "../.
 
 describe("my inverter card", () => {
   it("tests my inverter card", () => {
-      //cy.failTestIfTooLong(60000);
       adminLogin();
 
       dashboardSelect('Dashboard Cards');

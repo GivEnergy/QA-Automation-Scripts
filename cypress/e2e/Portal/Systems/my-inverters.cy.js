@@ -10,7 +10,6 @@ import { serialNumber, YYYYMMDD } from "../../../regex";
 
 describe("my inverter page", () => {
   it("tests my inverter page", () => {
-    //cy.failTestIfTooLong(60000);
     adminLogin();
 
     //opens my inverters and reloads page to hide nav bar
