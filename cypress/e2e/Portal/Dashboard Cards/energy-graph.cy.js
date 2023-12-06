@@ -1,3 +1,18 @@
+Cypress.Commands.add('failTestIfTooLong', (timeout = 120000) => {
+
+    let timeoutId;
+
+    beforeEach(() => {
+        timeoutId = setTimeout(() => {
+            throw new Error(`Test failed: exceeded run time limit of ${timeout}ms`);
+        }, timeout);
+    });
+
+    afterEach(() => {
+        clearTimeout(timeoutId); // Clear the timeout at the end of each test
+    });
+});
+
 import { adminLogin } from "../../../logins";
 import {changeEnergyGraphData, dashboardSelect, selectDashboardCard} from "../../../funcs";
 import { energyGraphDescription } from "../../../dashboardCards";
@@ -6,7 +21,7 @@ import { Months } from "../../../Enum";
 
 describe("energy graph card", () => {
   it("tests energy graph card", () => {
-      //cy.failTestIfTooLong(60000);
+      cy.failTestIfTooLong(60000);
       adminLogin();
 
       dashboardSelect('Dashboard Cards');

@@ -1,10 +1,25 @@
+Cypress.Commands.add('failTestIfTooLong', (timeout = 120000) => {
+
+    let timeoutId;
+
+    beforeEach(() => {
+        timeoutId = setTimeout(() => {
+            throw new Error(`Test failed: exceeded run time limit of ${timeout}ms`);
+        }, timeout);
+    });
+
+    afterEach(() => {
+        clearTimeout(timeoutId); // Clear the timeout at the end of each test
+    });
+});
+
 import { checkPageNav, checkReturnsActions, checkReturnsFormat, dashboardSelect, tableContains, tableClick, tableRegex } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 import { dateAndTime } from "../../../regex";
 
 describe("returns", () => {
     it("tests returns", () => {
-    //cy.failTestIfTooLong(120000);
+    cy.failTestIfTooLong(120000);
     adminLogin();
 
     //navigates to returns

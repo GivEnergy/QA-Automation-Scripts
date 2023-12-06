@@ -1,3 +1,18 @@
+Cypress.Commands.add('failTestIfTooLong', (timeout = 120000) => {
+
+  let timeoutId;
+
+  beforeEach(() => {
+    timeoutId = setTimeout(() => {
+      throw new Error(`Test failed: exceeded run time limit of ${timeout}ms`);
+    }, timeout);
+  });
+
+  afterEach(() => {
+    clearTimeout(timeoutId); // Clear the timeout at the end of each test
+  });
+});
+
 import { adminLogin } from "../../../logins";
 import {
   dashboardSelect,
@@ -10,7 +25,7 @@ import { serialNumber, YYYYMMDD } from "../../../regex";
 
 describe("my inverter page", () => {
   it("tests my inverter page", () => {
-    //cy.failTestIfTooLong(60000);
+    cy.failTestIfTooLong(60000);
     adminLogin();
 
     //opens my inverters and reloads page to hide nav bar
