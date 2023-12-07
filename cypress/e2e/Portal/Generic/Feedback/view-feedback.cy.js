@@ -163,7 +163,7 @@ describe("view feedback", () => {
               
               const str = $textarea.val()
               const text2 = str.substring(0, 50) + '...'
-    
+              console.log('substring from table ' + text1, 'created substring when viewing feedback ' + text2);
               if (text1 !== text2) {
                 throw new Error('View feedback content substring is different to content substring shown in table')
               }
