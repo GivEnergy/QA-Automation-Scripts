@@ -6,7 +6,6 @@ describe("Notifications centre", () => {
       adminLogin();
       
       cy.get('[data-qa="icon.notification"]').scrollIntoView().click();
-      cy.wait(2000);
       cy.get('[data-qa="button.refresh"]').click();
       cy.get('[data-qa="button.close"]').click();
       cy.get('[data-qa="title.notifications"]').should('not.be.visible');

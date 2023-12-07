@@ -63,7 +63,6 @@ describe("my inverter page", () => {
             cy.get('[data-qa="button.submit"]').contains('Submit').click();
 
             //deletes created dongle
-            cy.wait(3000);
             cy.get('i[class*="mdi-refresh"]').click();
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(1).click();
             cy.get('[data-qa="card.deleteDialog"]').should('be.visible');
