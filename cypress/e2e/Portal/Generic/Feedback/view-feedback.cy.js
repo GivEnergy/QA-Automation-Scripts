@@ -24,17 +24,16 @@ describe("view feedback", () => {
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
       cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
       cy.get('[data-qa="button.recordClose"]').click();
-      cy.wait(2000);
       cy.get('[data-qa="container.navigation"]').find('div').next().then(($div) => {
 
-        const num = getNum($div)
+        const num = getNum($div);
         cy.get('[data-qa="button.showClosed"]').parent().click();
-        cy.wait(2000);
+        cy.wait(2000);//this is necessary or error will be thrown when comparing amount of records
 
         cy.get('[data-qa="container.navigation"]').find('div').next().then(($div2) => {
 
-          const num2 = getNum($div2)
-
+          const num2 = getNum($div2);
+          console.log('records before closed ' + num, 'records after closed ' + num2);
           if (num2 <= num) {
             throw new Error('Show Closed Did Not Work')
           } 
