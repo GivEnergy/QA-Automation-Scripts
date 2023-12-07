@@ -1,24 +1,15 @@
-Cypress.Commands.add('failTestIfTooLong', (timeout = 120000) => {
-
-  let timeoutId;
-
-  beforeEach(() => {
-    timeoutId = setTimeout(() => {
-      throw new Error(`Test failed: exceeded run time limit of ${timeout}ms`);
-    }, timeout);
-  });
-
-  afterEach(() => {
-    clearTimeout(timeoutId); // Clear the timeout at the end of each test
-  });
-});
-
 import { adminLogin } from "../../../logins";
 import { createAccount, dashboardSelect, checkPageNav } from "../../../funcs";
 
+const time = 40000;
+beforeEach(() => {
+  setTimeout(() => {
+    throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+  }, time);
+});
 describe("account list create account", () => {
   it("tests Account list create account", () => {
-    cy.failTestIfTooLong(120000);
+
     //sets viewport and logins in as admin
     adminLogin();
 

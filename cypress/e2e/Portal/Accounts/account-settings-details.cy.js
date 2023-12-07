@@ -1,9 +1,15 @@
 import { adminLogin } from "../../../logins";
-import { dashboardSelect, changeDetails, changePassword } from "../../../funcs";
+import { dashboardSelect, changeDetails } from "../../../funcs";
 
+const time = 60000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("Account settings details", () => {
   it("tests changing the account settings details works", () => {
-      cy.failTestIfTooLong(90000);
+
       //sets viewport and logs in
       adminLogin();
 

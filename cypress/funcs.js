@@ -57,7 +57,6 @@ export function loginCheck(username, password, check){
 
 export function changeDetails(correct) {
     if (correct) {
-        cy.get('[data-qa="form.field.username"]').clear().type('GivQA');
         cy.get('[data-qa="form.field.firstName"]').clear().type('Ross');
         cy.get('[data-qa="form.field.surname"]').clear().type('Coates');
         cy.get('[data-qa="form.field.address"]').clear().type('GivEnergy');
@@ -67,7 +66,6 @@ export function changeDetails(correct) {
         cy.get('[data-qa="form.button.submit"]').contains('Submit').click();
         cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
     } else {
-        cy.get('[data-qa="form.field.username"]').type('1');
         cy.get('[data-qa="form.field.firstName"]').type('s');
         cy.get('[data-qa="form.field.surname"]').type('s');
         cy.get('[data-qa="form.field.address"]').clear().type('Brymbo Road');

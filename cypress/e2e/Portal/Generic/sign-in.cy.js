@@ -1,24 +1,14 @@
-Cypress.Commands.add('failTestIfTooLong', (timeout = 120000) => {
-
-    let timeoutId;
-
-    beforeEach(() => {
-        timeoutId = setTimeout(() => {
-            throw new Error(`Test failed: exceeded run time limit of ${timeout}ms`);
-        }, timeout);
-    });
-
-    afterEach(() => {
-        clearTimeout(timeoutId); // Clear the timeout at the end of each test
-    });
-});
-
 import { dashboardSelect, loginCheck } from "../../../funcs";
 
+const time = 40000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("Admin Sign In", () => {
     it("tests Admin Sign In", () => {
 
-        cy.failTestIfTooLong(40000);
       //directs to local host and sets viewport
       cy.visit("https://staging.givenergy.cloud/login");
 

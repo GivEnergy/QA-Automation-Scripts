@@ -1,26 +1,17 @@
-Cypress.Commands.add('failTestIfTooLong', (timeout = 120000) => {
-
-    let timeoutId;
-
-    beforeEach(() => {
-        timeoutId = setTimeout(() => {
-            throw new Error(`Test failed: exceeded run time limit of ${timeout}ms`);
-        }, timeout);
-    });
-
-    afterEach(() => {
-        clearTimeout(timeoutId); // Clear the timeout at the end of each test
-    });
-});
-
 import { adminLogin } from "../../../logins";
 import { dashboardSelect, selectDashboardCard, myInverterTab, inverterSoftwareCheck, myInverterNotificationsTable, myInverterTable } from "../../../funcs";
 import { myInverterDescription } from "../../../dashboardCards";
 import { YYYYMMDD, batteryFW, dateAndTime, inverterFW, serialNumber } from "../../../regex";
 
+const time = 60000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("my inverter card", () => {
   it("tests my inverter card", () => {
-      cy.failTestIfTooLong(60000);
+
       adminLogin();
 
       dashboardSelect('Dashboard Cards');
