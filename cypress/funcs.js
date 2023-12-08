@@ -5,7 +5,6 @@ export function addRNG(string) {
 }
 
 export function dashboardSelect(navItem, adminItem) {
-    cy.wait(500);
     cy.get('[data-qa="main.navbar"]').children().eq(0).click().contains(navItem).click();
     if (adminItem) {
         cy.get('[data-qa="title.text"]').contains(adminItem).click();
@@ -309,8 +308,7 @@ export function checksCounterIncreasesAndDecreases() {
 
     //checks that the number of notifications increases and decreases with the notifications being read and unread
     cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-check-outline"]').click();
-    cy.wait(3000);
-
+    cy.wait(3000); //necessary or error is thrown as notifications won't have updated
     cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
         
         const text = $span.text();
@@ -322,8 +320,7 @@ export function checksCounterIncreasesAndDecreases() {
 
         cy.get('[data-qa="notification.read"]').eq(0).find('[class*="mdi-email-outline"]').click();
 
-        cy.wait(3000);
-
+        cy.wait(3000); //necessary or error is thrown as notifications won't have updated
         cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
         
           const text2 = $span.text();
@@ -341,7 +338,7 @@ export function checksCounterIncreasesAndDecreases() {
 export function checkMarkAsReadWorks(withElse) {
     if (withElse) {
         cy.get('[data-qa="button.allRead"]').click();
-        cy.wait(3000);
+        cy.wait(3000); //necessary or error is thrown as notifications won't have updated
         cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
       
           const text = $span.text();
@@ -355,7 +352,7 @@ export function checkMarkAsReadWorks(withElse) {
         })
     } else {
         cy.get('[data-qa="button.allRead"]').click();
-        cy.wait(3000);
+        cy.wait(3000); //necessary or error is thrown as notifications won't have updated
         cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
       
           const text = $span.text();
@@ -417,7 +414,6 @@ export function changeEnergyGraphData(type, dataTypes) {
 export function checkWarranty(headingIndex, tableDataIndex) {
     cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
     cy.get('[data-qa="field.search"]').click();
-    cy.wait(5000);
     cy.get('[data-qa="table"]').find('tr').eq(tableDataIndex).find('td').eq(headingIndex).then(($td) => {
 
         const text = $td.text().trim();
@@ -429,13 +425,11 @@ export function checkWarranty(headingIndex, tableDataIndex) {
 
             cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
-            cy.wait(5000);
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
             dashboardSelect('My Inverters');
 
             cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
-            cy.wait(5000);
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
 
         } else if (text === 'Extended') {
@@ -445,13 +439,11 @@ export function checkWarranty(headingIndex, tableDataIndex) {
 
             cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
-            cy.wait(5000);
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
             dashboardSelect('My Inverters');
 
             cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
-            cy.wait(5000);
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
 
         } else if (text === 'Twelve_Years') {
@@ -461,13 +453,11 @@ export function checkWarranty(headingIndex, tableDataIndex) {
 
             cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
-            cy.wait(5000);
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
             dashboardSelect('My Inverters');
 
             cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{downArrow}').type('{downArrow}').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
-            cy.wait(5000);
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
 
         } else {

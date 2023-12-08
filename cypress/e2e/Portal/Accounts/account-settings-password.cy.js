@@ -15,7 +15,6 @@ describe("Account settings password", () => {
 
         //changes details back
         dashboardSelect('Account Settings');
-        cy.wait(3000);
 
         //goes to manage security and changes password
         cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();

@@ -9,7 +9,6 @@ beforeEach(() => {
 describe("Admin Sign In", () => {
     it("tests Admin Sign In", () => {
 
-      //directs to local host and sets viewport
       cy.visit("https://staging.givenergy.cloud/login");
 
       //attempts login with incorrect username and password

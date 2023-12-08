@@ -21,7 +21,6 @@ describe("Account settings details", () => {
 
       //changes details back
       dashboardSelect('Account Settings');
-      cy.wait(3000);
       changeDetails(true);
     });
   });

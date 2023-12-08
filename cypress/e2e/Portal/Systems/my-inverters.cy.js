@@ -32,7 +32,6 @@ describe("my inverter page", () => {
     tableContains('Model', 'GIV-HY5.0', 'Error when filtering by inverter model')
     cy.get('[data-qa="select.status"]').click();
     cy.get('[data-qa="status"]').eq(1).click();
-    cy.wait(5000);
     tableCSS('Status', 'rgb(248, 221, 108)', 'Error when filtering by status');
 
     //checks table format and buttons

@@ -18,7 +18,6 @@ describe("energy graph card", () => {
       dashboardSelect('Dashboard Cards');
 
       selectDashboardCard('Energy Graph', energyGraphDescription, 'brymbo', 'Brymbo Road');
-      cy.wait(5000);
 
       cy.get('[data-qa="chart.pie"]').should('be.visible');
       cy.get('[data-qa="chart.bar"]').should('be.visible');
@@ -32,19 +31,23 @@ describe("energy graph card", () => {
           const result = YYYYMMDD.test(date);
 
           let splitString = date.split('-');
-          splitString[2] = Number(splitString[2]) - 1;
-          splitString[2] = splitString[2].toString();
-          const estimate = splitString.join("-");
+          if (splitString[2].charAt(0) == 0) {
+              splitString[2] = Number(splitString[2]) - 1;
+              splitString[2] = '0' + splitString[2].toString();
+          } else {
+              splitString[2] = Number(splitString[2]) - 1;
+              splitString[2] = splitString[2].toString();
+          }
+          let estimate = splitString.join("-");
 
           if (!result) { throw new Error("Error: date in date picker does not match YYYY-MM-DD format"); }
 
           cy.get('[data-qa="datePicker"]').find('button').eq(0).click();
-          cy.wait(2000);
+          cy.wait(3000); //this one is necessary otherwise date2 will have value of 'Fetching Data...'
+          cy.get('[data-qa="datePicker"]', {timeout: 3000}).find('label').then(($label2) => {
 
-          cy.get('[data-qa="datePicker"]').find('label').then(($label2) => {
-
-              const date2 = $label.text();
-
+              const date2 = $label2.text();
+                console.log('retrieved date ' + date2, 'estimated date ' + estimate);
               if (date2 !== estimate) { throw new Error("Error: updated date after going back a day isn't correct"); }
           })
       })
@@ -69,11 +72,11 @@ describe("energy graph card", () => {
 
 
           cy.get('div[class*="v-picker__body"]').find('i[class*="mdi-skip-previous"]').click();
-          cy.wait(500);
-
+          cy.wait(3000); //this one is necessary otherwise text2 will be the current month and error will be thrown
           cy.get('div[class="v-date-picker-header__value"]').find('button').then(($label2) => {
 
               const text2 = $label2.text().split(' ')[0];
+              console.log('retrieved month ' + text2, 'estimated previous month ' + previousMonth)
               if (previousMonth !== text2) { throw new Error("Error: clicking back arrow did not show correct month"); }
 
 
@@ -83,7 +86,6 @@ describe("energy graph card", () => {
       cy.get('tbody').find('button').first().click();
       cy.get('tbody').find('button').last().click();
       cy.get('span[class="v-btn__content"]').contains('Confirm').click();
-      cy.wait(1000);
       cy.get('[data-qa="chart.pie"]').should('be.visible');
       cy.get('[data-qa="chart.bar"]').should('be.visible');
 

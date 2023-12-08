@@ -21,7 +21,6 @@ describe("returns", () => {
     checkPageNav();
 
     //checks format of table data
-    cy.wait(500);
     checkReturnsFormat();
     
     checkReturnsActions();

@@ -17,7 +17,6 @@ describe("my inverter card", () => {
       dashboardSelect('Dashboard Cards');
 
       selectDashboardCard('My Inverter', myInverterDescription, 'brymbopvtest', 'BrymboPVTest');
-      cy.wait(5000);
       cy.get('[data-qa="serialNumber"]').contains('FD2249G855');
       cy.get('[data-qa="graph"]').should('be.visible');
       cy.get('[data-qa="general.title"]').each(($div, index) => {
