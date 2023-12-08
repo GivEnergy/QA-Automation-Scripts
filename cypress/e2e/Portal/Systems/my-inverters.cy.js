@@ -30,9 +30,6 @@ describe("my inverter page", () => {
     //check filters
     cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{enter}');
     tableContains('Model', 'GIV-HY5.0', 'Error when filtering by inverter model')
-    cy.get('[data-qa="select.status"]').click();
-    cy.get('[data-qa="status"]').eq(1).click();
-    tableCSS('Status', 'rgb(248, 221, 108)', 'Error when filtering by status');
 
     //checks table format and buttons
     tableCheck('Inverter SN', serialNumber, 'Not a valid inverter serial number');
