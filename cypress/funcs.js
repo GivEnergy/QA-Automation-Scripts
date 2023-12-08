@@ -9,6 +9,7 @@ export function dashboardSelect(navItem, adminItem) {
     cy.get('@navbar').children().eq(0).click().contains(navItem).as('navbarItem');
     cy.get('@navbarItem').click();
     if (adminItem) {
+        cy.get('[data-qa="title.text"]').should('be.visible');
         cy.get('[data-qa="title.text"]').as('adminCard');
         cy.get('@adminCard').contains(adminItem).click();
     }
