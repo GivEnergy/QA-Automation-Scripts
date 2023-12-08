@@ -5,7 +5,7 @@ export function addRNG(string) {
 }
 
 export function dashboardSelect(navItem, adminItem) {
-    cy.get('[data-qa="main.navbar"]').as('navbar')
+    cy.get('[data-qa="main.navbar"]').as('navbar').should('be.visible');
     cy.get('@navbar').children().eq(0).click().contains(navItem).as('navbarItem');
     cy.get('@navbarItem').click();
     if (adminItem) {
