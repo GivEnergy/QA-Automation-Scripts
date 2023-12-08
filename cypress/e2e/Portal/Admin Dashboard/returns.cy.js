@@ -14,7 +14,8 @@ describe("returns", () => {
     adminLogin();
 
     //navigates to returns
-    dashboardSelect('Admin Dashboard', 'Returns');
+    dashboardSelect('Admin Dashboard');
+    cy.get('[data-qa="title.text"]').contains('Returns').click();
     cy.get('[data-qa="title.header"]').contains('Returns');
 
     //checks page navigation

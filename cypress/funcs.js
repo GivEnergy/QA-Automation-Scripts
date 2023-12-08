@@ -6,9 +6,6 @@ export function addRNG(string) {
 
 export function dashboardSelect(navItem, adminItem) {
     cy.get('[data-qa="main.navbar"]').children().eq(0).click().contains(navItem).click();
-    if (adminItem) {
-        cy.get('[data-qa="title.text"]').contains(adminItem).click();
-    }
 }
 
 export function checkPageNav() {
