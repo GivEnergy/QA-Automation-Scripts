@@ -4,8 +4,15 @@ import { energyGraphDescription } from "../../../dashboardCards";
 import {YYYYMMDD} from "../../../regex";
 import { Months } from "../../../Enum";
 
+const time = 60000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("energy graph card", () => {
   it("tests energy graph card", () => {
+
       adminLogin();
 
       dashboardSelect('Dashboard Cards');

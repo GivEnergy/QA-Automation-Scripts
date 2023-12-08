@@ -1,8 +1,15 @@
 import { adminLogin } from "../../../logins";
 import { dashboardSelect, changePassword } from "../../../funcs";
 
+const time = 60000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("Account settings password", () => {
     it("tests changing the account settings password works", () => {
+
         //sets viewport and logs in
         adminLogin();
 

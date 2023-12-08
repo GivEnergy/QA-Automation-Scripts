@@ -4,6 +4,12 @@ import {
     addRNG
 } from "../../../funcs";
 
+const time = 90000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("my inverter page", () => {
     it("tests my inverter page", () => {
 

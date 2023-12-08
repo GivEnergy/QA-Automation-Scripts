@@ -8,8 +8,15 @@ import {
 } from "../../../funcs";
 import { serialNumber, YYYYMMDD } from "../../../regex";
 
+const time = 60000;
+beforeEach(() => {
+  setTimeout(() => {
+    throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+  }, time);
+});
 describe("my inverter page", () => {
   it("tests my inverter page", () => {
+
     adminLogin();
 
     //opens my inverters and reloads page to hide nav bar

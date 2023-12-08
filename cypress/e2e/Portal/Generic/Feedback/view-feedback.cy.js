@@ -2,8 +2,15 @@ import { checkPageNav, dashboardSelect, getNum, tableCheck, tableContains, table
 import { adminLogin } from "../../../../logins";
 import { dateAndTime } from "../../../../regex";
 
+const time = 60000;
+beforeEach(() => {
+  setTimeout(() => {
+    throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+  }, time);
+});
 describe("view feedback", () => {
     it("tests view feedback", () => {
+
       //sets viewport and logs in
       adminLogin();
 

@@ -2,6 +2,12 @@ import { adminLogin } from "../../../logins";
 import { dashboardSelect, tableContains, tableRegex } from "../../../funcs";
 import { YYYYMMDD } from "../../../regex";
 
+const time = 90000;
+beforeEach(() => {
+  setTimeout(() => {
+    throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+  }, time);
+});
 describe("account list", () => {
   it("tests Account list", () => {
     //sets viewport and logins in as admin

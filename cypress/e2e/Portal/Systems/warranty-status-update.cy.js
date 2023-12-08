@@ -1,10 +1,18 @@
 import { adminLogin } from "../../../logins";
 import {dashboardSelect, checkWarranty} from "../../../funcs";
 
+const time = 90000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
+
 let tableDataIndex = 1;
 
 describe("warranty status", () => {
   it("tests updating warranty status", () => {
+
     //sets viewport and logins in as admin
     adminLogin();
 

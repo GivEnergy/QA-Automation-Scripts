@@ -1,5 +1,12 @@
+const time = 30000;
+beforeEach(() => {
+  setTimeout(() => {
+    throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+  }, time);
+});
 describe("forgot password", () => {
     it("tests forgot password", () => {
+
       //Cypress.config('defaultCommandTimeout', 30000);
       //Cypress.config('requestTimeout', 30000);
       // //setups up temp email and inbox

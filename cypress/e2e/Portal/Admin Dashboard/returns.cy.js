@@ -2,8 +2,15 @@ import { checkPageNav, checkReturnsActions, checkReturnsFormat, dashboardSelect,
 import { adminLogin } from "../../../logins";
 import { dateAndTime } from "../../../regex";
 
+const time = 90000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("returns", () => {
     it("tests returns", () => {
+
     adminLogin();
 
     //navigates to returns

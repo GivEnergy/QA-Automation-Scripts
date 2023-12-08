@@ -1,5 +1,11 @@
 import { dashboardSelect, loginCheck } from "../../../funcs";
 
+const time = 40000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("Admin Sign In", () => {
     it("tests Admin Sign In", () => {
 

@@ -31,3 +31,4 @@ Cypress.Commands.add('disableDebugBar', () => {
     }).as('disableDebugBar');
 
   });
+
