@@ -5,14 +5,16 @@ export function addRNG(string) {
 }
 
 export function dashboardSelect(navItem, adminItem) {
-    cy.get('[data-qa="main.navbar"]').as('navbar').should('be.visible');
-    cy.get('@navbar').children().eq(0).click().contains(navItem).as('navbarItem');
-    cy.get('@navbarItem').click();
     if (adminItem) {
+        cy.get('[data-qa="main.navbar"]').as('navbar').should('be.visible');
+        cy.visit('https://staging.givenergy.cloud/admin');
         cy.location('pathname').should('include', '/admin');
         cy.get('[data-qa="title.text"]').should('be.visible');
-        cy.get('[data-qa="title.text"]').as('adminCard');
-        cy.get('@adminCard').contains(adminItem).click();
+        cy.get('[data-qa="title.text"]').contains(adminItem).click();
+    } else {
+        cy.get('[data-qa="main.navbar"]').as('navbar').should('be.visible');
+        cy.get('@navbar').children().eq(0).click().contains(navItem).as('navbarItem');
+        cy.get('@navbarItem').click();
     }
 }
 
@@ -110,19 +112,16 @@ export function changePassword(current, newP, repeatP, order) {
 
 export function checkReturnsFormat() {
     cy.get('[data-qa="card.item"]').should('not.exist');
-    
-    cy.get('[data-qa="tableData.creator"]').first().click();
-    cy.get('[data-qa="card.item"]').should('be.visible');
+
+    tableClick('Created By');
     cy.get('[data-qa="title.header"]').click();
     cy.get('[data-qa="card.item"]').should('not.be.visible');
 
-    cy.get('[data-qa="tableData.customer"]').first().click();
-    cy.get('[data-qa="card.item"]').should('be.visible');
+    tableClick('Customer');
     cy.get('[data-qa="title.header"]').click();
     cy.get('[data-qa="card.item"]').should('not.be.visible');
 
-    cy.get('[data-qa="tableData.ticket"]').first().click();
-    cy.get('[data-qa="card.item"]').should('be.visible');
+    tableClick('Customer');
     tableRegex('Created At', /^\d{4,4}[-]\d{2,2}[-]\d{2,2}\s\d{2,2}[:]\d{2,2}[:]\d{2,2}$/, 'Error: created at does not meet yyyy-mm-dd hh:mm:ss');
 }
 
@@ -238,7 +237,10 @@ export function tableClick(heading, value) {
 
         if (text1 === heading) {
           cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('span').eq(0).click();
-          cy.get('[data-qa="card.item"]').contains(value).should('be.visible');
+          if (value) {
+              cy.get('[data-qa="card.item"]').contains(value);
+          }
+          cy.get('[data-qa="card.item"]').should('be.visible');
         } 
       });
 }
