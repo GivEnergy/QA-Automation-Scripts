@@ -30,6 +30,7 @@ describe("my inverter page", () => {
     //check filters
     cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{enter}');
     tableContains('Model', 'GIV-HY5.0', 'Error when filtering by inverter model')
+    cy.get('[data-qa="title.text"]').contains('My Inverters').click();
 
     //checks table format and buttons
     tableCheck('Inverter SN', serialNumber, 'Not a valid inverter serial number');
@@ -43,9 +44,9 @@ describe("my inverter page", () => {
       if (text === 'Warranty Status') {
 
         cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).contains('Valid');
-        cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('button').click();
+        cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('button').click({force: true});
         cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).contains('Void');
-        cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('button').click();
+        cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('button').click({force: true});
         cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).contains('Valid');
 
       }

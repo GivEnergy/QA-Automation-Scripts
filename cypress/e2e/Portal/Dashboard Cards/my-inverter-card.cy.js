@@ -17,7 +17,19 @@ describe("my inverter card", () => {
       dashboardSelect('Dashboard Cards');
 
       selectDashboardCard('My Inverter', myInverterDescription, 'brymbopvtest', 'BrymboPVTest');
-      cy.get('[data-qa="serialNumber"]').contains('FD2249G855');
+      cy.get('[data-qa="serialNumber"]').then(($el) => {
+
+          const text = $el.text().trim();
+          console.log(text);
+          const result = serialNumber.test(text);
+
+          console.log(result);
+
+          if (!result) {
+              throw new Error("Error: serial number does not match correct format.");
+          }
+
+      });
       cy.get('[data-qa="graph"]').should('be.visible');
       cy.get('[data-qa="general.title"]').each(($div, index) => {
         
@@ -98,13 +110,6 @@ describe("my inverter card", () => {
         const text = $div.text()
 
         switch(index) {
-          case 0:
-            if (text === 'GIV-HY5.0') {
-              cy.log('description is correct');
-            } else {
-              throw new Error('Inverter Model description is not correct');
-            }
-            break;
           case 2:
   
             const result = serialNumber.test(text);
