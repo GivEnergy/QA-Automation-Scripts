@@ -1,7 +1,7 @@
 export function addRNG(string) {
     let num = Math.floor(Math.random() * 100000);
     num.toString;
-    return string + num + "@gmail.com";
+    return string + num;
 }
 
 export function dashboardSelect(navItem, adminItem) {
@@ -31,22 +31,35 @@ export function checkPageNav() {
 }
 
 export function createAccount(username, clear) {
+    cy.get('[data-qa="form.field.email"]').as('email');
+    cy.get('[data-qa="form.field.postcode"]').as('postcode');
+    cy.get('[data-qa="form.field.address"]').as('address');
+    cy.get('[data-qa="form.field.phonenumber"]').as('phoneNumber');
+    cy.get('[data-qa="form.field.username"]').as('username');
     if (!clear) {
         cy.get('[data-qa="button.creation"]').contains('Create Distributor Account').click();
-        cy.get('[data-qa="form.field.email"]').prev().contains('Email');
-        cy.get('[data-qa="form.field.email"]').type(addRNG('Distributor'));
-        cy.get('[data-qa="form.field.postcode"]').prev().contains('Postcode');
-        cy.get('[data-qa="form.field.postcode"]').type('T3ST');
-        cy.get('[data-qa="form.field.address"]').prev().contains('Address Line 1');
-        cy.get('[data-qa="form.field.address"]').type('123 test street');
-        cy.get('[data-qa="form.field.phonenumber"]').prev().contains('Phone Number');
-        cy.get('[data-qa="form.field.phonenumber"]').type('11111 111111');
+        cy.get('@username').prev().contains('Username');
+        cy.get('@username').type(addRNG(username));
+        cy.get('@email').prev().contains('Email');
+        cy.get('@email').type('fakeEmail@gmail.com');
+        cy.get('@postcode').prev().contains('Postcode');
+        cy.get('@postcode').type('T3ST');
+        cy.get('@address').prev().contains('Address Line 1');
+        cy.get('@address').type('123 test street');
+        cy.get('@phoneNumber').prev().contains('Phone Number');
+        cy.get('@phoneNumber').type('11111 111111');
     } else {
         cy.get('[data-qa="button.creation"]').click();
-        cy.get('[data-qa="form.field.email"]').clear().type(addRNG('Distributor'));
-        cy.get('[data-qa="form.field.postcode"]').clear().type('T3ST');
-        cy.get('[data-qa="form.field.address"]').clear().type('123 test street');
-        cy.get('[data-qa="form.field.phonenumber"]').clear().type('11111 111111');
+        cy.get('@username').clear();
+        cy.get('@username').type(addRNG(username));
+        cy.get('@email').clear()
+        cy.get('@email').type('fakeEmail@gmail.com');
+        cy.get('@postcode').clear()
+        cy.get('@postcode').type('T3ST');
+        cy.get('@address').clear()
+        cy.get('@address').type('123 test street');
+        cy.get('@phoneNumber').clear()
+            cy.get('@phoneNumber').type('11111 111111');
     }
 }
 

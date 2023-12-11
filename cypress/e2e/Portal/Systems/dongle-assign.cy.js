@@ -1,7 +1,7 @@
 import {adminLogin, engineerLogin} from "../../../logins";
 import {
     dashboardSelect,
-    addRNG
+    addRNG, createAccount
 } from "../../../funcs";
 
 const time = 180000;
@@ -19,24 +19,36 @@ describe("my inverter page", () => {
 
         cy.get('[data-qa="field.search"]').click();
         cy.get('[data-qa="button.creation"]').contains('Create Customer Account').click();
-        cy.get('[data-qa="form.field.postcode"]').prev().contains('Postcode');
-        cy.get('[data-qa="form.field.postcode"]').type('T3ST');
-        cy.get('[data-qa="form.field.address"]').prev().contains('Address Line 1');
-        cy.get('[data-qa="form.field.address"]').type('123 test street');
-        cy.get('[data-qa="form.field.phonenumber"]').prev().contains('Phone Number');
-        cy.get('[data-qa="form.field.phonenumber"]').type('11111 111111');
-        cy.get('[data-qa="form.field.firstName"]').prev().contains('First Name');
-        cy.get('[data-qa="form.field.firstName"]').type('Test');
-        cy.get('[data-qa="form.field.surname"]').prev().contains('Surname');
-        cy.get('[data-qa="form.field.surname"]').type('Customer');
+
+        //creates alias'
+        cy.get('[data-qa="form.field.email"]').as('email');
+        cy.get('[data-qa="form.field.postcode"]').as('postcode');
+        cy.get('[data-qa="form.field.address"]').as('address');
+        cy.get('[data-qa="form.field.phonenumber"]').as('phoneNumber');
+        cy.get('[data-qa="form.field.username"]').as('username');
+        cy.get('[data-qa="form.field.firstName"]').as('firstName');
+        cy.get('[data-qa="form.field.surname"]').as('surname');
+
+        cy.get('@email').prev().contains('Email');
+        cy.get('@email').type('fakeEmail@gmail.com');
+        cy.get('@postcode').prev().contains('Postcode');
+        cy.get('@postcode').type('T3ST');
+        cy.get('@address').prev().contains('Address Line 1');
+        cy.get('@address').type('123 test street');
+        cy.get('@phoneNumber').prev().contains('Phone Number');
+        cy.get('@phoneNumber').type('11111 111111');
+        cy.get('@firstName').prev().contains('First Name');
+        cy.get('@firstName').type('Test');
+        cy.get('@surname').prev().contains('Surname');
+        cy.get('@surname').type('Customer');
         cy.get('[data-qa="form.field.plantType"]').click();
         cy.get('div[class="v-list-item__title"]').contains('Single Inverter').click();
-        cy.get('[data-qa="form.field.email"]').then(() => {
+        cy.get('@username').then(() => {
 
-            const email = addRNG('Customer');
+            const username = addRNG('testCustomer');
 
-            cy.get('[data-qa="form.field.email"]').prev().contains('Email');
-            cy.get('[data-qa="form.field.email"]').type(email);
+            cy.get('@username').clear();
+            cy.get('@username').type(username);
             cy.get('[data-qa="button.create"]').contains('Create').click();
 
             dashboardSelect('Logout');
@@ -60,8 +72,8 @@ describe("my inverter page", () => {
             cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('!!!!!!!!!!');
             cy.get('[data-qa="field.sn"]').parent().find('div[class*="v-messages__message"]').contains('This field can only contain alphanumeric characters');
             cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').clear().type('WO2249G378');
-            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').clear().type(email);
-            cy.get('div[class*="v-list-item__title"]').contains(email).click();
+            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').clear().type(username);
+            cy.get('div[class*="v-list-item__title"]').contains(username).click();
             cy.get('[data-qa="field.vc"]').parent('div[class*="v-text-field__slot"]').type('F9237');
             cy.get('[data-qa="button.submit"]').contains('Submit').click();
             cy.get('div[class*="v-messages__message"]').contains('This dongle is already assigned to another user');
