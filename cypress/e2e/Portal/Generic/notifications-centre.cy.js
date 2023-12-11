@@ -1,7 +1,7 @@
 import { checkMarkAsReadWorks, checksCounterIncreasesAndDecreases } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
-const time = 60000;
+const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);

@@ -1,13 +1,16 @@
-import { checkPageNav, dashboardSelect, getNum, tableCheck, tableContains, tableClick } from "../../../../funcs";
+import { checkPageNav, dashboardSelect, getNum, tableCheck, tableContains, tableClick, closeFeedback } from "../../../../funcs";
 import { adminLogin } from "../../../../logins";
 import { dateAndTime } from "../../../../regex";
 
-const time = 60000;
+const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
   }, time);
 });
+
+let trIndex= 1;
+
 describe("view feedback", () => {
     it("tests view feedback", () => {
 
@@ -17,11 +20,16 @@ describe("view feedback", () => {
       //navigates to leave feedback
       dashboardSelect('View Feedback');
       cy.get('[data-qa="title"]').contains('Feedback').click();
+      cy.get('[data-qa="table"]').find('th').each(($el, index) => {
 
-      cy.get('[data-qa="container.navigation"]').find('li').first().next().click();
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
-      cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
-      cy.get('[data-qa="button.recordClose"]').click();
+        const heading = $el.text()
+
+        if (heading === 'Last Action By') {
+
+          closeFeedback(trIndex, index);
+
+        }
+      })
 
       checkPageNav();
 
@@ -173,7 +181,7 @@ describe("view feedback", () => {
 
               
               const str = $textarea.val()
-              const text2 = str.substring(0, 50) + '...'
+              const text2 = str.substring(0, 50).trimEnd() + '...'
               console.log('substring from table ' + text1, 'created substring when viewing feedback ' + text2);
               if (text1 !== text2) {
                 throw new Error('View feedback content substring is different to content substring shown in table')

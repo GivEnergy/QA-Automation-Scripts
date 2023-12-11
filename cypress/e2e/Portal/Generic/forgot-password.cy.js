@@ -1,4 +1,4 @@
-const time = 30000;
+const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);

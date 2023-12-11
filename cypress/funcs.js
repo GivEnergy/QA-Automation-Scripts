@@ -6,13 +6,14 @@ export function addRNG(string) {
 
 export function dashboardSelect(navItem, adminItem) {
     if (adminItem) {
-        cy.get('[data-qa="main.navbar"]').as('navbar').should('be.visible');
+        cy.get('[data-qa="main.navbar"]').should('be.visible');
         cy.visit('https://staging.givenergy.cloud/admin');
         cy.location('pathname').should('include', '/admin');
         cy.get('[data-qa="title.text"]').should('be.visible');
         cy.get('[data-qa="title.text"]').contains(adminItem).click();
     } else {
-        cy.get('[data-qa="main.navbar"]').as('navbar').should('be.visible');
+        cy.get('[data-qa="main.navbar"]').as('navbar');
+        cy.get('@navbar').should('be.visible');
         cy.get('@navbar').children().eq(0).click().contains(navItem).as('navbarItem');
         cy.get('@navbarItem').click();
     }
@@ -472,4 +473,24 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             checkWarranty(headingIndex, index);
         }
     });
+}
+
+export function closeFeedback(trIndex, headingIndex) {
+    console.log(trIndex);
+    cy.get('[data-qa="table"]').find('tr').eq(trIndex).find('td').eq(headingIndex).then(($td) => {
+
+        const text = $td.text()
+
+        if (text === 'You') {
+
+            cy.get('[data-qa="container.navigation"]').find('li').first().next().click();
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
+            cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
+            cy.get('[data-qa="button.recordClose"]').click();
+            cy.wait(1000);
+            trIndex++;
+
+            closeFeedback(trIndex, headingIndex);
+        }
+    })
 }
