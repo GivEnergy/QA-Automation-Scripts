@@ -473,3 +473,23 @@ export function checkWarranty(headingIndex, tableDataIndex) {
         }
     });
 }
+
+export function closeFeedback(trIndex, headingIndex) {
+    console.log(trIndex);
+    cy.get('[data-qa="table"]').find('tr').eq(trIndex).find('td').eq(headingIndex).then(($td) => {
+
+        const text = $td.text()
+
+        if (text === 'You') {
+
+            cy.get('[data-qa="container.navigation"]').find('li').first().next().click();
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
+            cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
+            cy.get('[data-qa="button.recordClose"]').click();
+            cy.wait(1000);
+            trIndex++;
+
+            closeFeedback(trIndex, headingIndex);
+        }
+    })
+}
