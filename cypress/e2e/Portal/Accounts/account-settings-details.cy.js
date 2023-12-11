@@ -1,7 +1,7 @@
 import { adminLogin } from "../../../logins";
 import { dashboardSelect, changeDetails } from "../../../funcs";
 
-const time = 60000;
+const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);

@@ -6,13 +6,14 @@ export function addRNG(string) {
 
 export function dashboardSelect(navItem, adminItem) {
     if (adminItem) {
-        cy.get('[data-qa="main.navbar"]').as('navbar').should('be.visible');
+        cy.get('[data-qa="main.navbar"]').should('be.visible');
         cy.visit('https://staging.givenergy.cloud/admin');
         cy.location('pathname').should('include', '/admin');
         cy.get('[data-qa="title.text"]').should('be.visible');
         cy.get('[data-qa="title.text"]').contains(adminItem).click();
     } else {
-        cy.get('[data-qa="main.navbar"]').as('navbar').should('be.visible');
+        cy.get('[data-qa="main.navbar"]').as('navbar');
+        cy.get('@navbar').should('be.visible');
         cy.get('@navbar').children().eq(0).click().contains(navItem).as('navbarItem');
         cy.get('@navbarItem').click();
     }

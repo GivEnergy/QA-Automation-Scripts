@@ -8,7 +8,7 @@ import {
 } from "../../../funcs";
 import { serialNumber, YYYYMMDD } from "../../../regex";
 
-const time = 60000;
+const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);

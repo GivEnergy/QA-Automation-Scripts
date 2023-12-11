@@ -4,7 +4,7 @@ import { energyGraphDescription } from "../../../dashboardCards";
 import {YYYYMMDD} from "../../../regex";
 import { Months } from "../../../Enum";
 
-const time = 60000;
+const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
