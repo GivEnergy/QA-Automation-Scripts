@@ -302,20 +302,17 @@ export function tableRegex(heading, regex, errorMessage) {
 }
 
 export function selectDashboardCard(title, description, search, user) {
-    cy.get('[data-qa="card"]').each(($div1, index) => {
+    cy.get('[data-qa="card.title"]').each(($div2, index) => {
 
-        cy.get('[data-qa="card.title"]').eq(index).then(($div2) => {
-  
-            const text = $div2.text();
-
-          if (text === title) {
+        const text = $div2.text();
+        console.log(text);
+        if (text === title) {
             cy.get('[data-qa="card.description"]').eq(index).contains(description).click().scrollIntoView();
             cy.get('[data-qa="button.search"]').eq(index).click();
             cy.get('[data-qa="search"]').eq(1).type(search);
             cy.get('div[class="v-list-item__title"]').contains(user).click();
             cy.get('[data-qa="button.view"]').click();
-          }
-        });
+        }
     });
 }
 
@@ -408,7 +405,7 @@ export function checkMarkAsReadWorks(withElse) {
 }
 
 export function updateWarrantyAndCheck(warranty, num, tableDataIndex) {
-    cy.get('[data-qa="table"').find('tr').eq(tableDataIndex).find('[data-qa="button.warranty"]').click();
+    cy.get('[data-qa="table"').find('tr').eq(tableDataIndex).find('[data-qa="button.warranty"]').click({force: true});
     cy.get('[data-qa="card.warranty"]').should('be.visible');
     cy.get('[data-qa="select.warranty"]').click();
     cy.get('div[class="v-list-item__title"]').contains(warranty).click();
