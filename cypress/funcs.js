@@ -63,49 +63,70 @@ export function loginCheck(username, password, check){
 }
 
 export function changeDetails(correct) {
+    cy.get('[data-qa="form.field.firstName"]').as('firstName');
+    cy.get('[data-qa="form.field.surname"]').as('surname');
+    cy.get('[data-qa="form.field.address"]').as('address');
+    cy.get('[data-qa="form.field.postcode"]').as('postcode');
+    cy.get('[data-qa="form.field.phoneNumber"]').as('phoneNumber');
+    cy.get('[data-qa="form.field.email"]').as('email');
     if (correct) {
-        cy.get('[data-qa="form.field.firstName"]').clear().type('Ross');
-        cy.get('[data-qa="form.field.surname"]').clear().type('Coates');
-        cy.get('[data-qa="form.field.address"]').clear().type('GivEnergy');
-        cy.get('[data-qa="form.field.postcode"]').clear().type('ST6');
-        cy.get('[data-qa="form.field.phoneNumber"]').clear().type('01234567897');
-        cy.get('[data-qa="form.field.email"]').clear().type('ross.coates@givenergy.co.uk');
+        cy.get('@firstName').clear()
+        cy.get('@firstName').type('Ross');
+        cy.get('@surname').clear()
+        cy.get('@surname').type('Coates');
+        cy.get('@address').clear()
+        cy.get('@address').type('GivEnergy');
+        cy.get('@postcode').clear()
+        cy.get('@postcode').type('ST6');
+        cy.get('@phoneNumber').clear();
+        cy.get('@phoneNumber').type('01234567897');
+        cy.get('@email').clear()
+        cy.get('@email').type('ross.coates@givenergy.co.uk');
         cy.get('[data-qa="form.button.submit"]').contains('Submit').click();
         cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
     } else {
-        cy.get('[data-qa="form.field.firstName"]').type('s');
-        cy.get('[data-qa="form.field.surname"]').type('s');
-        cy.get('[data-qa="form.field.address"]').clear().type('Brymbo Road');
-        cy.get('[data-qa="form.field.postcode"]').clear().type('ST9');
-        cy.get('[data-qa="form.field.phoneNumber"]').type('7');
-        cy.get('[data-qa="form.field.email"]').clear().type('ross.coates@givenergy.com');
+        cy.get('@firstName').clear()
+        cy.get('@firstName').type('s');
+        cy.get('@surname').clear()
+        cy.get('@surname').type('s');
+        cy.get('@address').clear()
+        cy.get('@address').type('Brymbo Road');
+        cy.get('@postcode').clear()
+        cy.get('@postcode').type('ST9');
+        cy.get('@phoneNumber').clear();
+        cy.get('@phoneNumber').type('7');
+        cy.get('@email').clear();
+        cy.get('@email').type('ross.coates@givenergy.com');
         cy.get('[data-qa="form.button.submit"]').contains('Submit').click();
         cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
     }
 }
 
 export function changePassword(current, newP, repeatP, order) {
+    cy.get('[data-qa="form.field.current"]').as('current');
+    cy.get('[data-qa="form.field.new"]').as('new');
+    cy.get('[data-qa="form.field.repeat"]').as('repeat');
     if (order === 'first') {
-        cy.get('[data-qa="form.field.current"]').clear().type(current);
-        cy.get('[data-qa="form.field.new"]').clear().type(newP);
-        cy.get('[data-qa="form.field.repeat"]').clear().type(repeatP);
+        cy.get('@current').type(current);
+        cy.get('@new').type(newP);
+        cy.get('@repeat').type(repeatP);
         cy.get('[data-qa="button.submit"]').contains('Submit').should('not.be.enabled');
         cy.get('[data-qa="form.field.repeat"]').parents('.v-input__control').find('.v-messages__message')
             .contains('This field must be the same as Password');
         dashboardSelect('Account Settings');
         cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();
     } else if (order === 'second') {
-        cy.get('[data-qa="form.field.current"]').clear().type(current);
-        cy.get('[data-qa="form.field.new"]').clear().type(newP);
-        cy.get('[data-qa="form.field.repeat"]').clear().type(repeatP);
+        cy.get('@current').type(current);
+        cy.get('@new').type(newP);
+        cy.get('@repeat').type(repeatP);
         cy.get('[data-qa="button.submit"]').contains('Submit').click();
         cy.get('i[class*="mdi-alert"]').parent().find('p').contains('The current password is incorrect.');
         dashboardSelect('Account Settings');
         cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();
     } else if (order === 'third'){
-        cy.get('[data-qa="form.field.current"]').clear().type(current);
-        cy.get('[data-qa="form.field.new"]').clear().type(newP);
-        cy.get('[data-qa="form.field.repeat"]').clear().type(repeatP);
+        cy.get('@current').type(current);
+        cy.get('@new').type(newP);
+        cy.get('@repeat').type(repeatP);
         cy.get('[data-qa="button.submit"]').contains('Submit').click();
         cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Your password has been updated!');
     }

@@ -20,7 +20,7 @@ describe("Account settings details", () => {
       changeDetails(false);
 
       //changes details back
-      dashboardSelect('Account Settings');
+      cy.visit('https://staging.givenergy.cloud/account-settings');
       changeDetails(true);
     });
   });
