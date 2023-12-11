@@ -290,9 +290,9 @@ export function tableRegex(heading, regex, errorMessage) {
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
             
             const text2 = $td.text();
-
+            console.log(text2)
             const result = regex.test(text2);
-
+            console.log(result)
             if (!result) {
               throw new Error(errorMessage);
             }
