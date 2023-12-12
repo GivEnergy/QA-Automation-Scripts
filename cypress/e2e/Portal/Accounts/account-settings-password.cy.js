@@ -17,7 +17,9 @@ describe("Account settings password", () => {
         dashboardSelect('Account Settings');
 
         //goes to manage security and changes password
-        cy.get('[data-qa="link.button.security"]').contains('Manage Account Security').click();
+        cy.get('[data-qa="link.button.security"]').as('security');
+        cy.get('@security').contains('Manage Account Security');
+        cy.get('@security').click();
         changePassword(Cypress.env('adminPassword'), 'NotARealPassword123!', 'NotARealPassword123!' + '456', 'first');
         changePassword('NotARealPassword123!', 'NotARealPassword123!', 'NotARealPassword123!', 'second');
         changePassword(Cypress.env('adminPassword'), Cypress.env('adminPassword'), Cypress.env('adminPassword'), 'third');

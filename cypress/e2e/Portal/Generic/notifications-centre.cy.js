@@ -11,14 +11,17 @@ describe("Notifications centre", () => {
     it("tests Notifications centre", () => {
 
       adminLogin();
-      
-      cy.get('[data-qa="icon.notification"]').scrollIntoView().click();
+
+      cy.get('[data-qa="icon.notification"]').as('icon');
+      cy.get('@icon').scrollIntoView();
+      cy.get('@icon').click();
       cy.get('[data-qa="button.refresh"]').click();
       cy.get('[data-qa="button.close"]').click();
       cy.get('[data-qa="title.notifications"]').should('not.be.visible');
-      cy.get('[data-qa="icon.notification"]').scrollIntoView().click();
+      cy.get('@icon').scrollIntoView();
+      cy.get('@icon').click();
       cy.get('[data-qa="title.notifications"]').contains('Notifications');
-      cy.get('[data-qa="icon.notification"]').next().find('span[class*="v-badge__badge"]').then(($span) => {
+      cy.get('@icon').next().find('span[class*="v-badge__badge"]').then(($span) => {
         
         const text = $span.text()
         const num = Number(text)
