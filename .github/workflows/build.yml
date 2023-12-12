@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parallelism: [1, 2]
+        containers: [1, 2]
 
     steps:
       - name: Checkout
