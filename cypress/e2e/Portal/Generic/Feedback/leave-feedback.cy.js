@@ -7,7 +7,7 @@ beforeEach(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
   }, time);
 });
-describe("leave feedback", () => {
+describe("Group 2", () => {
     it("tests leave feedback", () => {
 
       //sets viewport and logs in

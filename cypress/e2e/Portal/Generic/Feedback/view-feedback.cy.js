@@ -11,7 +11,7 @@ beforeEach(() => {
 
 let trIndex= 1;
 
-describe("view feedback", () => {
+describe("Group 2", () => {
     it("tests view feedback", () => {
 
       //sets viewport and logs in

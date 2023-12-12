@@ -21,8 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ci_index: [0, 1]
-        ci_total: [2]
+        group: [group1, group2]
 
     steps:
       - name: Checkout
@@ -39,4 +38,4 @@ jobs:
         run: npm ci
 
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --env ${{ secrets.CYPRESS_ENV }} --parallel
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --env ${{ secrets.CYPRESS_ENV }} --group ${{ matrix.group }}

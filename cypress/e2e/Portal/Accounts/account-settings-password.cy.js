@@ -7,7 +7,7 @@ beforeEach(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
     }, time);
 });
-describe("Account settings password", () => {
+describe("Group 1", () => {
     it("tests changing the account settings password works", () => {
 
         //sets viewport and logs in

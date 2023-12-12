@@ -8,7 +8,7 @@ beforeEach(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
     }, time);
 });
-describe("reward points", () => {
+describe("Group 1", () => {
     it("tests reward points page", () => {
 
         adminLogin();

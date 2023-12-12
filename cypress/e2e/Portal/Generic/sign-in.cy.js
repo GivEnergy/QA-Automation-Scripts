@@ -6,7 +6,7 @@ beforeEach(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
     }, time);
 });
-describe("Admin Sign In", () => {
+describe("Group 2", () => {
     it("tests Admin Sign In", () => {
 
       cy.visit("https://staging.givenergy.cloud/login");

@@ -9,7 +9,7 @@ beforeEach(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
     }, time);
 });
-describe("my inverter card", () => {
+describe("Group 1", () => {
   it("tests my inverter card", () => {
 
       adminLogin();

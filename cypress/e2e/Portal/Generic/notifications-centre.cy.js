@@ -7,7 +7,7 @@ beforeEach(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
   }, time);
 });
-describe("Notifications centre", () => {
+describe("Group 2", () => {
     it("tests Notifications centre", () => {
 
       adminLogin();

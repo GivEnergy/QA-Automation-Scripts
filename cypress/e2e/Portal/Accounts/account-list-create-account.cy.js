@@ -7,7 +7,7 @@ beforeEach(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
   }, time);
 });
-describe("account list create account", () => {
+describe("Group 1", () => {
   it("tests creating an account on the account list page", () => {
 
     //sets viewport and logins in as admin

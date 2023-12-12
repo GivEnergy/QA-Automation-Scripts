@@ -10,7 +10,7 @@ beforeEach(() => {
 
 let tableDataIndex = 1;
 
-describe("warranty status", () => {
+describe("Group 2", () => {
   it("tests updating warranty status", () => {
 
     //sets viewport and logins in as admin

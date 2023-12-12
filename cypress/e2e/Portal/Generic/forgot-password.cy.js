@@ -4,7 +4,7 @@ beforeEach(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
   }, time);
 });
-describe("forgot password", () => {
+describe("Group 2", () => {
     it("tests forgot password", () => {
 
       //Cypress.config('defaultCommandTimeout', 30000);

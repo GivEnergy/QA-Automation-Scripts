@@ -10,7 +10,7 @@ beforeEach(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
     }, time);
 });
-describe("energy graph card", () => {
+describe("Group 1", () => {
   it("tests energy graph card", () => {
 
       adminLogin();
