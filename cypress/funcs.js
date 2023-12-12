@@ -64,8 +64,12 @@ export function createAccount(username, clear) {
 }
 
 export function loginCheck(username, password, check){
-    cy.get('[data-qa="field.username"]').clear().type(username);
-    cy.get('[data-qa="field.password"]').clear().type(password);
+    cy.get('[data-qa="field.username"]').as('username');
+    cy.get('[data-qa="field.username"]').as('password');
+    cy.get('@username').clear();
+    cy.get('@username').type(username);
+    cy.get('@password').clear();
+    cy.get('@password').type(password);
     cy.get('[data-qa="button.login"]').click();
     if (check) {
         cy.get('[data-qa="field.username"]').parents('.v-input__control').find('.v-messages__message')
