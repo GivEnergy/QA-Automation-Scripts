@@ -8,9 +8,9 @@ beforeEach(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
     }, time);
 });
-describe("Group 1", () => {
+describe("reward points", () => {
     it("tests reward points page", () => {
-
+        cy.assignToGroup('group1');
         adminLogin();
 
         //navigates to returns

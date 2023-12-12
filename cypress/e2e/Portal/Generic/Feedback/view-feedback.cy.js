@@ -11,9 +11,9 @@ beforeEach(() => {
 
 let trIndex= 1;
 
-describe("Group 2", () => {
+describe("view feedback", () => {
     it("tests view feedback", () => {
-
+      cy.assignToGroup('group2');
       //sets viewport and logs in
       adminLogin();
 

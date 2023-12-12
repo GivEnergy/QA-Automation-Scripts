@@ -4,9 +4,9 @@ beforeEach(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
   }, time);
 });
-describe("Group 2", () => {
+describe("forgot password", () => {
     it("tests forgot password", () => {
-
+      cy.assignToGroup('group2');
       //Cypress.config('defaultCommandTimeout', 30000);
       //Cypress.config('requestTimeout', 30000);
       // //setups up temp email and inbox

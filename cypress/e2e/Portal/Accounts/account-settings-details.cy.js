@@ -7,9 +7,9 @@ beforeEach(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
     }, time);
 });
-describe("Group 1", () => {
+describe("Account settings details", () => {
   it("tests changing the account settings details works", () => {
-
+      cy.assignToGroup('group1');
       //sets viewport and logs in
       adminLogin();
 

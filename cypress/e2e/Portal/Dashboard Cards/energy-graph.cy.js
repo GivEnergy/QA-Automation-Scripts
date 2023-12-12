@@ -10,9 +10,9 @@ beforeEach(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
     }, time);
 });
-describe("Group 1", () => {
+describe("energy graph card", () => {
   it("tests energy graph card", () => {
-
+      cy.assignToGroup('group1');
       adminLogin();
 
       dashboardSelect('Dashboard Cards');

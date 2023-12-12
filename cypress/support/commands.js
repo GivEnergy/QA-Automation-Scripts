@@ -32,3 +32,6 @@ Cypress.Commands.add('disableDebugBar', () => {
 
   });
 
+Cypress.Commands.add('assignToGroup', (group) => {
+    cy.task('setGroup', group);
+});

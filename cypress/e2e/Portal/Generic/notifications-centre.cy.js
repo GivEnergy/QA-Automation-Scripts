@@ -7,9 +7,9 @@ beforeEach(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
   }, time);
 });
-describe("Group 2", () => {
+describe("Notifications centre", () => {
     it("tests Notifications centre", () => {
-
+      cy.assignToGroup('group2');
       adminLogin();
 
       cy.get('[data-qa="icon.notification"]').as('icon');

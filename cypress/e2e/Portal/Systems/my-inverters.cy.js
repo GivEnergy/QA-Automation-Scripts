@@ -14,9 +14,9 @@ beforeEach(() => {
     throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
   }, time);
 });
-describe("Group 2", () => {
+describe("my inverter page", () => {
   it("tests my inverter page", () => {
-
+    cy.assignToGroup('group2');
     adminLogin();
 
     //opens my inverters and reloads page to hide nav bar
