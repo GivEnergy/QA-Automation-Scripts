@@ -18,6 +18,10 @@ jobs:
 
   cypress-tests:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        browser: [chrome]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,4 +37,4 @@ jobs:
         run: npm ci
 
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --env ${{ secrets.CYPRESS_ENV }}
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --env ${{ secrets.CYPRESS_ENV }} --browser ${{ matrix.browser }}
