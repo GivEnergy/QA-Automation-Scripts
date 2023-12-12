@@ -28,7 +28,9 @@ describe("my inverter page", () => {
     checkPageNav();
 
     //check filters
-    cy.get('[data-qa="auto.model"]').type('{downArrow}').type('{enter}');
+    cy.get('[data-qa="auto.model"]').as('model');
+    cy.get('@model').type('{downArrow}');
+    cy.get('@model').type('{enter}');
     tableContains('Model', 'GIV-HY5.0', 'Error when filtering by inverter model')
     cy.get('[data-qa="title.text"]').contains('My Inverters').click();
 

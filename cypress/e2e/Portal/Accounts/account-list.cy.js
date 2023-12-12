@@ -25,7 +25,8 @@ describe("account list", () => {
     // cy.reload();
 
     cy.get('[data-qa="input.filter"]').click();
-    cy.get('div[class*="v-list-item"]').contains('Customer').click();
+    cy.get('div[class*="v-list-item"]').contains('Customer').as('listCustomer');
+    cy.get('@listCustomer').click();
     tableContains('Type', 'Customer', 'Error when filtering by account type');
     tableRegex('Create Date', YYYYMMDD, 'Error: date does not match yyyy-mm-dd format');
     cy.get('i[class*="mdi-delete"]').first().scrollIntoView();
@@ -34,20 +35,29 @@ describe("account list", () => {
     cy.get('a[href*="legacy-dashboard"]').first().click();
     cy.get('i[class*="mdi-account-alert"]').first().click();
     cy.get('[data-qa="title.header"]').contains('Account Permissions');
-    cy.get('[data-qa="button.update"]').contains('Update').click();
+    cy.get('[data-qa="button.update"]').as('update');
+    cy.get('@update').contains('Update');
+    cy.get('@update').click();
     cy.get('i[class*="mdi-delete"]').first().click();
     cy.get('[data-qa="button.change"]').then(($button) => {
 
       const text = $button.text().trim();
 
+      cy.get('[data-qa="button.change"]').as('change');
+      cy.get('i[class*="mdi-delete"]').as('delete');
+
       if (text === "Enable") {
-        cy.get('[data-qa="button.change"]').contains('Enable').click();
-        cy.get('i[class*="mdi-delete"]').first().click();
-        cy.get('[data-qa="button.change"]').contains('Disable').click();
+        cy.get('@change').contains('Enable');
+        cy.get('@change').click();
+        cy.get('@delete').first().click();
+        cy.get('@change').contains('Disable');
+        cy.get('@change').click();
       } else {
-        cy.get('[data-qa="button.change"]').contains('Disable').click();
-        cy.get('i[class*="mdi-delete"]').first().click();
-        cy.get('[data-qa="button.change"]').contains('Enable').click();
+        cy.get('@change').contains('Disable');
+        cy.get('@change').click();
+        cy.get('@delete').first().click();
+        cy.get('@change').contains('Enable');
+        cy.get('@change').click();
       }
     })
 

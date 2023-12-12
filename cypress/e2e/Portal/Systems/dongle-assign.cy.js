@@ -71,13 +71,16 @@ describe("my inverter page", () => {
             cy.get('div[class="v-select-list"]').should('not.exist');
             cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('!!!!!!!!!!');
             cy.get('[data-qa="field.sn"]').parent().find('div[class*="v-messages__message"]').contains('This field can only contain alphanumeric characters');
-            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').clear().type('WO2249G378');
-            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').clear().type(username);
+            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').clear();
+            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('WO2249G378');
+            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').clear();
+            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').type(username);
             cy.get('div[class*="v-list-item__title"]').contains(username).click();
             cy.get('[data-qa="field.vc"]').parent('div[class*="v-text-field__slot"]').type('F9237');
             cy.get('[data-qa="button.submit"]').contains('Submit').click();
             cy.get('div[class*="v-messages__message"]').contains('This dongle is already assigned to another user');
-            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('{backspace}').type('7');
+            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('{backspace}');
+            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('7');
             cy.get('[data-qa="button.submit"]').contains('Submit').click();
 
             //deletes created dongle
