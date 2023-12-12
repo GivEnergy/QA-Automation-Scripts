@@ -32,6 +32,6 @@ describe("account list create account", () => {
     //fills in details again and clicks create
     createAccount('TestDistributor', 'clear');
     cy.get('[data-qa="button.create"]').contains('Create').click();
-
+    cy.get('div[class="v-snack__content"]').should('be.visible');
   });
 });
