@@ -21,7 +21,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome]
+        ci_index: [0, 1]
+        ci_total: [2]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
