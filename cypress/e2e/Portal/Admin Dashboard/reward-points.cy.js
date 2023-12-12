@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 describe("reward points", () => {
     it("tests reward points page", () => {
-        cy.assignToGroup('group1');
+
         adminLogin();
 
         //navigates to returns

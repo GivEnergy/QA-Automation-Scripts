@@ -16,7 +16,7 @@ beforeEach(() => {
 });
 describe("my inverter page", () => {
   it("tests my inverter page", () => {
-    cy.assignToGroup('group2');
+
     adminLogin();
 
     //opens my inverters and reloads page to hide nav bar

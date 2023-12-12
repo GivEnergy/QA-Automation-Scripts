@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 describe("returns", () => {
     it("tests returns page", () => {
-        cy.assignToGroup('group1');
+
     adminLogin();
 
     //navigates to returns

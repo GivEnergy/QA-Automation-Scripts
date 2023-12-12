@@ -12,7 +12,7 @@ let tableDataIndex = 1;
 
 describe("warranty status", () => {
   it("tests updating warranty status", () => {
-      cy.assignToGroup('group2');
+
     //sets viewport and logins in as admin
     adminLogin();
 

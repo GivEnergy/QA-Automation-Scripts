@@ -9,7 +9,7 @@ beforeEach(() => {
 });
 describe("leave feedback", () => {
     it("tests leave feedback", () => {
-      cy.assignToGroup('group2');
+
       //sets viewport and logs in
       adminLogin();
 

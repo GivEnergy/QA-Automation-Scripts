@@ -9,7 +9,7 @@ beforeEach(() => {
 });
 describe("Notifications centre", () => {
     it("tests Notifications centre", () => {
-      cy.assignToGroup('group2');
+
       adminLogin();
 
       cy.get('[data-qa="icon.notification"]').as('icon');

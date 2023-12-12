@@ -13,7 +13,7 @@ let trIndex= 1;
 
 describe("view feedback", () => {
     it("tests view feedback", () => {
-      cy.assignToGroup('group2');
+
       //sets viewport and logs in
       adminLogin();
 

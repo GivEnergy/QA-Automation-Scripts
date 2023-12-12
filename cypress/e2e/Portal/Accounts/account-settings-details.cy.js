@@ -9,7 +9,7 @@ beforeEach(() => {
 });
 describe("Account settings details", () => {
   it("tests changing the account settings details works", () => {
-      cy.assignToGroup('group1');
+
       //sets viewport and logs in
       adminLogin();
 

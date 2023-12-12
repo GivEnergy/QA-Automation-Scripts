@@ -12,7 +12,7 @@ beforeEach(() => {
 });
 describe("energy graph card", () => {
   it("tests energy graph card", () => {
-      cy.assignToGroup('group1');
+
       adminLogin();
 
       dashboardSelect('Dashboard Cards');

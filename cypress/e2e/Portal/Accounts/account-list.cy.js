@@ -10,7 +10,6 @@ beforeEach(() => {
 });
 describe("account list", () => {
   it("tests Account list", () => {
-    cy.assignToGroup('group1');
     //sets viewport and logins in as admin
     adminLogin();
 

@@ -8,7 +8,7 @@ beforeEach(() => {
 });
 describe("Admin Sign In", () => {
     it("tests Admin Sign In", () => {
-        cy.assignToGroup('group2');
+
       cy.visit("https://staging.givenergy.cloud/login");
 
       //attempts login with incorrect username and password

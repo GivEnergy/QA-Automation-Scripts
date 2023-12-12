@@ -11,7 +11,7 @@ beforeEach(() => {
 });
 describe("my inverter card", () => {
   it("tests my inverter card", () => {
-      cy.assignToGroup('group1');
+
       adminLogin();
 
       dashboardSelect('Dashboard Cards');

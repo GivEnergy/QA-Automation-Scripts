@@ -12,7 +12,7 @@ beforeEach(() => {
 });
 describe("my inverter page", () => {
     it("tests my inverter page", () => {
-        cy.assignToGroup('group2');
+
         engineerLogin();
 
         dashboardSelect('Account List');
