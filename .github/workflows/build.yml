@@ -15,22 +15,19 @@ permissions:
   contents: read
 
 jobs:
-  checkout-repo:
+  cypress-tests:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           repository: GivEnergy/QA-Automation-Scripts
 
-  cypress-tests:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        containers: [ 1, 2 ]
-
-    steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -40,10 +37,4 @@ jobs:
         run: npm ci
 
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          record: true
-          parallel: true
-          env:
-            ${{ secrets.CYPRESS_ENV }}
-            ${{ secrets.CYPRESS_RECORD_KEY }}
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --env ${{ secrets.CYPRESS_ENV }} --parallel
