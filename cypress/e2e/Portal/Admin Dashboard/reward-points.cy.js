@@ -13,7 +13,7 @@ describe("reward points", () => {
 
         adminLogin();
 
-        //navigates to returns
+        //navigates to rewards
         dashboardSelect('Admin Dashboard', 'Reward Points');
         cy.get('[data-qa="table.points"]').should('be.visible');
 
