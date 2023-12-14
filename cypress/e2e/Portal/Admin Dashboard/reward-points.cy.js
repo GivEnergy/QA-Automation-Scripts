@@ -19,9 +19,9 @@ describe("reward points", () => {
 
         checkPageNav();
 
-        tableRegex("Points Gained This Month", positiveNumber, "Points Gained This Month has a value that is NaN");
-        tableRegex("Points Used This Month", positiveNumber, "Points Used This Month has a value that is NaN");
-        tableRegex("Redeemable Points", positiveNumber, "Reedemable Points has a value that is NaN");
+        tableRegex("Points Gained This Month", positiveNumber, "Points Gained This Month has a value that is not a positive number");
+        tableRegex("Points Used This Month", positiveNumber, "Points Used This Month has a value that is not a positive number");
+        tableRegex("Redeemable Points", positiveNumber, "Reedemable Points has a value that is not a positive number");
 
         //finds engineer header in table
         //gets first engineer in the table and searches for this engineer
