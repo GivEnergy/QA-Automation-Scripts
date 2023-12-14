@@ -19,6 +19,9 @@ describe("energy graph card", () => {
 
       selectDashboardCard('Energy Graph', energyGraphDescription, 'brymbo', 'Brymbo Road');
 
+      cy.location('pathname').should('include', '/energy-graph/');
+      cy.get('[data-qa="chart.pie"]').should('exist');
+      cy.get('[data-qa="chart.bar"]').should('exist');
       cy.get('[data-qa="chart.pie"]').should('be.visible');
       cy.get('[data-qa="chart.bar"]').should('be.visible');
       cy.get('[data-qa="datePicker"]').find('button').eq(1).should('not.be.enabled');
