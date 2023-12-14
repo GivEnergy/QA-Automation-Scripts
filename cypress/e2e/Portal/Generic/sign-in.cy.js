@@ -12,6 +12,11 @@ describe("Admin Sign In", () => {
 
       cy.visit("https://staging.givenergy.cloud/login");
 
+
+      cy.location('pathname').should('include', '/login');
+      cy.get('[data-qa="field.username"]').should('be.visible');
+      cy.get('[data-qa="field.password"]').should('be.visible');
+
       //attempts login with incorrect username and password
       loginCheck('NotARealUsername123', 'NotARealPassword123!', 'check');
 

@@ -34,6 +34,8 @@ describe("forgot password", () => {
       //navigates to forgot password page
       //checks you can enter an incorrect username and get confirmation
       //checks you can enter a correct username and get confirmation
+      cy.location('pathname').should('include', '/login');
+      cy.get('[data-qa="link.forgotPW"]').should('be.visible');
       cy.get('[data-qa="link.forgotPW"]').click();
       cy.get('[data-qa="form.link.back"]').click();
       cy.get('[data-qa="link.forgotPW"]').click();
