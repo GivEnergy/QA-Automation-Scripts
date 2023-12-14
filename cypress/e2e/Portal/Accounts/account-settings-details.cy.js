@@ -1,6 +1,7 @@
 import { adminLogin } from "../../../logins";
 import { dashboardSelect, changeDetails } from "../../../funcs";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -10,16 +11,12 @@ beforeEach(() => {
 describe("Account settings details", () => {
   it("tests changing the account settings details works", () => {
 
-      //sets viewport and logs in
       adminLogin();
 
-      //navigates to account settings page
       dashboardSelect('Account Settings');
 
-      //changes details
       changeDetails(false);
 
-      //changes details back
       cy.visit('https://staging.givenergy.cloud/account-settings');
       changeDetails(true);
     });

@@ -1,7 +1,8 @@
-import { checkPageNav, dashboardSelect, getNum, tableCheck, tableContains, tableClick, closeFeedback } from "../../../../funcs";
+import { checkPageNav, dashboardSelect, getNum, tableRegex, tableContains, tableClick, closeFeedback } from "../../../../funcs";
 import { adminLogin } from "../../../../logins";
 import { dateAndTime } from "../../../../regex";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
@@ -20,6 +21,8 @@ describe("view feedback", () => {
       //navigates to leave feedback
       dashboardSelect('View Feedback');
       cy.get('[data-qa="title"]').contains('Feedback').click();
+
+      //check function description
       cy.get('[data-qa="table"]').find('th').each(($el, index) => {
 
         const heading = $el.text()
@@ -34,8 +37,8 @@ describe("view feedback", () => {
       checkPageNav();
 
       //check table format
-      tableCheck('Reported At', dateAndTime, 'Invalid date and time format');
-      tableCheck('Last Action Time', dateAndTime, 'Invalid date and time format');
+      tableRegex('Reported At', dateAndTime, 'Invalid date and time format');
+      tableRegex('Last Action Time', dateAndTime, 'Invalid date and time format');
       tableClick('Reported By', 'Username:');
       tableClick('Last Action By', 'Account Type:');
 
@@ -86,7 +89,7 @@ describe("view feedback", () => {
       })
       cy.get('button[class*="mdi-close"]').click();
 
-
+      //checks type filter works
       cy.get('[data-qa="select.type"]').click();
       cy.get('div[class*="v-select-list"]').children().contains('Bug').click();
       cy.get('[data-qa="title"]').contains('Feedback').click();
@@ -109,20 +112,7 @@ describe("view feedback", () => {
       })
       cy.get('button[class*="mdi-close"]').click();
 
-      //add back when search works
-      // cy.get('[data-qa="search"]').type('Test').type('{enter}');
-      // cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
-      //   const text = $th.text()
-
-      //   if (text === 'Title') {
-
-      //     cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).contains('Test');
-
-      //   } 
-      // })
-      // cy.get('button[class*="mdi-close"]').click();
-
-      //uses select record options
+      //uses select record options and checks if closing feedback works
       cy.get('[data-qa="container.navigation"]').find('li').first().next().click();
       cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
       cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');

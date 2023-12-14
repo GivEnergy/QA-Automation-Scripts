@@ -1,3 +1,4 @@
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
@@ -6,6 +7,8 @@ beforeEach(() => {
 });
 describe("forgot password", () => {
     it("tests forgot password", () => {
+      //commented code is for an additional check that checks received email works to reset password
+      //may be added in if staging emails work
 
       //Cypress.config('defaultCommandTimeout', 30000);
       //Cypress.config('requestTimeout', 30000);
@@ -18,7 +21,7 @@ describe("forgot password", () => {
       // let emailAddress = inbox.emailAddress;
 
       //visits page
-      cy.visit("https://staging.givenergy.cloud/login"); //remove this when mailslurp is added
+      cy.visit("https://staging.givenergy.cloud/login");
 
       //logs in and changes email to temp email
       // adminLogin();
@@ -28,6 +31,9 @@ describe("forgot password", () => {
       // cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
       // dashboardSelect('Logout');
 
+      //navigates to forgot password page
+      //checks you can enter an incorrect username and get confirmation
+      //checks you can enter a correct username and get confirmation
       cy.get('[data-qa="link.forgotPW"]').click();
       cy.get('[data-qa="form.link.back"]').click();
       cy.get('[data-qa="link.forgotPW"]').click();

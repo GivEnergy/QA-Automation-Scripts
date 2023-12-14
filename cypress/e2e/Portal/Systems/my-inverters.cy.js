@@ -2,12 +2,12 @@ import { adminLogin } from "../../../logins";
 import {
   dashboardSelect,
   checkPageNav,
-  tableCheck,
-  tableContains,
-  tableCSS,
+  tableRegex,
+  tableContains
 } from "../../../funcs";
 import { serialNumber, YYYYMMDD } from "../../../regex";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
@@ -35,10 +35,11 @@ describe("my inverter page", () => {
     cy.get('[data-qa="title.text"]').contains('My Inverters').click();
 
     //checks table format and buttons
-    tableCheck('Inverter SN', serialNumber, 'Not a valid inverter serial number');
-    tableCheck('Dongle SN', serialNumber, 'Not a valid dongle serial number');
-    tableCheck('Commission Date', YYYYMMDD, 'Not a valid date, should follow YYYYMMDD format');
+    tableRegex('Inverter SN', serialNumber, 'Not a valid inverter serial number');
+    tableRegex('Dongle SN', serialNumber, 'Not a valid dongle serial number');
+    tableRegex('Commission Date', YYYYMMDD, 'Not a valid date, should follow YYYYMMDD format');
 
+    //checks warranty status updates when warranty void/validate button is clicked
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
 
       const text = $th.text()
@@ -54,18 +55,12 @@ describe("my inverter page", () => {
       }
 
     })
+    //checks other action buttons work
     cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(0).click();
     cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(1).click();
     cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(2).click();
     cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(3).click();
 
-    // add back when search works 
-
-    //checks search and account info hovers work
-    // cy.get('[data-qa="search"]').type('Chemical Lane').type('{enter}');
-    // tableClick('End User', 'Chemical Lane');
-    // tableClick('Engineer', 'Dan Lambert');
-    // tableClick('Company', 'GivEnergy03');
 
    });
 }); 

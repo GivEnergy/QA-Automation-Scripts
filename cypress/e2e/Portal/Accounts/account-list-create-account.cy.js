@@ -1,6 +1,7 @@
 import { adminLogin } from "../../../logins";
 import { createAccount, dashboardSelect, checkPageNav } from "../../../funcs";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
@@ -10,14 +11,11 @@ beforeEach(() => {
 describe("account list create account", () => {
   it("tests creating an account on the account list page", () => {
 
-    //sets viewport and logins in as admin
     adminLogin();
 
-    //opens account list and reloads page to hide nav bar
     dashboardSelect('Account List');
     cy.get('[data-qa="input.filter"]').click();
-    
-    //checks page navigation
+
     checkPageNav();
 
     //clicks create account and cancels it

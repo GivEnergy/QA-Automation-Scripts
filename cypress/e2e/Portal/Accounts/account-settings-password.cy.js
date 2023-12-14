@@ -1,6 +1,7 @@
 import { adminLogin } from "../../../logins";
 import { dashboardSelect, changePassword } from "../../../funcs";
 
+//this should prevent any tests from hanging
 const time = 60000;
 beforeEach(() => {
     setTimeout(() => {
@@ -10,13 +11,10 @@ beforeEach(() => {
 describe("Account settings password", () => {
     it("tests changing the account settings password works", () => {
 
-        //sets viewport and logs in
         adminLogin();
 
-        //changes details back
         dashboardSelect('Account Settings');
 
-        //goes to manage security and changes password
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');
         cy.get('@security').click();

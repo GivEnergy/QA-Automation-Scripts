@@ -1,18 +1,18 @@
 export function addRNG(string) {
-    let num = Math.floor(Math.random() * 100000);
+    let num = Math.floor(Math.random() * 100000); //generates a random number
     num.toString;
-    return string + num;
+    return string + num; //concatenates this num onto a passed in string
 }
 
 export function dashboardSelect(navItem, adminItem) {
-    if (adminItem) {
+    if (adminItem) { //if it needs to navigate to admin dashboard it redirects to /admin rather than using navbar to reduce flakiness
         cy.get('[data-qa="main.navbar"]').should('be.visible');
         cy.visit('https://staging.givenergy.cloud/admin');
         cy.location('pathname').should('include', '/admin');
         cy.get('[data-qa="title.text"]').as('title');
         cy.get('@title').should('be.visible');
         cy.get('@title').contains(adminItem).click();
-    } else {
+    } else { //if item exists on navbar it clicks on the desired navbar item
         cy.get('[data-qa="main.navbar"]').as('navbar');
         cy.get('@navbar').should('be.visible');
         cy.get('@navbar').children().eq(0).click()
@@ -21,7 +21,7 @@ export function dashboardSelect(navItem, adminItem) {
     }
 }
 
-export function checkPageNav() {
+export function checkPageNav() { //checks all the paginate navigations work
     cy.get('[data-qa="container.navigation"]').as('navContainer');
     cy.get('@navContainer').scrollIntoView();
     cy.get('@navContainer').find('li').last().click();
@@ -37,6 +37,7 @@ export function checkPageNav() {
 }
 
 export function createAccount(username, clear) {
+    //creates aliases
     cy.get('[data-qa="button.creation"]').as('create');
     cy.get('[data-qa="form.field.email"]').as('email');
     cy.get('[data-qa="form.field.postcode"]').as('postcode');
@@ -44,6 +45,7 @@ export function createAccount(username, clear) {
     cy.get('[data-qa="form.field.phonenumber"]').as('phoneNumber');
     cy.get('[data-qa="form.field.username"]').as('username');
     if (!clear) {
+        //enters details into create account form
         cy.get('@create').contains('Create Distributor Account');
         cy.get('@create').click();
         cy.get('@username').prev().contains('Username');
@@ -57,6 +59,7 @@ export function createAccount(username, clear) {
         cy.get('@phoneNumber').prev().contains('Phone Number');
         cy.get('@phoneNumber').type('11111 111111');
     } else {
+        //clears details in the form and enters details again
         cy.get('[data-qa="button.creation"]').click();
         cy.get('@username').clear();
         cy.get('@username').type(addRNG(username));
@@ -72,10 +75,14 @@ export function createAccount(username, clear) {
 }
 
 export function loginCheck(username, password, check){
-    cy.get('[data-qa="field.username"]').clear().type(username);
-    cy.get('[data-qa="field.password"]').clear().type(password);
+    //enters username and password and tries to log in
+    cy.get('[data-qa="field.username"]').clear();
+    cy.get('[data-qa="field.username"]').type(username);
+    cy.get('[data-qa="field.password"]').clear();
+    cy.get('[data-qa="field.password"]').type(password);
     cy.get('[data-qa="button.login"]').click();
     if (check) {
+        //checks for invalid credentials message
         cy.get('[data-qa="field.username"]').parents('.v-input__control').find('.v-messages__message')
             .contains('These credentials do not match our records');
         cy.get('[data-qa="field.password"]').parents('.v-input__control').find('.v-messages__message')
@@ -84,6 +91,7 @@ export function loginCheck(username, password, check){
 }
 
 export function changeDetails(correct) {
+    //creates aliases
     cy.get('[data-qa="form.field.firstName"]').as('firstName');
     cy.get('[data-qa="form.field.surname"]').as('surname');
     cy.get('[data-qa="form.field.address"]').as('address');
@@ -92,6 +100,7 @@ export function changeDetails(correct) {
     cy.get('[data-qa="form.field.email"]').as('email');
     cy.get('[data-qa="form.button.submit"]').as('submit');
     if (correct) {
+        //clears fields and enters correct account details
         cy.get('@firstName').clear()
         cy.get('@firstName').type('Ross');
         cy.get('@surname').clear()
@@ -108,6 +117,7 @@ export function changeDetails(correct) {
         cy.get('@submit').click();
         cy.get('i[class*="mdi-check-circle"]').parent().find('p').contains('Account details updated successfully');
     } else {
+        //clears field and enters incorrect details
         cy.get('@firstName').clear()
         cy.get('@firstName').type('s');
         cy.get('@surname').clear()
@@ -127,12 +137,13 @@ export function changeDetails(correct) {
 }
 
 export function changePassword(current, newP, repeatP, order) {
-
+    //creates aliases
     cy.get('[data-qa="form.field.current"]').as('current');
     cy.get('[data-qa="form.field.new"]').as('new');
     cy.get('[data-qa="form.field.repeat"]').as('repeat');
     cy.get('[data-qa="button.submit"]').as('submit');
-
+    //function is executed three times with different results if blocks refer to which execution
+    //first if is incorrect passwords
     if (order === 'first') {
         cy.get('@current').type(current);
         cy.get('@new').type(newP);
@@ -145,6 +156,7 @@ export function changePassword(current, newP, repeatP, order) {
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');
         cy.get('@security').click();
+        //second if is incorrect passwords
     } else if (order === 'second') {
         cy.get('@current').type(current);
         cy.get('@new').type(newP);
@@ -156,6 +168,7 @@ export function changePassword(current, newP, repeatP, order) {
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');
         cy.get('@security').click();
+        //third if is correct passwords
     } else if (order === 'third'){
         cy.get('@current').type(current);
         cy.get('@new').type(newP);
@@ -167,6 +180,7 @@ export function changePassword(current, newP, repeatP, order) {
 }
 
 export function checkReturnsFormat() {
+    //checks account cards can be viewed and checks table data
     cy.get('[data-qa="card.item"]').should('not.exist');
 
     tableClick('Created By');
@@ -182,6 +196,7 @@ export function checkReturnsFormat() {
 }
 
 export function checkReturnsActions() {
+    //checks action buttons in returns table
     cy.get('i[class*="mdi-email-sync"]').first().click();
     cy.get('a[href*="admin/returns"]').first().click();
     cy.get('i[class*="mdi-delete"]').first().click();
@@ -190,6 +205,7 @@ export function checkReturnsActions() {
 }
 
 export function reportingFilter(filter) {
+    //used for reporting tests, currently deprecated
     cy.get('[data-qa="icon.button.filter"]').click();
     cy.get('[data-qa="nav.dropdown.filter"]').children().contains(filter).click();
     cy.get('[data-qa="span.name"]').contains('All Time # ' + filter);
@@ -200,56 +216,17 @@ export function reportingFilter(filter) {
 }
 
 export function getNum(div) {
+    //retrieves number from a string
     const text = div.text();
     const str = text.split(' ')[2];
     const num = Number(str);
     return num
 }
 
-export function createReturnItem(serialNumber1, serialNumber2) {
-    cy.get('[data-qa="button.create"]').contains('Create Return').should('not.be.enabled');
-    cy.get('[data-qa=."autocomplete.typemodel"]').eq(1).should('not.be.enabled');
-    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).should('not.be.enabled');
-    cy.get('[data-qa="button.validate"]').should('not.be.enabled');
-    cy.get('[data-qa="autocomplete.category"]').eq(1).click().type('{downArrow}').type('{downArrow}').type('{enter}');
-    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).should('not.be.enabled');
-    cy.get('[data-qa="button.validate"]').should('not.be.enabled');
-    cy.get('[data-qa="autocomplete.typemodel"]').eq(1).click().type('{downArrow}').type('{downArrow}').type('{enter}');
-    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).type('67GHET78D!');
-    cy.get('[data-qa="button.validate"]').click();
-    cy.get('[data-qa="button.validate"]').should('not.be.enabled');
-    cy.get('div[class*="v-text-field__details"]').contains('This serial number is not valid');
-    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).clear().type(serialNumber1);
-    cy.get('[data-qa="button.validate"]').click();
-    cy.get('[data-qa="button.edit"]').eq(1).click();
-    cy.get('[data-qa="autocomplete.idserialnumber"]').eq(1).clear().type(serialNumber2);
-    cy.get('[data-qa="button.validate"]').click();
-    cy.get('[data-qa="textarea.reason"]').eq(1).type('Dongle is broken.');
-    cy.get('[data-qa="returnsbutton.createreturn"]').contains('Create Return').click();
-}
-
-export function tableCheck(heading, regex, errorMessage) {
-    cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
-      
-        const text1 = $elm.text();
-  
-        if (text1 === heading) {
-  
-            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
-  
-            const text2 = $td.text();
-          
-            const result = regex.test(text2);
-
-            if (!result) {
-              throw new Error(errorMessage);
-            }
-          });
-        }
-    });
-}
-
 export function tableContains(heading, value, errorMessage) {
+    //finds the index of a table header
+    //finds 1st data record under this header, and checks if value is present
+    //if not present throws error
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
       
         const text1 = $elm.text();
@@ -269,6 +246,9 @@ export function tableContains(heading, value, errorMessage) {
 }
 
 export function tableCSS(heading, expectedCSS, errorMessage) {
+    //finds the index of a table header
+    //finds 1st data record under this header, and checks css of element in this data record
+    //if css is not as expected it throws an error
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
       
         const text1 = $elm.text();
@@ -288,6 +268,9 @@ export function tableCSS(heading, expectedCSS, errorMessage) {
 }
 
 export function tableClick(heading, value) {
+    //finds the index of a table header
+    //finds 1st data record under this header, and clicks element in this data record
+    //if card is not visible after click test should fail
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
 
         const text1 = $th.text();
@@ -303,6 +286,9 @@ export function tableClick(heading, value) {
 }
 
 export function tableRegex(heading, regex, errorMessage) {
+    //finds the index of a table header
+    //finds 1st data record under this header, and checks if value matches regex
+    //if it doesn't match regex it throws an error
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
       
         const text1 = $elm.text();
@@ -324,6 +310,7 @@ export function tableRegex(heading, regex, errorMessage) {
 }
 
 export function selectDashboardCard(title, description, search, user) {
+    //finds a dashboard card that matches title and description and searches for and selects a user
     cy.get('[data-qa="card.title"]').each(($div2, index) => {
 
         const text = $div2.text();
@@ -342,10 +329,12 @@ export function selectDashboardCard(title, description, search, user) {
 }
 
 export function myInverterTab(tab) {
+    //clicks a specific tab on inverter info page
     cy.get('[data-qa="card.tab"]').contains(tab).click();
 }
 
 export function inverterSoftwareCheck(titles, subtitles) {
+    //checks each title and subtitle on the inverter info software tab
     for (var i = 0; i < titles.length; i++) {
         cy.get('[data-qa="tab.content"]').find('div[class="v-card__title"]').contains(titles[i]);
     }
@@ -355,18 +344,21 @@ export function inverterSoftwareCheck(titles, subtitles) {
 }
 
 export function myInverterNotificationsTable(header) {
+    //checks each title in inverter info notifications tab
     for (var i = 0; i < header.length; i++ ) {
         cy.get('[data-qa="table.notifications"]').find('th').contains(header[i]);
     }
 }
 
 export function myInverterTable(header) {
+    //checks each table header on inverter info page
     for (var i = 0; i < header.length; i++ ) {
         cy.get('[data-qa="tab.content"]').find('th').contains(header[i]);
     }
 }
 
 export function checksCounterIncreasesAndDecreases() {
+    //will read and unread notifications and check that the notifications counter updates accordingly
     cy.get('[data-qa="notification.title"]').should('exist');
     cy.get('[data-qa="notification.content"]').should('exist');
 
@@ -400,6 +392,9 @@ export function checksCounterIncreasesAndDecreases() {
 }
 
 export function checkMarkAsReadWorks(withElse) {
+    //checks mark as read works and notifications counter updates
+    //if block execution depends on if there are any unread notifications to begin with
+    //uses the check counter increases and decreases function to use DRY and to shorten function size to improve readability
     if (withElse) {
         cy.get('[data-qa="button.allRead"]').click();
         cy.wait(3000); //necessary or error is thrown as notifications won't have updated
@@ -430,6 +425,9 @@ export function checkMarkAsReadWorks(withElse) {
 }
 
 export function updateWarrantyAndCheck(warranty, num, tableDataIndex) {
+    //updates an inverters warranty in my inverter table
+    //then visits the inverter info page and checks that the warranty expiry date has updated according to new warranty
+    //calculates expected warranty expiry date, if not equal to actual expiry date then throws an error
     cy.get('[data-qa="table"').find('tr').eq(tableDataIndex).find('[data-qa="button.warranty"]').click({force: true});
     cy.get('[data-qa="card.warranty"]').should('be.visible');
     cy.get('[data-qa="select.warranty"]').click();
@@ -467,6 +465,7 @@ export function updateWarrantyAndCheck(warranty, num, tableDataIndex) {
 }
 
 export function changeEnergyGraphData(type, dataTypes) {
+    //changes type of data shown in energy graph
     cy.get('[data-qa="graphSelected"]').click();
     cy.get('div[class="v-list-item__content"]').contains(type).click();
 
@@ -476,6 +475,12 @@ export function changeEnergyGraphData(type, dataTypes) {
 }
 
 export function checkWarranty(headingIndex, tableDataIndex) {
+    //uses the update warranty and check function due to size and to improved readability
+    //first filters for specific inverter type to ensure checks can be done (removes only dongles from table)
+    //checks table headers to find warranty column
+    //checks existing warranty type and checks the other types
+    //if 1st data record has no warranty showing then it increments tableDataIndex and calls itself
+    //if tableDataIndex > 3 test will fail
     cy.get('[data-qa="auto.model"]').as('model');
     cy.get('@model').type('{downArrow}');
     cy.get('@model').type('{downArrow}');
@@ -554,6 +559,9 @@ export function checkWarranty(headingIndex, tableDataIndex) {
 }
 
 export function closeFeedback(trIndex, headingIndex) {
+    //if feedback is created/updated by 'You'
+    //increments trIndex until created/updated isn't 'You'
+    //ensures other checks don't fail unnecessarily
     console.log(trIndex);
     cy.get('[data-qa="table"]').find('tr').eq(trIndex).find('td').eq(headingIndex).then(($td) => {
 

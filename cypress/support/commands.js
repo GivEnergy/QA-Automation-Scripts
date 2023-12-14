@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('disableDebugBar', () => {
-
+    //uses intercept command to add header which disables PHP debugbar
     cy.intercept('**https://staging.givenergy.cloud/**', (req) => {
       req.headers['X-DEBUGBAR-DISABLED'] = '1';
     }).as('disableDebugBar');

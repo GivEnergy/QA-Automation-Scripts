@@ -1,5 +1,6 @@
 import { dashboardSelect, loginCheck } from "../../../funcs";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -24,7 +25,7 @@ describe("Admin Sign In", () => {
       loginCheck(Cypress.env('adminUsername'), Cypress.env('adminPassword'));
 
       //clicks on admin dashboard to ensure that the page loads
-      dashboardSelect('Admin Dashboard');
+      dashboardSelect('Logout');
       
     });
   });
