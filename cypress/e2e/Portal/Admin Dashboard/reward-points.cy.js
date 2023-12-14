@@ -107,5 +107,22 @@ describe("reward points", () => {
         cy.get('[data-qa="search.engineer"]').should('be.visible');
         cy.get('[data-qa="field.search"]').should('be.visible');
 
+        cy.get('div[class="v-data-footer__pagination"]').then(($el) => {
+
+            const paginationRecords = $el.text();
+            const numberOfRecords = Number(paginationRecords.split(' ')[0].split('-')[1]);
+            console.log("Records to loop through " + numberOfRecords);
+            cy.get('@tableHeadings').find('th').each(($th, index) => {
+
+                const heading = $th.text();
+                console.log(heading)
+                if (heading === "Via") {
+                    for (var i = 1; i < numberOfRecords; i++) {
+                        cy.get('@table').find('tr').eq(i).find('td').eq(index).find('a[href*="/commission/"]');
+                    }
+                }
+            });
+        });
+
     });
 });
