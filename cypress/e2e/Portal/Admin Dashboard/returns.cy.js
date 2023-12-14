@@ -2,6 +2,7 @@ import { checkPageNav, checkReturnsActions, checkReturnsFormat, dashboardSelect,
 import { adminLogin } from "../../../logins";
 import { dateAndTime } from "../../../regex";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -13,27 +14,14 @@ describe("returns", () => {
 
     adminLogin();
 
-    //navigates to returns
     dashboardSelect('Admin Dashboard', 'Returns');
     cy.get('[data-qa="title.header"]').contains('Returns');
 
-    //checks page navigation
     checkPageNav();
-
-    //checks format of table data
     checkReturnsFormat();
-    
     checkReturnsActions();
 
-    //check search, pop up, format
-    // cy.get('[data-qa="field.search"]').type('Adam');
-    // tableContains('Created By', 'Adam Reynolds', 'Error when searching for criteria')
-    // checkReturnsFormat();
-
-    // tableClick('Created By', 'Adam Reynolds');
-    // checkReturnsActions();
-
-    //use create new return
+    //creates a new return
     cy.get('[data-qa="button.start"]').contains('Create New Return');
     cy.get('[data-qa="button.start"]').click();
     cy.get('[data-qa="button.check"]').should('be.disabled');
@@ -123,6 +111,7 @@ describe("returns", () => {
     cy.get('[data-qa="button.create"]').contains('Create Return').click();
 
     //verifies the return is created and is showing correct info in the table
+    //then deletes created return
     cy.get('i[class*="mdi-check-circle"]').parent().contains('Return created successfully!');
     tableContains('Created By', 'You', 'Error when checking returns data');
     tableClick('Customer', 'Brymbo Road');

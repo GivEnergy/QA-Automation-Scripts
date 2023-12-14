@@ -1,6 +1,7 @@
 import { dashboardSelect } from "../../../../funcs";
 import { adminLogin } from "../../../../logins";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
   setTimeout(() => {

@@ -1,9 +1,10 @@
 import {adminLogin, engineerLogin} from "../../../logins";
 import {
     dashboardSelect,
-    addRNG, createAccount
+    addRNG
 } from "../../../funcs";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -13,6 +14,7 @@ beforeEach(() => {
 describe("my inverter page", () => {
     it("tests my inverter page", () => {
 
+        //logs in as engineer first to create a customer account
         engineerLogin();
 
         dashboardSelect('Account List');
@@ -29,6 +31,7 @@ describe("my inverter page", () => {
         cy.get('[data-qa="form.field.firstName"]').as('firstName');
         cy.get('[data-qa="form.field.surname"]').as('surname');
 
+        //creates customer account
         cy.get('@email').prev().contains('Email');
         cy.get('@email').type('fakeEmail@gmail.com');
         cy.get('@postcode').prev().contains('Postcode');
@@ -45,6 +48,7 @@ describe("my inverter page", () => {
         cy.get('div[class="v-list-item__title"]').contains('Single Inverter').click();
         cy.get('@username').then(() => {
 
+            //sets username used for account as variable here
             const username = addRNG('testCustomer');
 
             cy.get('@username').clear();
@@ -53,6 +57,7 @@ describe("my inverter page", () => {
 
             dashboardSelect('Logout');
 
+            //logs in as admin
             adminLogin();
 
             //opens my inverters and reloads page to hide nav bar
@@ -74,6 +79,8 @@ describe("my inverter page", () => {
             cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').clear();
             cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('WO2249G378');
             cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').clear();
+
+            //username used to create account is used here to assign dongle to
             cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').type(username);
             cy.get('div[class*="v-list-item__title"]').contains(username).click();
             cy.get('[data-qa="field.vc"]').parent('div[class*="v-text-field__slot"]').type('F9237');

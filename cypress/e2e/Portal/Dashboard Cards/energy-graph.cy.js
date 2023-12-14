@@ -4,6 +4,7 @@ import { energyGraphDescription } from "../../../dashboardCards";
 import {YYYYMMDD} from "../../../regex";
 import { Months } from "../../../Enum";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -19,12 +20,17 @@ describe("energy graph card", () => {
 
       selectDashboardCard('Energy Graph', energyGraphDescription, 'brymbo', 'Brymbo Road');
 
+      //checks url contains /energy-graph/
+      //checks charts exist and are visible
       cy.location('pathname').should('include', '/energy-graph/');
       cy.get('[data-qa="chart.pie"]').should('exist');
       cy.get('[data-qa="chart.bar"]').should('exist');
       cy.get('[data-qa="chart.pie"]').should('be.visible');
       cy.get('[data-qa="chart.bar"]').should('be.visible');
+
+      //ensures you cannot go forward from current date
       cy.get('[data-qa="datePicker"]').find('button').eq(1).should('not.be.enabled');
+
       //below makes sure that the datePicker has the correct format of date within its label
       //and that when you go back a day that it shows the correct date (today's date - 1 from day)
       cy.get('[data-qa="datePicker"]').find('label').then(($label) => {
@@ -33,6 +39,10 @@ describe("energy graph card", () => {
 
           const result = YYYYMMDD.test(date);
 
+          if (!result) { throw new Error("Error: date in date picker does not match YYYY-MM-DD format"); }
+
+          //the if and else block are for if the day starts with a 0 as subtracting 1 from this produces a single digit number
+          //so it will do this and then concatenate a 0 to the start
           let splitString = date.split('-');
           if (splitString[2].charAt(0) == 0) {
               splitString[2] = Number(splitString[2]) - 1;
@@ -42,8 +52,6 @@ describe("energy graph card", () => {
               splitString[2] = splitString[2].toString();
           }
           let estimate = splitString.join("-");
-
-          if (!result) { throw new Error("Error: date in date picker does not match YYYY-MM-DD format"); }
 
           cy.get('[data-qa="datePicker"]').find('button').eq(0).click();
           cy.wait(3000); //this one is necessary otherwise date2 will have value of 'Fetching Data...'
@@ -55,6 +63,8 @@ describe("energy graph card", () => {
           })
       })
 
+      //uses an enum of months to check that clicking back arrow shows the expected month (current month - 1)
+      //e.g. December = 12, November = 11, December - 1 = 11. Clicking back when month is december has expected month of november
       cy.get('[data-qa="datePicker"]').click();
       cy.get('div[class="v-date-picker-header__value"]').find('button').then(($label) => {
 
@@ -92,12 +102,12 @@ describe("energy graph card", () => {
       cy.get('[data-qa="chart.pie"]').should('be.visible');
       cy.get('[data-qa="chart.bar"]').should('be.visible');
 
+      //checks changing data shows correct graph data headings
       cy.get('[data-qa="graphSelected"]').click();
       cy.get('div[class="v-list-item__content"]').contains('Grid In').click();
       cy.get('[data-qa="graphSelected"]').find('span').contains('Grid In');
       cy.get('g[class*="highcharts-legend-item"]').eq(0).contains('Grid To Home');
       cy.get('g[class*="highcharts-legend-item"]').eq(1).contains('Grid To Battery');
-
       changeEnergyGraphData('Grid In', ['Grid To Home', 'Grid To Battery']);
       changeEnergyGraphData('Home', ['Solar To Home', 'Grid To Home', 'Battery To Home']);
       changeEnergyGraphData('Generation', ['Solar To Home', 'Solar To Battery', 'Solar To Grid']);

@@ -2,6 +2,7 @@ import {checkPageNav, dashboardSelect, tableRegex} from "../../../funcs";
 import { adminLogin } from "../../../logins";
 import {dateAndTime, positiveNumber} from "../../../regex";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -13,18 +14,20 @@ describe("reward points", () => {
 
         adminLogin();
 
-        //navigates to rewards
         dashboardSelect('Admin Dashboard', 'Reward Points');
         cy.get('[data-qa="table.points"]').should('be.visible');
 
-        //checks page navigation
         checkPageNav();
 
         tableRegex("Points Gained This Month", positiveNumber, "Points Gained This Month has a value that is NaN");
         tableRegex("Points Used This Month", positiveNumber, "Points Used This Month has a value that is NaN");
         tableRegex("Redeemable Points", positiveNumber, "Reedemable Points has a value that is NaN");
 
-        //creates alias
+        //finds engineer header in table
+        //gets first engineer in the table and searches for this engineer
+        //finds amount of records on first page and
+        //then checks by that amount of records that the engineer name is same as was searched for
+        //throws error if not
         cy.get('[data-qa="table"]').as('table');
         cy.get('@table').find('tr').eq(0).as('tableHeadings');
 
@@ -67,6 +70,7 @@ describe("reward points", () => {
             }
         });
 
+        //visits engineers history page
         cy.get('@table').find('tr').eq(1).find('td').last().find('i[class*="mdi-magnify"]').parent().then(($a) => {
 
             const url = $a.attr('href');
@@ -79,8 +83,9 @@ describe("reward points", () => {
         tableRegex("Time", dateAndTime, "Value showing in time column does not meet format, YYYY-MM-DD HH:MM:SS");
         tableRegex("Amount", positiveNumber, "Amount contains a value that is not a positive number");
 
-        //needs a check to see if via has a commissioning url as a href
-
+        //finds type heading in table and
+        //checks first data record in this column has a value of
+        //either 'Add' or 'Deduct'
         cy.get('@tableHeadings').find('th').each(($th, index) => {
 
             const heading = $th.text();
@@ -101,12 +106,17 @@ describe("reward points", () => {
 
         });
 
+        //checks type filter contains Add and Deduct values
+        //checks both searches are visible
         cy.get('[data-qa="select.type"]').click();
         cy.get('div[class="v-list-item__title"]').contains('Add');
         cy.get('div[class="v-list-item__title"]').contains('Deduct');
         cy.get('[data-qa="search.engineer"]').should('be.visible');
         cy.get('[data-qa="field.search"]').should('be.visible');
 
+        //finds amount of records on first page and
+        //then checks by that amount of records that the via column
+        //contains an anchor element that has an url that contains '/commission/'
         cy.get('div[class="v-data-footer__pagination"]').then(($el) => {
 
             const paginationRecords = $el.text();

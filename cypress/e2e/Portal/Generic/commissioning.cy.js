@@ -1,7 +1,14 @@
 import { adminLogin } from "../../../logins";
-import { checkPageNav, dashboardSelect, tableCheck } from "../../../funcs";
+import { checkPageNav, dashboardSelect, tableRegex } from "../../../funcs";
 import { dateAndTime } from "../../../regex";
 
+//this should prevent any tests from hanging
+const time = 180000;
+beforeEach(() => {
+    setTimeout(() => {
+        throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
+    }, time);
+});
 describe("commissions", () => {
     it("tests commissions", () => {
 
@@ -9,30 +16,29 @@ describe("commissions", () => {
 
         dashboardSelect('Commissions');
 
-        //initial check of page and clicks on create commission
         cy.get('[data-qa="search"]').should('be.visible').click();
         checkPageNav();
 
+        //checks create commission button directs to commission process
         cy.get('[data-qa="card.commissions"]').should('be.visible');
         cy.get('[data-qa="title.commissions"]').contains('Commissions');
         cy.get('[data-qa="button.create"]').contains('Create Commission').click();
         cy.get('[data-qa="search.account"]').should('be.visible');
 
+        //navigates back to commissions
         dashboardSelect('Commissions');
         cy.get('[data-qa="search"]').should('be.visible').click();
 
-        //check table and deletes created commission
-        tableCheck('Started At', dateAndTime, 'Error: Started At time and date using incorrect format');
-        tableCheck('Last Updated At', dateAndTime, 'Error: Last Updated At time and date using incorrect format');
+        tableRegex('Started At', dateAndTime, 'Error: Started At time and date using incorrect format');
+        tableRegex('Last Updated At', dateAndTime, 'Error: Last Updated At time and date using incorrect format');
 
+        //checks account hovers work
         cy.get('[data-qa="createdFor"]').eq(0).click();
         cy.get('[data-qa="card.item"]').should('be.visible');
         cy.get('[data-qa="search"]').click();
-
         cy.get('[data-qa="inverter.serials"]').eq(0).click();
         cy.get('[data-qa="card.item"]').should('be.visible');
         cy.get('[data-qa="search"]').click();
-
         cy.get('[data-qa="createdBy"]').eq(0).click();
         cy.get('[data-qa="card.item"]').should('be.visible');
         cy.get('[data-qa="search"]').click();
@@ -79,6 +85,7 @@ describe("commissions", () => {
             })
         })
 
+        //checks commissions table action buttons work as expected
         cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
 
             const text1 = $elm.text();

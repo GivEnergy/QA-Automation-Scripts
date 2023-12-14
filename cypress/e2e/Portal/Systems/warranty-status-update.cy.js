@@ -1,6 +1,7 @@
 import { adminLogin } from "../../../logins";
 import {dashboardSelect, checkWarranty} from "../../../funcs";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -26,7 +27,7 @@ describe("warranty status", () => {
         const text1 = $elm.text()
 
         if (text1 === 'Warranty Type') {
-
+            //please check function descriptions
             if (tableDataIndex > 3) {
                 throw new Error('Error: no warranty type found');
             } else {
