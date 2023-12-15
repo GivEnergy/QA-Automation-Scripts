@@ -15,9 +15,9 @@ let trIndex= 1;
 describe("view feedback", () => {
     it("tests view feedback", () => {
 
-      //sets viewport and logs in
       adminLogin();
-
+      //creates alias for dashboard API request
+      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
       //navigates to leave feedback
       dashboardSelect('View Feedback');
       cy.get('[data-qa="title"]').contains('Feedback').click();
@@ -154,7 +154,8 @@ describe("view feedback", () => {
       });
 
       //goes back to view feedback and check view feedback content
-      dashboardSelect('View Feedback');
+      cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+      cy.get('[data-qa="main.navbar"]').contains('View Feedback').click();
       cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
 
         const text = $th.text()

@@ -14,7 +14,8 @@ describe("my inverter card", () => {
   it("tests my inverter card", () => {
 
       adminLogin();
-
+      //creates alias for dashboard API request
+      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
       dashboardSelect('Dashboard Cards');
 
       selectDashboardCard('My Inverter', myInverterDescription, 'brymbopvtest', 'BrymboPVTest');

@@ -13,7 +13,8 @@ describe("reward points", () => {
     it("tests reward points page", () => {
 
         adminLogin();
-
+        //creates alias for dashboard API request
+        cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('Admin Dashboard', 'Reward Points');
         cy.get('[data-qa="table.points"]').should('be.visible');
 

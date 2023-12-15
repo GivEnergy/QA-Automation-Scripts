@@ -5,31 +5,35 @@ export function addRNG(string) {
 }
 
 export function dashboardSelect(navItem, adminItem) {
+    //waits for dashboard api request to be successful
+    cy.wait('@dashboardAPI', {timeout: 30000});
+    cy.get('[data-qa="main.navbar"]').should('be.visible');
+
     if (adminItem) { //if it needs to navigate to admin dashboard it redirects to /admin rather than using navbar to reduce flakiness
-        cy.get('[data-qa="main.navbar"]').should('be.visible');
-        cy.visit('https://staging.givenergy.cloud/admin');
-        cy.location('pathname').should('include', '/admin');
+        //creates alias for admin API request
+        cy.intercept('**/staging.givenergy.cloud/admin').as('adminAPI');
+        cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+        cy.get('[data-qa="main.navbar"]').contains(navItem).click();
+        //waits for admin api request to be successful
+        cy.wait('@adminAPI', {timeout: 30000});
         cy.get('[data-qa="title.text"]').as('title');
         cy.get('@title').should('be.visible');
         cy.get('@title').contains(adminItem).click();
-    } else { //if item exists on navbar it clicks on the desired navbar item
-        cy.get('[data-qa="main.navbar"]').as('navbar');
-        cy.get('@navbar').should('be.visible');
-        cy.get('@navbar').children().eq(0).click()
-        cy.get('@navbar').contains(navItem).as('navbarItem');
-        cy.get('@navbarItem').click();
+    } else {
+        cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+        cy.get('[data-qa="main.navbar"]').contains(navItem).click();
     }
 }
 
 export function checkPageNav() { //checks all the paginate navigations work
-    cy.get('[data-qa="container.navigation"]').as('navContainer');
-    cy.get('@navContainer').scrollIntoView();
-    cy.get('@navContainer').find('li').last().click();
-    cy.get('@navContainer').find('div').next().contains('16-30');
-    cy.get('@navContainer').find('li').first().click();
-    cy.get('@navContainer').find('div').next().contains('1-15');
-    cy.get('@navContainer').find('li').first().next().next().next().click();
-    cy.get('@navContainer').find('div').next().contains('31-45');
+    cy.get('[data-qa="container.navigation"]').as('pagination');
+    cy.get('@pagination').scrollIntoView();
+    cy.get('@pagination').find('li').last().click();
+    cy.get('@pagination').find('div').next().contains('16-30');
+    cy.get('@pagination').find('li').first().click();
+    cy.get('@pagination').find('div').next().contains('1-15');
+    cy.get('@pagination').find('li').first().next().next().next().click();
+    cy.get('@pagination').find('div').next().contains('31-45');
     cy.get('[data-qa="jumpToPage.input.page"]').as('pageInput');
     cy.get('@pageInput').type('1');
     cy.get('@pageInput').type("{downArrow}");
@@ -152,7 +156,8 @@ export function changePassword(current, newP, repeatP, order) {
         cy.get('@submit').should('not.be.enabled');
         cy.get('@repeat').parents('.v-input__control').find('.v-messages__message')
             .contains('This field must be the same as Password');
-        dashboardSelect('Account Settings');
+        cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+        cy.get('[data-qa="main.navbar"]').contains("Account Settings").click();
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');
         cy.get('@security').click();
@@ -164,7 +169,8 @@ export function changePassword(current, newP, repeatP, order) {
         cy.get('@submit').contains('Submit');
         cy.get('@submit').click();
         cy.get('i[class*="mdi-alert"]').parent().find('p').contains('The current password is incorrect.');
-        dashboardSelect('Account Settings');
+        cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+        cy.get('[data-qa="main.navbar"]').contains("Account Settings").click();
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');
         cy.get('@security').click();
@@ -494,7 +500,8 @@ export function checkWarranty(headingIndex, tableDataIndex) {
         if (text === 'Standard') {
 
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
-            dashboardSelect('My Inverters');
+            cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+            cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
@@ -502,7 +509,8 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             cy.get('@model').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
-            dashboardSelect('My Inverters');
+            cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+            cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
@@ -514,7 +522,8 @@ export function checkWarranty(headingIndex, tableDataIndex) {
         } else if (text === 'Extended') {
 
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
-            dashboardSelect('My Inverters');
+            cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+            cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
@@ -522,7 +531,8 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             cy.get('@model').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
-            dashboardSelect('My Inverters');
+            cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+            cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
@@ -534,7 +544,8 @@ export function checkWarranty(headingIndex, tableDataIndex) {
         } else if (text === 'Twelve_Years') {
 
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
-            dashboardSelect('My Inverters');
+            cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+            cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
@@ -542,7 +553,8 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             cy.get('@model').type('{enter}');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
-            dashboardSelect('My Inverters');
+            cy.get('[data-qa="main.navbar"]').children().eq(0).click();
+            cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
