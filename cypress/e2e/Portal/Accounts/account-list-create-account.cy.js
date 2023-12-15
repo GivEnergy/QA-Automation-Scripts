@@ -12,7 +12,8 @@ describe("account list create account", () => {
   it("tests creating an account on the account list page", () => {
 
     adminLogin();
-
+    //creates alias for dashboard API request
+    cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
     dashboardSelect('Account List');
     cy.get('[data-qa="input.filter"]').click();
 

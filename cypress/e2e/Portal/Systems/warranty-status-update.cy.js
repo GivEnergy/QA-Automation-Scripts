@@ -16,7 +16,8 @@ describe("warranty status", () => {
 
     //sets viewport and logins in as admin
     adminLogin();
-
+    //creates alias for dashboard API request
+    cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
     //opens my inverters and reloads page to hide nav bar
     dashboardSelect('My Inverters');
     cy.get('[data-qa="title.text"]').contains('My Inverters');

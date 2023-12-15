@@ -21,7 +21,12 @@ describe("forgot password", () => {
       // let emailAddress = inbox.emailAddress;
 
       //visits page
+      //creates alias for login API request
+      cy.intercept('**/staging.givenergy.cloud/login').as('loginAPI');
       cy.visit("https://staging.givenergy.cloud/login");
+
+      //waits for login API request to be successful
+      cy.wait('@loginAPI', {timeout: 30000});
 
       //logs in and changes email to temp email
       // adminLogin();

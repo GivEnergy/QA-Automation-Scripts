@@ -14,7 +14,8 @@ describe("installer incentive", () => {
     it("tests engineer installer incentive page", () => {
 
         engineerLogin();
-
+        //creates alias for dashboard API request
+        cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('Reward Scheme');
 
         cy.get('[data-qa="title"]').as('title');

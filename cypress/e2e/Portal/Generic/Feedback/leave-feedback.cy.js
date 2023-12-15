@@ -13,7 +13,8 @@ describe("leave feedback", () => {
 
       //sets viewport and logs in
       adminLogin();
-
+      //creates alias for dashboard API request
+      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
       //navigates to leave feedback
       dashboardSelect('Leave Feedback');
 

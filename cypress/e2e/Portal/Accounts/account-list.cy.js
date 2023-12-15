@@ -14,7 +14,8 @@ describe("account list", () => {
   it("tests Account list", () => {
 
     adminLogin();
-
+    //creates alias for dashboard api request
+    cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
     dashboardSelect('Account List');
 
     //filters account by customer

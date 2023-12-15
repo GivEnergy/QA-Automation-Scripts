@@ -15,14 +15,33 @@ describe("energy graph card", () => {
   it("tests energy graph card", () => {
 
       adminLogin();
-
+      //creates alias for dashboard API request
+      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
       dashboardSelect('Dashboard Cards');
 
-      selectDashboardCard('Energy Graph', energyGraphDescription, 'brymbo', 'Brymbo Road');
+      //creates alias for energy graph API request
+      cy.intercept('**/BrymboPVTest/energy-graph').as('energyGraphAPI');
+
+      cy.get('[data-qa="card.title"]').each(($div2, index) => {
+
+          const text = $div2.text();
+          console.log(text);
+          if (text === 'Energy Graph') {
+              cy.get('[data-qa="card.description"]').as('description');
+              cy.get('@description').eq(index).contains(energyGraphDescription).as('target');
+              cy.get('@target').click();
+              cy.get('@target').scrollIntoView();
+              cy.get('[data-qa="button.search"]').eq(index).click();
+              cy.get('[data-qa="search"]').eq(1).type('brymbo');
+              cy.get('div[class="v-list-item__title"]').contains('BrymboPVTest').click();
+              cy.get('[data-qa="button.view"]').click();
+          }
+      });
 
       //checks url contains /energy-graph/
       //checks charts exist and are visible
-      cy.location('pathname').should('include', '/energy-graph/');
+      //waits for energy graph API request to be successful
+      cy.wait('@energyGraphAPI', {timeout: 30000});
       cy.get('[data-qa="chart.pie"]').should('exist');
       cy.get('[data-qa="chart.bar"]').should('exist');
       cy.get('[data-qa="chart.pie"]').should('be.visible');

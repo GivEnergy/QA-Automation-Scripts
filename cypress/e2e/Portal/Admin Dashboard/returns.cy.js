@@ -13,8 +13,13 @@ describe("returns", () => {
     it("tests returns page", () => {
 
     adminLogin();
-
+    //creates alias for dashboard API request
+    cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+    //creates alias for returns API request
+    cy.intercept('**/admin/returns').as('returnsAPI');
     dashboardSelect('Admin Dashboard', 'Returns');
+    //waits for return API request to be successful
+    cy.wait('@returnsAPI', {timeout: 30000});
     cy.get('[data-qa="title.header"]').contains('Returns');
 
     checkPageNav();
@@ -31,7 +36,13 @@ describe("returns", () => {
     cy.get('[data-qa="button.confirm"]').contains('Confirm Ticket #');
     cy.get('[data-qa="button.confirm"]').click();
     cy.get('[data-qa="link.view"]').contains('View On Freshdesk');
-    cy.get('[data-qa="link.view"]').click();
+    cy.get('[data-qa="link.view"]').then(($el) => {
+        const url = $el.attr('href');
+
+        if (!url.includes('givenergy.freshdesk.com')){
+            throw new Error("Error: ticket does not include freshdesk URL");
+        }
+    })
     cy.get('[data-qa="button.create"]').contains('Create Return');
     cy.get('[data-qa="button.create"]').should('not.be.enabled');
     cy.get('[data-qa="select.recipients"]').click();
