@@ -210,10 +210,12 @@ export function checkReturnsActions() {
     cy.get('[data-qa="button.cancel"]').click();
 }
 
-export function reportingFilter(filter) {
+export function reportingFilter(filter, alias) {
     //used for reporting tests, currently deprecated
     cy.get('[data-qa="icon.button.filter"]').click();
     cy.get('[data-qa="nav.dropdown.filter"]').children().contains(filter).click();
+    cy.wait(alias, {timeout: 30000});
+    cy.get('[data-qa="span.name"]').contains(filter);
     cy.get('[data-qa="span.name"]').contains('All Time # ' + filter);
     cy.get('[data-qa="span.name"]').contains(filter + ' in Date Range');
     cy.get('[data-qa="span.name"]').contains(filter + ' Past 30 Days');
@@ -591,4 +593,21 @@ export function closeFeedback(trIndex, headingIndex) {
             closeFeedback(trIndex, headingIndex);
         }
     })
+}
+
+export function checkBarChartXAxis() {
+    cy.get('[data-qa="container.bar"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').find('text').eq(0).contains(/^\d{4,4}[-]\d{2,2}/);
+    cy.get('[data-qa="container.bar"]').eq(0).find('g[class*="highcharts-xaxis-labels"]').find('text').eq(11).contains(/^\d{4,4}[-]\d{2,2}/);
+}
+
+export function checkDateRangePicker() {
+    cy.get('[data-qa="calendar.field.text"]').click();
+    cy.get('div[class*="v-date-picker-header"]').find('button').eq(0).click();
+    cy.get('tbody').find('div[class*="v-btn__content"]').contains('7').click();
+    cy.get('tbody').find('div[class*="v-btn__content"]').contains('10').click();
+    cy.get('[data-qa="calendar.button.cancel"]').click();
+    cy.get('[data-qa="calendar.field.text"]').click();
+    cy.get('tbody').find('div[class*="v-btn__content"]').contains('1').click();
+    cy.get('tbody').find('div[class*="v-btn__content"]').contains('28').click();
+    cy.get('[data-qa="calendar.button.save"]').click();
 }
