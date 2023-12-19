@@ -1,6 +1,7 @@
 import { dashboardSelect } from "../../../../funcs";
 import { adminLogin } from "../../../../logins";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
@@ -12,7 +13,8 @@ describe("leave feedback", () => {
 
       //sets viewport and logs in
       adminLogin();
-
+      //creates alias for dashboard API request
+      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
       //navigates to leave feedback
       dashboardSelect('Leave Feedback');
 

@@ -1,7 +1,8 @@
 import { adminLogin } from "../../../logins";
 import { dashboardSelect, changePassword } from "../../../funcs";
 
-const time = 60000;
+//this should prevent any tests from hanging
+const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
@@ -10,13 +11,11 @@ beforeEach(() => {
 describe("Account settings password", () => {
     it("tests changing the account settings password works", () => {
 
-        //sets viewport and logs in
         adminLogin();
-
-        //changes details back
+        //creates alias for dashboard API request
+        cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('Account Settings');
 
-        //goes to manage security and changes password
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');
         cy.get('@security').click();

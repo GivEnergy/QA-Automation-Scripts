@@ -2,6 +2,7 @@ import { checkPageNav, checkReturnsActions, checkReturnsFormat, dashboardSelect,
 import { adminLogin } from "../../../logins";
 import { dateAndTime } from "../../../regex";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -12,28 +13,20 @@ describe("returns", () => {
     it("tests returns page", () => {
 
     adminLogin();
-
-    //navigates to returns
+    //creates alias for dashboard API request
+    cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+    //creates alias for returns API request
+    cy.intercept('**/admin/returns').as('returnsAPI');
     dashboardSelect('Admin Dashboard', 'Returns');
+    //waits for return API request to be successful
+    cy.wait('@returnsAPI', {timeout: 30000});
     cy.get('[data-qa="title.header"]').contains('Returns');
 
-    //checks page navigation
     checkPageNav();
-
-    //checks format of table data
     checkReturnsFormat();
-    
     checkReturnsActions();
 
-    //check search, pop up, format
-    // cy.get('[data-qa="field.search"]').type('Adam');
-    // tableContains('Created By', 'Adam Reynolds', 'Error when searching for criteria')
-    // checkReturnsFormat();
-
-    // tableClick('Created By', 'Adam Reynolds');
-    // checkReturnsActions();
-
-    //use create new return
+    //creates a new return
     cy.get('[data-qa="button.start"]').contains('Create New Return');
     cy.get('[data-qa="button.start"]').click();
     cy.get('[data-qa="button.check"]').should('be.disabled');
@@ -43,7 +36,13 @@ describe("returns", () => {
     cy.get('[data-qa="button.confirm"]').contains('Confirm Ticket #');
     cy.get('[data-qa="button.confirm"]').click();
     cy.get('[data-qa="link.view"]').contains('View On Freshdesk');
-    cy.get('[data-qa="link.view"]').click();
+    cy.get('[data-qa="link.view"]').then(($el) => {
+        const url = $el.attr('href');
+
+        if (!url.includes('givenergy.freshdesk.com')){
+            throw new Error("Error: ticket does not include freshdesk URL");
+        }
+    })
     cy.get('[data-qa="button.create"]').contains('Create Return');
     cy.get('[data-qa="button.create"]').should('not.be.enabled');
     cy.get('[data-qa="select.recipients"]').click();
@@ -123,6 +122,7 @@ describe("returns", () => {
     cy.get('[data-qa="button.create"]').contains('Create Return').click();
 
     //verifies the return is created and is showing correct info in the table
+    //then deletes created return
     cy.get('i[class*="mdi-check-circle"]').parent().contains('Return created successfully!');
     tableContains('Created By', 'You', 'Error when checking returns data');
     tableClick('Customer', 'Brymbo Road');

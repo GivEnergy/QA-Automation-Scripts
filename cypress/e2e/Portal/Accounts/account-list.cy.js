@@ -2,6 +2,8 @@ import { adminLogin } from "../../../logins";
 import { dashboardSelect, tableContains, tableRegex } from "../../../funcs";
 import { YYYYMMDD } from "../../../regex";
 
+
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
@@ -10,25 +12,19 @@ beforeEach(() => {
 });
 describe("account list", () => {
   it("tests Account list", () => {
-    //sets viewport and logins in as admin
-    adminLogin();
 
-    //opens account list and reloads page to hide nav bar
+    adminLogin();
+    //creates alias for dashboard api request
+    cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
     dashboardSelect('Account List');
 
-    //to be added in when search works
-    //checks search, hover pop ups and account buttons
-    // cy.get('[data-qa="field.search"]').click().type('Chemical Lane');
-    // tableClick('Engineer', 'Dan Lambert');
-    // tableClick('Company', 'GivEnergy03');
-    // tableClick('Distributor', 'Givenergy02');
-    // cy.reload();
-
+    //filters account by customer
     cy.get('[data-qa="input.filter"]').click();
     cy.get('div[class*="v-list-item"]').contains('Customer').as('listCustomer');
     cy.get('@listCustomer').click();
     tableContains('Type', 'Customer', 'Error when filtering by account type');
     tableRegex('Create Date', YYYYMMDD, 'Error: date does not match yyyy-mm-dd format');
+    //checks first data records action buttons
     cy.get('i[class*="mdi-delete"]').first().scrollIntoView();
     cy.get('a[href*="new-dashboard"]').first().click();
     cy.get('a[href*="account-settings"]').first().click();
@@ -39,6 +35,7 @@ describe("account list", () => {
     cy.get('@update').contains('Update');
     cy.get('@update').click();
     cy.get('i[class*="mdi-delete"]').first().click();
+    //checks enable and disable button and dialog works
     cy.get('[data-qa="button.change"]').then(($button) => {
 
       const text = $button.text().trim();

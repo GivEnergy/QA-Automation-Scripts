@@ -1,6 +1,7 @@
 import { checkMarkAsReadWorks, checksCounterIncreasesAndDecreases } from "../../../funcs";
 import { adminLogin } from "../../../logins";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
   setTimeout(() => {
@@ -11,7 +12,9 @@ describe("Notifications centre", () => {
     it("tests Notifications centre", () => {
 
       adminLogin();
-
+      //creates alias for dashboard API request
+      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+      //checks notifications tab opens and refresh and close buttons work
       cy.get('[data-qa="icon.notification"]').as('icon');
       cy.get('@icon').scrollIntoView();
       cy.get('@icon').click();
@@ -21,6 +24,7 @@ describe("Notifications centre", () => {
       cy.get('@icon').scrollIntoView();
       cy.get('@icon').click();
       cy.get('[data-qa="title.notifications"]').contains('Notifications');
+      //checks notification reading updates counter
       cy.get('@icon').next().find('span[class*="v-badge__badge"]').then(($span) => {
         
         const text = $span.text()

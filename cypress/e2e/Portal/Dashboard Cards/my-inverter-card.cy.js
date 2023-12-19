@@ -3,6 +3,7 @@ import { dashboardSelect, selectDashboardCard, myInverterTab, inverterSoftwareCh
 import { myInverterDescription } from "../../../dashboardCards";
 import { YYYYMMDD, batteryFW, dateAndTime, inverterFW, serialNumber } from "../../../regex";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -13,10 +14,12 @@ describe("my inverter card", () => {
   it("tests my inverter card", () => {
 
       adminLogin();
-
+      //creates alias for dashboard API request
+      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
       dashboardSelect('Dashboard Cards');
 
       selectDashboardCard('My Inverter', myInverterDescription, 'brymbopvtest', 'BrymboPVTest');
+      //checks inverter info shows serial number of correct format
       cy.get('[data-qa="serialNumber"]').then(($el) => {
 
           const text = $el.text().trim();
@@ -30,7 +33,10 @@ describe("my inverter card", () => {
           }
 
       });
+
       cy.get('[data-qa="graph"]').should('be.visible');
+
+      //checks each inverter info tab shows expected title name
       cy.get('[data-qa="general.title"]').each(($div, index) => {
         
         const text = $div.text()
@@ -105,6 +111,7 @@ describe("my inverter card", () => {
         }
       })
 
+      //checks each inverter info tab shows expected subtitle description
       cy.get('[data-qa="general.subtitle"]').each(($div, index) => {
         
         const text = $div.text()
@@ -155,6 +162,7 @@ describe("my inverter card", () => {
         }
       })
 
+      //please check functions for descriptions
       myInverterTab('Software');
       inverterSoftwareCheck(['Inverter Firmware Version', 'Last Update Time', 'Battery Firmware Version'],
                             [inverterFW, batteryFW]);

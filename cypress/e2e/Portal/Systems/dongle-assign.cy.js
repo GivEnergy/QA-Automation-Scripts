@@ -1,9 +1,10 @@
 import {adminLogin, engineerLogin} from "../../../logins";
 import {
     dashboardSelect,
-    addRNG, createAccount
+    addRNG
 } from "../../../funcs";
 
+//this should prevent any tests from hanging
 const time = 180000;
 beforeEach(() => {
     setTimeout(() => {
@@ -11,10 +12,13 @@ beforeEach(() => {
     }, time);
 });
 describe("my inverter page", () => {
-    it("tests my inverter page", () => {
+    let customerUsername;
+    it("creates a customer account", () => {
 
+        //logs in as engineer first to create a customer account
         engineerLogin();
-
+        //creates alias for dashboard API request
+        cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('Account List');
 
         cy.get('[data-qa="field.search"]').click();
@@ -29,6 +33,7 @@ describe("my inverter page", () => {
         cy.get('[data-qa="form.field.firstName"]').as('firstName');
         cy.get('[data-qa="form.field.surname"]').as('surname');
 
+        //creates customer account
         cy.get('@email').prev().contains('Email');
         cy.get('@email').type('fakeEmail@gmail.com');
         cy.get('@postcode').prev().contains('Postcode');
@@ -45,56 +50,60 @@ describe("my inverter page", () => {
         cy.get('div[class="v-list-item__title"]').contains('Single Inverter').click();
         cy.get('@username').then(() => {
 
-            const username = addRNG('testCustomer');
+            //sets username used for account as variable here
+            customerUsername = addRNG('testCustomer');
 
             cy.get('@username').clear();
-            cy.get('@username').type(username);
+            cy.get('@username').type(customerUsername);
             cy.get('[data-qa="button.create"]').contains('Create').click();
+        })
+    })
 
-            dashboardSelect('Logout');
+    it("assigns dongle to newly created customer", () => {
 
-            adminLogin();
+        adminLogin();
+        //creates alias for dashboard API request
+        cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
 
-            //opens my inverters and reloads page to hide nav bar
-            dashboardSelect('My Inverters');
-            cy.get('[data-qa="title.text"]').contains('My Inverters');
-            cy.get('[data-qa="search"]').click();
+        //opens my inverters and reloads page to hide nav bar
+        dashboardSelect('My Inverters');
+        cy.get('[data-qa="title.text"]').contains('My Inverters');
+        cy.get('[data-qa="search"]').click();
 
-            //opens register a dongle page and closes it
-            cy.get('[data-qa="button.register"]').contains('Register a New Inverter').click();
-            cy.get('[data-qa="title.assign"]').contains('Assign a Dongle');
-            cy.get('[data-qa="button.cancel"]').click();
+        //opens register a dongle page and closes it
+        cy.get('[data-qa="button.register"]').contains('Register a New Inverter').click();
+        cy.get('[data-qa="title.assign"]').contains('Assign a Dongle');
+        cy.get('[data-qa="button.cancel"]').click();
 
-            //opens register a dongle page and enters the details
-            cy.get('[data-qa="button.register"]').contains('Register a New Inverter').click();
-            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').type('NotARealUsername123');
-            cy.get('div[class="v-select-list"]').should('not.exist');
-            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('!!!!!!!!!!');
-            cy.get('[data-qa="field.sn"]').parent().find('div[class*="v-messages__message"]').contains('This field can only contain alphanumeric characters');
-            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').clear();
-            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('WO2249G378');
-            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').clear();
-            cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').type(username);
-            cy.get('div[class*="v-list-item__title"]').contains(username).click();
-            cy.get('[data-qa="field.vc"]').parent('div[class*="v-text-field__slot"]').type('F9237');
-            cy.get('[data-qa="button.submit"]').contains('Submit').click();
-            cy.get('div[class*="v-messages__message"]').contains('This dongle is already assigned to another user');
-            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('{backspace}');
-            cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('7');
-            cy.get('[data-qa="button.submit"]').contains('Submit').click();
+        //opens register a dongle page and enters the details
+        cy.get('[data-qa="button.register"]').contains('Register a New Inverter').click();
+        cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').type('NotARealUsername123');
+        cy.get('div[class="v-select-list"]').should('not.exist');
+        cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('!!!!!!!!!!');
+        cy.get('[data-qa="field.sn"]').parent().find('div[class*="v-messages__message"]').contains('This field can only contain alphanumeric characters');
+        cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').clear();
+        cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('WO2249G378');
+        cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').clear();
 
-            //deletes created dongle
-            cy.get('i[class*="mdi-refresh"]').click();
-            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(1).click();
-            cy.get('[data-qa="card.deleteDialog"]').should('be.visible');
-            cy.get('[data-qa="button.cancel"]').eq(1).click();
-            cy.get('[data-qa="card.deleteDialog"]').should('not.exist');
-            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(1).click();
-            cy.get('[data-qa="card.deleteDialog"]').should('be.visible');
-            cy.get('[data-qa="button.delete"]').click();
-            cy.get('[data-qa="container.navigation"]').find('li').first().next().next().next().click();
+        //username used to create account is used here to assign dongle to
+        cy.get('[data-qa="search.user"]').parent('div[class*="v-select__slot"]').type(customerUsername);
+        cy.get('div[class*="v-list-item__title"]').contains(customerUsername).click();
+        cy.get('[data-qa="field.vc"]').parent('div[class*="v-text-field__slot"]').type('F9237');
+        cy.get('[data-qa="button.submit"]').contains('Submit').click();
+        cy.get('div[class*="v-messages__message"]').contains('This dongle is already assigned to another user');
+        cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('{backspace}');
+        cy.get('[data-qa="field.sn"]').parent('div[class*="v-text-field__slot"]').type('7');
+        cy.get('[data-qa="button.submit"]').contains('Submit').click();
 
-        });
-
-    });
+        //deletes created dongle
+        cy.get('i[class*="mdi-refresh"]').click();
+        cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(1).click();
+        cy.get('[data-qa="card.deleteDialog"]').should('be.visible');
+        cy.get('[data-qa="button.cancel"]').eq(1).click();
+        cy.get('[data-qa="card.deleteDialog"]').should('not.exist');
+        cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('div').find('div').children().eq(1).click();
+        cy.get('[data-qa="card.deleteDialog"]').should('be.visible');
+        cy.get('[data-qa="button.delete"]').click();
+        cy.get('[data-qa="container.navigation"]').find('li').first().next().next().next().click();
+    })
 });
