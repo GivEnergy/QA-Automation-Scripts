@@ -15,8 +15,10 @@ describe("leave feedback", () => {
       adminLogin();
       //creates alias for dashboard API request
       cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+      cy.intercept('**/feedback/create').as('feedbackAPI');
       //navigates to leave feedback
       dashboardSelect('Leave Feedback');
+      cy.wait('@feedbackAPI');
 
       cy.get('[data-qa="title.text"]').contains('Leave Feedback');
       cy.get('[data-qa="link.faq"]').click();
@@ -40,7 +42,9 @@ describe("leave feedback", () => {
       cy.get('[data-qa="checkbox.contacted"]').parent().click();
       cy.get('[data-qa="checkbox.mentioned"]').parent().click();
       cy.get('[data-qa="checkbox.mentioned"]').parent().click();
+      cy.intercept('**/feedback/create').as('feedbackAPI');
       cy.get('[data-qa="button.submit"').click();
+      cy.wait('@feedbackAPI');
       cy.get('i[class*="mdi-check-circle"]').parent().contains('Your feedback has been successfully submitted!');
 
     });

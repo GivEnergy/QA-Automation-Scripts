@@ -22,6 +22,20 @@ describe("returns", () => {
     cy.wait('@returnsAPI', {timeout: 30000});
     cy.get('[data-qa="title.header"]').contains('Returns');
 
+    cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
+
+        const text1 = $th.text();
+
+        if (text1 === "Created By") {
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($el) => {
+                if ($el.text() === "You") {
+                    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click();
+                    cy.get('[data-qa="button.yes"]').click()
+                }
+            })
+        }
+    });
+
     checkPageNav();
     checkReturnsFormat();
     checkReturnsActions();
