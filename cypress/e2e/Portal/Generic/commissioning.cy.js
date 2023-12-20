@@ -15,7 +15,9 @@ describe("commissions", () => {
         adminLogin();
         //creates alias for dashboard API request
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+        cy.intercept('**/staging.givenergy.cloud/commission').as('commissionAPI');
         dashboardSelect('Commissions');
+        cy.wait('@commissionAPI', {timeout: 30000});
 
         cy.get('[data-qa="search"]').should('be.visible').click();
         checkPageNav();
@@ -27,8 +29,10 @@ describe("commissions", () => {
         cy.get('[data-qa="search.account"]').should('be.visible');
 
         //navigates back to commissions
+        cy.intercept('**/staging.givenergy.cloud/commission').as('commissionAPI');
         cy.get('[data-qa="main.navbar"]').children().eq(0).click();
         cy.get('[data-qa="main.navbar"]').contains('Commissions').click();
+        cy.wait('@commissionAPI', {timeout: 30000});
         cy.get('[data-qa="search"]').should('be.visible').click();
 
         tableRegex('Started At', dateAndTime, 'Error: Started At time and date using incorrect format');
@@ -97,15 +101,19 @@ describe("commissions", () => {
                 cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('i[class*="mdi-clipboard"]').click();
 
                 cy.get('[data-qa="search.account"]').should('be.visible');
+                cy.intercept('**/staging.givenergy.cloud/commission').as('commissionAPI');
                 cy.get('[data-qa="main.navbar"]').children().eq(0).click();
                 cy.get('[data-qa="main.navbar"]').contains('Commissions').click();
+                cy.wait('@commissionAPI', {timeout: 30000});
                 cy.get('[data-qa="search"]').should('be.visible').click();
 
                 cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('i[class*="mdi-magnify"]').click();
 
                 cy.get('[data-qa="title.viewCommission"]').should('be.visible');
+                cy.intercept('**/staging.givenergy.cloud/commission').as('commissionAPI');
                 cy.get('[data-qa="main.navbar"]').children().eq(0).click();
                 cy.get('[data-qa="main.navbar"]').contains('Commissions').click();
+                cy.wait('@commissionAPI', {timeout: 30000});
                 cy.get('[data-qa="search"]').should('be.visible').click();
 
                 cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).find('i[class*="mdi-delete"]').click();
