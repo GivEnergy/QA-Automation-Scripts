@@ -16,7 +16,9 @@ describe("installer incentive", () => {
         engineerLogin();
         //creates alias for dashboard API request
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+        cy.intercept('**/staging.givenergy.cloud/reward-points').as('rewardsAPI');
         dashboardSelect('Reward Scheme');
+        cy.wait('@rewardsAPI', {timeout: 30000});
 
         cy.get('[data-qa="title"]').as('title');
         cy.get('@title').should('be.visible');
@@ -59,8 +61,11 @@ describe("installer incentive", () => {
         cy.get('@value').eq(14).contains(voucherValues[4]);
 
         //navigates to history page and checks type filter and table
+        cy.intercept('**/reward-points/history').as('historyAPI');
         cy.get('[data-qa="link.history"]').should('be.enabled');
         cy.get('[data-qa="link.history"]').click();
+
+        cy.wait('@historyAPI', {timeout: 30000});
         cy.get('[data-qa="title.history"]').should('be.visible');
         cy.get('[data-qa="title.history"]').contains('History');
         cy.get('[data-qa="select.type"]').should('be.visible');
