@@ -14,7 +14,10 @@ describe("Account settings password", () => {
         adminLogin();
         //creates alias for dashboard API request
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+        cy.intercept('**/staging.givenergy.cloud/account-settings').as('accountSettingsAPI');
         dashboardSelect('Account Settings');
+        cy.wait('@accountSettingsAPI', {timeout: 30000});
+
 
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');

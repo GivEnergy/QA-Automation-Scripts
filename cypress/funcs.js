@@ -156,8 +156,10 @@ export function changePassword(current, newP, repeatP, order) {
         cy.get('@submit').should('not.be.enabled');
         cy.get('@repeat').parents('.v-input__control').find('.v-messages__message')
             .contains('This field must be the same as Password');
+        cy.intercept('**/staging.givenergy.cloud/account-settings').as('accountSettingsAPI');
         cy.get('[data-qa="main.navbar"]').children().eq(0).click();
         cy.get('[data-qa="main.navbar"]').contains("Account Settings").click();
+        cy.wait('@accountSettingsAPI', {timeout: 30000});
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');
         cy.get('@security').click();
@@ -169,8 +171,10 @@ export function changePassword(current, newP, repeatP, order) {
         cy.get('@submit').contains('Submit');
         cy.get('@submit').click();
         cy.get('i[class*="mdi-alert"]').parent().find('p').contains('The current password is incorrect.');
+        cy.intercept('**/staging.givenergy.cloud/account-settings').as('accountSettingsAPI');
         cy.get('[data-qa="main.navbar"]').children().eq(0).click();
         cy.get('[data-qa="main.navbar"]').contains("Account Settings").click();
+        cy.wait('@accountSettingsAPI', {timeout: 30000});
         cy.get('[data-qa="link.button.security"]').as('security');
         cy.get('@security').contains('Manage Account Security');
         cy.get('@security').click();
