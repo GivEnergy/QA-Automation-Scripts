@@ -37,4 +37,4 @@ jobs:
         run: npm ci
 
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --env ${{ secrets.CYPRESS_ENV }} --parallel --browser chrome
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --env ${{ secrets.CYPRESS_ENV }} --parallel --browser edge
