@@ -20,8 +20,10 @@ describe("account list", () => {
 
     //filters account by customer
     cy.get('[data-qa="input.filter"]').click();
+    cy.intercept('**/internal-api/paginate/account**').as('tableAccountRequest');
     cy.get('div[class*="v-list-item"]').contains('Customer').as('listCustomer');
     cy.get('@listCustomer').click();
+    cy.wait('@tableAccountRequest', {timeout: 30000});
     tableContains('Type', 'Customer', 'Error when filtering by account type');
     tableRegex('Create Date', YYYYMMDD, 'Error: date does not match yyyy-mm-dd format');
     //checks first data records action buttons
