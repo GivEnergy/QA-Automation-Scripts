@@ -55,7 +55,9 @@ describe("commissions", () => {
             const text = $div.text();
             const num = Number(text);
 
+            cy.intercept('**/internal-api/paginate/commission**').as('completedRequest');
             cy.get('[data-qa="checkbox.completed"]').parent().click();
+            cy.wait('@completedRequest', {timeout: 30000});
 
             cy.get('div[class="v-data-footer__pagination"]').then(($div2) => {
 
@@ -75,8 +77,9 @@ describe("commissions", () => {
 
             const text = $div.text();
             const num = Number(text);
-
+            cy.intercept('**/internal-api/paginate/commission**').as('deletedRequest');
             cy.get('[data-qa="checkbox.deleted"]').parent().click();
+            cy.wait('@deletedRequest', {timeout: 30000});
 
             cy.get('div[class="v-data-footer__pagination"]').then(($div2) => {
 

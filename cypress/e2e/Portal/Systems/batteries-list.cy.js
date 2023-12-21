@@ -21,7 +21,9 @@ describe("my inverter page", () => {
         //creates alias for dashboard API request
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         //opens my inverters and reloads page to hide nav bar
+        cy.intercept('**/staging.givenergy.cloud/batteries').as('batteriesAPI');
         dashboardSelect('My Batteries');
+        cy.wait('@batteriesAPI', {timeout: 30000});
         cy.get('[data-qa="search"]').should('be.visible').click();
         cy.get('[data-qa="title"]').should('be.visible').contains('My Batteries');
 
@@ -40,14 +42,16 @@ describe("my inverter page", () => {
         tableRegex("Cell #", positiveNumber, "Error: cell # is not a positive number");
         tableRegex("Cycle Count", positiveNumber, "Error: cycle count is not a positive number");
 
+        cy.intercept('**//internal-api/paginate/battery?page=1&itemsPerPage=15').as('capacityRequest');
         cy.get('[data-qa="autocomplete.capacity"]').should('be.visible');
         cy.get('[data-qa="autocomplete.capacity"]').click();
         cy.get('div[class*="v-list-item"]').contains('186Ah').click();
         cy.get('[data-qa="search"]').should('be.visible').click();
-        cy.wait(2000);
+        cy.wait('@capacityRequest', {timeout: 30000});
         tableContains("Design Capacity (Ah)", "186", "Error: filtering by design capacity did not work");
 
         cy.get('[data-qa="autocomplete.firmware"]').as('firmware');
+        cy.intercept('**//internal-api/paginate/battery?page=1&itemsPerPage=15').as('firmwareRequest');
         cy.get('@firmware').should('be.visible');
         cy.get('@firmware').click();
         cy.get('@firmware').type('3013');
@@ -55,7 +59,7 @@ describe("my inverter page", () => {
         cy.get('@3013').scrollIntoView();
         cy.get('@3013').click();
         cy.get('[data-qa="search"]').should('be.visible').click();
-        cy.wait(2000);
+        cy.wait('@firmwareRequest', {timeout: 30000});
         tableContains("Firmware Version", "3013", "Error: filtering by firmware version did not work");
 
     });

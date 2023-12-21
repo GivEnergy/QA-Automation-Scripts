@@ -26,14 +26,18 @@ describe("my evc page", () => {
         tableRegex("Online Since", dateAndTime, "Error: last updated is showing incorrect date format, should be YYYY-MM-DD HH:MM:SS");
 
         cy.get('[data-qa="autocomplete.status"]').should('be.visible');
+        cy.intercept('**/internal-api/paginate/ev-charger**').as('statusRequest');
         cy.get('[data-qa="autocomplete.status"]').click();
         cy.get('div[class*="v-list-item"]').contains('Available').click();
+        cy.wait('@statusRequest', {timeout: 30000});
         cy.wait(2000);
         tableContains("Status", "Available", "Error: filtering by status did not work");
 
         cy.get('[data-qa="autocomplete.product"]').should('be.visible');
+        cy.intercept('**/internal-api/paginate/ev-charger**').as('productRequest');
         cy.get('[data-qa="autocomplete.product"]').click();
         cy.get('div[class*="v-list-item"]').contains('SingleSocketCharger (WWWW)').click();
+        cy.wait('@productRequest', {timeout: 30000});
         tableContains("Product", "SingleSocketCharger", "Error: filtering by product did not work");
 
     });

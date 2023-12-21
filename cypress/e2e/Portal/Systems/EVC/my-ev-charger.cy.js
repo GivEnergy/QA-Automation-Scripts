@@ -262,13 +262,17 @@ describe("ev charger", () => {
             const value = $el.text();
 
             if (value === "Logs") {
+                cy.intercept('**/internal-api/paginate/ev-charger-command-record?page=1&itemsPerPage=15').as('logsRequest');
                 cy.get('div[class="v-tab"]').last().click();
+                cy.wait('@logsRequest', {timeout: 30000});
                 cy.get('[data-qa="table"]').should('be.visible');
                 cy.get('[data-qa="search.user"]').should('be.enabled');
+                cy.intercept('**/internal-api/paginate/ev-charger-command-record?page=1&itemsPerPage=15').as('logsRequest');
                 cy.get('[data-qa="autocomplete.command"]').click();
                 cy.get('[data-qa="autocomplete.command"]').type('{downArrow}');
                 cy.get('[data-qa="autocomplete.command"]').type('{downArrow}');
                 cy.get('[data-qa="autocomplete.command"]').type('{enter}');
+                cy.wait('@logsRequest', {timeout: 30000});
                 tableContains("Setting", "Change Active Schedule", "Error: filtering by command did not work");
                 tableRegex("Time", dateAndTime, "Error: date and time format in time column does not match format YYYY-MM-DD HH:MM:SS");
 

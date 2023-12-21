@@ -494,11 +494,13 @@ export function checkWarranty(headingIndex, tableDataIndex) {
     //checks existing warranty type and checks the other types
     //if 1st data record has no warranty showing then it increments tableDataIndex and calls itself
     //if tableDataIndex > 3 test will fail
+    cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
     cy.get('[data-qa="auto.model"]').as('model');
     cy.get('@model').type('{downArrow}');
     cy.get('@model').type('{downArrow}');
     cy.get('@model').type('{downArrow}');
     cy.get('@model').type('{enter}');
+    cy.wait('@modelRequest');
     cy.get('[data-qa="field.search"]').click();
     cy.get('[data-qa="table"]').find('tr').eq(tableDataIndex).find('td').eq(headingIndex).then(($td) => {
 
@@ -510,19 +512,23 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
+            cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
+            cy.wait('@modelRequest');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
+            cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
+            cy.wait('@modelRequest');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
 
@@ -532,19 +538,23 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
+            cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
+            cy.wait('@modelRequest');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
+            cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
+            cy.wait('@modelRequest');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
 
@@ -554,19 +564,23 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
+            cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
+            cy.wait('@modelRequest');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
 
+            cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
+            cy.wait('@modelRequest');
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
 
