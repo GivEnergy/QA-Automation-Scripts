@@ -247,8 +247,9 @@ export function tableContains(heading, value, errorMessage) {
   
             cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
             
-            const text2 = $td.text();
-
+            const text2 = $td.text().trim();
+            console.log(text2);
+            console.log(value);
             if (text2 !== value) {
               throw new Error(errorMessage);
             }

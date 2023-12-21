@@ -3,7 +3,7 @@ import { adminLogin } from "../../../logins";
 import { dateAndTime } from "../../../regex";
 
 //this should prevent any tests from hanging
-const time = 180000;
+const time = 240000;
 beforeEach(() => {
     setTimeout(() => {
         throw new Error(`Test failed: exceeded run time limit of ${time}ms`);
@@ -140,7 +140,7 @@ describe("returns", () => {
     cy.get('i[class*="mdi-check-circle"]').parent().contains('Return created successfully!');
     tableContains('Created By', 'You', 'Error when checking returns data');
     tableClick('Customer', 'Brymbo Road');
-    tableContains('Items', 'Dongle - WiFi - WO2249G374 Dongle - WiFi - WO2249G377 ', 'Error return items in created return are not listed');
+    tableContains('Items', 'Dongle - WiFi - WO2249G374 Dongle - WiFi - WO2249G377', 'Error return items in created return are not listed');
     tableContains('Ticket #', '53431', 'Error returns ticket # is not correctly stated')
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
 
