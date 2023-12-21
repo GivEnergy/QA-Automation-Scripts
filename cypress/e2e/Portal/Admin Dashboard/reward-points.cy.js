@@ -129,7 +129,13 @@ describe("reward points", () => {
                 console.log(heading)
                 if (heading === "Via") {
                     for (var i = 1; i < numberOfRecords; i++) {
-                        cy.get('@table').find('tr').eq(i).find('td').eq(index).find('a[href*="/commission/"]');
+                        cy.get('@table').find('tr').eq(i).find('td').eq(index).then(($td) => {
+                            const value = $td.text();
+
+                            if (value === "Commission") {
+                                cy.get('@table').find('tr').eq(i).find('td').eq(index).find('a[href*="/commission/"]');
+                            }
+                        })
                     }
                 }
             });
