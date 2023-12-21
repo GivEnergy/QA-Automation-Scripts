@@ -5,3 +5,5 @@ export const batteryFW = /^\d{1,4}$/
 export const inverterFW = /^[D][0][.]{1,1}\d{3,3}[-]{1,1}[A][0][.]{1,1}\d{3,3}$/
 export const positiveOrNegativeNumber = /^\d{1,}$|^[-]\d{1,}$/
 export const positiveNumber = /^\d{1,}$/
+export const evcSerialNumber = /^\d{14}$/
+export const numOrDecimal = /^\d{1,}[.]\d{1,}$|^\d{1,}$/
