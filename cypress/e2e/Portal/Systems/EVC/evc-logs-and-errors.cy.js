@@ -26,7 +26,7 @@ describe("evc error and logs", () => {
 
         cy.intercept('**/internal-api/paginate/ocpp-error**').as('errorsRequest');
         cy.get('div[class="v-tab"]').contains('Errors').should('be.visible').click();
-        cy.wait('@errorsRequest');
+        cy.wait('@errorsRequest', {timeout: 30000});
 
         cy.get('[data-qa="table"]').should("be.visible");
         cy.get('[data-qa="table"]').find('th').each(($th, index) => {

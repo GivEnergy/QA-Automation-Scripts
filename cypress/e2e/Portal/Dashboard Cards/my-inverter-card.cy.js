@@ -17,8 +17,9 @@ describe("my inverter card", () => {
       //creates alias for dashboard API request
       cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
       dashboardSelect('Dashboard Cards');
-
+      cy.intercept('**/admin/dashboard/cards/my-inverters/BrymboPVTest?only_large=1').as('inverterAPI');
       selectDashboardCard('My Inverter', myInverterDescription, 'brymbopvtest', 'BrymboPVTest');
+      cy.wait('@inverterAPI', {timeout: 30000});
       //checks inverter info shows serial number of correct format
       cy.get('[data-qa="serialNumber"]').then(($el) => {
 

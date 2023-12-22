@@ -18,8 +18,10 @@ describe("view feedback", () => {
       adminLogin();
       //creates alias for dashboard API request
       cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+      cy.intercept('**/staging.givenergy.cloud/feedback').as('feedbackAPI');
       //navigates to leave feedback
       dashboardSelect('View Feedback');
+      cy.wait('@feedbackAPI', {timeout: 30000});
       cy.get('[data-qa="title"]').contains('Feedback').click();
 
       //check function description

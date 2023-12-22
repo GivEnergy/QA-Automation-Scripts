@@ -18,7 +18,7 @@ describe("leave feedback", () => {
       cy.intercept('**/feedback/create').as('feedbackAPI');
       //navigates to leave feedback
       dashboardSelect('Leave Feedback');
-      cy.wait('@feedbackAPI');
+      cy.wait('@feedbackAPI', {timeout: 30000});
 
       cy.get('[data-qa="title.text"]').contains('Leave Feedback');
       cy.get('[data-qa="link.faq"]').click();
@@ -44,7 +44,7 @@ describe("leave feedback", () => {
       cy.get('[data-qa="checkbox.mentioned"]').parent().click();
       cy.intercept('**/feedback/create').as('feedbackAPI');
       cy.get('[data-qa="button.submit"').click();
-      cy.wait('@feedbackAPI');
+      cy.wait('@feedbackAPI', {timeout: 30000});
       cy.get('i[class*="mdi-check-circle"]').parent().contains('Your feedback has been successfully submitted!');
 
     });

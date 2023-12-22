@@ -12,6 +12,7 @@ describe("Admin Sign In", () => {
 
         //creates alias for login API request
         cy.intercept('**/staging.givenergy.cloud/login').as('loginAPI');
+        cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         cy.visit("https://staging.givenergy.cloud/login");
 
         //waits for login API request to be successful
@@ -34,7 +35,6 @@ describe("Admin Sign In", () => {
 
         //clicks on admin dashboard to ensure that the page loads
         //creates alias for dashboard API request
-        cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('Logout');
       
     });

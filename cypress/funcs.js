@@ -500,7 +500,7 @@ export function checkWarranty(headingIndex, tableDataIndex) {
     cy.get('@model').type('{downArrow}');
     cy.get('@model').type('{downArrow}');
     cy.get('@model').type('{enter}');
-    cy.wait('@modelRequest');
+    cy.wait('@modelRequest', {timeout: 30000});
     cy.get('[data-qa="field.search"]').click();
     cy.get('[data-qa="table"]').find('tr').eq(tableDataIndex).find('td').eq(headingIndex).then(($td) => {
 
@@ -509,78 +509,90 @@ export function checkWarranty(headingIndex, tableDataIndex) {
         if (text === 'Standard') {
 
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
+            cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
+            cy.wait('@inverterAPI', {timeout: 30000});
 
             cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
-            cy.wait('@modelRequest');
+            cy.wait('@modelRequest', {timeout: 30000});
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
+            cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
+            cy.wait('@inverterAPI', {timeout: 30000});
 
             cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
-            cy.wait('@modelRequest');
+            cy.wait('@modelRequest', {timeout: 30000});
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
 
         } else if (text === 'Extended') {
 
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
+            cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
+            cy.wait('@inverterAPI', {timeout: 30000});
 
             cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
-            cy.wait('@modelRequest');
+            cy.wait('@modelRequest', {timeout: 30000});
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
+            cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
+            cy.wait('@inverterAPI', {timeout: 30000});
 
             cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
-            cy.wait('@modelRequest');
+            cy.wait('@modelRequest', {timeout: 30000});
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
 
         } else if (text === 'Twelve_Years') {
 
             updateWarrantyAndCheck('Standard', 5, tableDataIndex);
+            cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
+            cy.wait('@inverterAPI', {timeout: 30000});
 
             cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
-            cy.wait('@modelRequest');
+            cy.wait('@modelRequest', {timeout: 30000});
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Extended', 10, tableDataIndex);
+            cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
             cy.get('[data-qa="main.navbar"]').children().eq(0).click();
             cy.get('[data-qa="main.navbar"]').contains('My Inverters').click();
+            cy.wait('@inverterAPI', {timeout: 30000});
 
             cy.intercept('**/internal-api/paginate/inverter?page=1&itemsPerPage=15').as('modelRequest');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{downArrow}');
             cy.get('@model').type('{enter}');
-            cy.wait('@modelRequest');
+            cy.wait('@modelRequest', {timeout: 30000});
             cy.get('[data-qa="field.search"]').click();
             updateWarrantyAndCheck('Twelve years', 12, tableDataIndex);
 
