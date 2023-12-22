@@ -15,7 +15,9 @@ describe("reward points", () => {
         adminLogin();
         //creates alias for dashboard API request
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+        cy.intercept('**/admin/reward-points').as('rewardPointsAPI');
         dashboardSelect('Admin Dashboard', 'Reward Points');
+        cy.wait('@rewardPointsAPI', {timeout: 30000});
         cy.get('[data-qa="table.points"]').should('be.visible');
 
         checkPageNav();
@@ -71,6 +73,7 @@ describe("reward points", () => {
             }
         });
 
+        cy.intercept('**/reward-points/history').as('historyAPI');
         //visits engineers history page
         cy.get('@table').find('tr').eq(1).find('td').last().find('i[class*="mdi-magnify"]').parent().then(($a) => {
 
@@ -80,6 +83,7 @@ describe("reward points", () => {
 
         });
 
+        cy.wait('@historyAPI', {timeout: 30000});
         cy.get('[data-qa="title.history"]').contains('History');
         tableRegex("Time", dateAndTime, "Value showing in time column does not meet format, YYYY-MM-DD HH:MM:SS");
         tableRegex("Amount", positiveNumber, "Amount contains a value that is not a positive number");

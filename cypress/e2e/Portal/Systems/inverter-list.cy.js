@@ -23,7 +23,7 @@ describe("my inverter page", () => {
     //opens my inverters and reloads page to hide nav bar
     cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
     dashboardSelect('My Inverters');
-    cy.wait('@inverterAPI');
+    cy.wait('@inverterAPI', {timeout: 30000});
     cy.get('[data-qa="title.text"]').contains('My Inverters');
     cy.get('[data-qa="search"]').click();
     
@@ -35,7 +35,7 @@ describe("my inverter page", () => {
     cy.get('[data-qa="auto.model"]').as('model');
     cy.get('@model').type('{downArrow}');
     cy.get('@model').type('{enter}');
-    cy.wait('@modelRequest');
+    cy.wait('@modelRequest', {timeout: 30000});
     tableContains('Model', 'GIV-HY5.0', 'Error when filtering by inverter model')
     cy.get('[data-qa="title.text"]').contains('My Inverters').click();
 

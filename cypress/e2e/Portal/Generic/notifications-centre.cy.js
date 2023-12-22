@@ -11,9 +11,11 @@ beforeEach(() => {
 describe("Notifications centre", () => {
     it("tests Notifications centre", () => {
 
+      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
       adminLogin();
       //creates alias for dashboard API request
-      cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+
+      cy.wait('@dashboardAPI', {timeout: 30000});
       //checks notifications tab opens and refresh and close buttons work
       cy.get('[data-qa="icon.notification"]').as('icon');
       cy.get('@icon').scrollIntoView();

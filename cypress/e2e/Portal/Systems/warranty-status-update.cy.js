@@ -18,8 +18,10 @@ describe("warranty status", () => {
     adminLogin();
     //creates alias for dashboard API request
     cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+    cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
     //opens my inverters and reloads page to hide nav bar
     dashboardSelect('My Inverters');
+    cy.wait('@inverterAPI', {timeout: 30000});
     cy.get('[data-qa="title.text"]').contains('My Inverters');
     cy.get('[data-qa="search"]').click();
 

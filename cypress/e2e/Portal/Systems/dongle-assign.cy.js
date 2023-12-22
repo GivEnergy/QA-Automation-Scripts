@@ -19,7 +19,9 @@ describe("my inverter page", () => {
         engineerLogin();
         //creates alias for dashboard API request
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+        cy.intercept('**/staging.givenergy.cloud/user').as('userAPI');
         dashboardSelect('Account List');
+        cy.wait('@userAPI', {timeout: 30000});
 
         cy.get('[data-qa="field.search"]').click();
         cy.get('[data-qa="button.creation"]').contains('Create Customer Account').click();
@@ -64,9 +66,10 @@ describe("my inverter page", () => {
         adminLogin();
         //creates alias for dashboard API request
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
-
+        cy.intercept('**/staging.givenergy.cloud/inverter').as('inverterAPI');
         //opens my inverters and reloads page to hide nav bar
         dashboardSelect('My Inverters');
+        cy.wait('@inverterAPI' , {timeout: 30000});
         cy.get('[data-qa="title.text"]').contains('My Inverters');
         cy.get('[data-qa="search"]').click();
 
