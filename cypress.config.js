@@ -16,6 +16,7 @@ module.exports = defineConfig({
         },
         testIsolation: true,
     },
+    //DO NOT COMMIT ENV VARIABLES
     env: {}
 });
 //
