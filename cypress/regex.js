@@ -7,3 +7,6 @@ export const positiveOrNegativeNumber = /^\d{1,}$|^[-]\d{1,}$/
 export const positiveNumber = /^\d{1,}$/
 export const evcSerialNumber = /^\d{14}$/
 export const numOrDecimal = /^\d{1,}[.]\d{1,}$|^\d{1,}$/
+export const smartPLugUUID = /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/
+export const smartPlugSN = /^SP\w{12}$/
+export const deviceID = /^\w{16}$/

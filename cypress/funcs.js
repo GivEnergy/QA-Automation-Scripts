@@ -642,3 +642,19 @@ export function checkDateRangePicker() {
     cy.get('tbody').find('div[class*="v-btn__content"]').contains('28').click();
     cy.get('[data-qa="calendar.button.save"]').click();
 }
+
+export function deleteSmartPlug(tableDataIndex, index) {
+    cy.get('[data-qa="table"]').find('tr').eq(tableDataIndex).find('td').eq(index).find('i').then(($el) => {
+
+        const value = $el.attr('class');
+
+        if (!value.includes('mdi-delete')) {
+            tableDataIndex++;
+            deleteSmartPlug(tableDataIndex, index);
+        } else if (value.includes('mdi-delete')) {
+            cy.intercept('**/destroy').as('deleteAPI');
+            cy.get('[data-qa="table"]').find('tr').eq(tableDataIndex).find('td').eq(index).find('i[class*="mdi-delete"]').click();
+            cy.wait('@deleteAPI', {timeout: 30000});
+        }
+    });
+}
