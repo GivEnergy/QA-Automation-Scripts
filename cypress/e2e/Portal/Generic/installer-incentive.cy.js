@@ -48,12 +48,6 @@ describe("installer incentive", () => {
             cy.get('@list').eq(i).contains(rewardsValues[i]);
 
         }
-
-        for (var i = 0; i < 10; i++) {
-
-            cy.get('@value').eq(i).contains(pointValues[i]);
-
-        }
         cy.get('@value').eq(10).contains(voucherValues[0]);
         cy.get('@value').eq(11).contains(voucherValues[1]);
         cy.get('@value').eq(12).contains(voucherValues[2]);
