@@ -19,15 +19,18 @@ describe("evc error and logs", () => {
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('My EV Chargers');
 
-        //creates alias for energy graph API request
+        //creates alias for ev charger API request
         cy.intercept('**/ev-charger/11288853545688').as('evchargerAPI');
         cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
+        //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
+        //waits for errors page to load
         cy.intercept('**/internal-api/paginate/ocpp-error**').as('errorsRequest');
         cy.get('div[class="v-tab"]').contains('Errors').should('be.visible').click();
         cy.wait('@errorsRequest', {timeout: 30000});
 
+        //checks table is showing the correct data
         cy.get('[data-qa="table"]').should("be.visible");
         cy.get('[data-qa="table"]').find('th').each(($th, index) => {
             if ($th.text() === "Timestamp") {
@@ -84,6 +87,7 @@ describe("evc error and logs", () => {
         cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
         cy.wait('@evchargerAPI', {timeout: 30000});
 
+        //checks table and filters are visible
         cy.get('div[class="v-tab"]').contains('Logs').should('be.visible').click();
         cy.get('[data-qa="autocomplete.action"]').should('be.visible').click();
         cy.get('div[class*="v-select-list"]').should('be.visible');

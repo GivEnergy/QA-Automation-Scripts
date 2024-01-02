@@ -20,15 +20,18 @@ describe("my inverter page", () => {
         adminLogin();
         //creates alias for dashboard API request
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
-        //opens my inverters and reloads page to hide nav bar
+        //creates alias for battery list page API request
         cy.intercept('**/staging.givenergy.cloud/batteries').as('batteriesAPI');
         dashboardSelect('My Batteries');
+
+        //waits for battery list page to load
         cy.wait('@batteriesAPI', {timeout: 30000});
         cy.get('[data-qa="search"]').should('be.visible').click();
         cy.get('[data-qa="title"]').should('be.visible').contains('My Batteries');
 
         checkPageNav();
 
+        //checks battery list page is showing the correct data and that hover cards work
         tableRegex("Serial Number", serialNumber, "Error: serial number does not match format");
         tableRegex("Inverter Serial", serialNumber, "Error: serial number does not match format");
         tableClick("Inverter Serial");
@@ -42,6 +45,7 @@ describe("my inverter page", () => {
         tableRegex("Cell #", positiveNumber, "Error: cell # is not a positive number");
         tableRegex("Cycle Count", positiveNumber, "Error: cycle count is not a positive number");
 
+        //checks capacity filter works
         cy.intercept('**//internal-api/paginate/battery?page=1&itemsPerPage=15').as('capacityRequest');
         cy.get('[data-qa="autocomplete.capacity"]').should('be.visible');
         cy.get('[data-qa="autocomplete.capacity"]').click();
@@ -50,6 +54,7 @@ describe("my inverter page", () => {
         cy.wait('@capacityRequest', {timeout: 30000});
         tableContains("Design Capacity (Ah)", "186", "Error: filtering by design capacity did not work");
 
+        //checks firmware filter works
         cy.get('[data-qa="autocomplete.firmware"]').as('firmware');
         cy.intercept('**//internal-api/paginate/battery?page=1&itemsPerPage=15').as('firmwareRequest');
         cy.get('@firmware').should('be.visible');
