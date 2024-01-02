@@ -19,11 +19,14 @@ describe("ev charger", () => {
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('My EV Chargers');
 
-        //creates alias for energy graph API request
+        //creates alias for ev charger API request
         cy.intercept('**/ev-charger/11288853545688').as('evchargerAPI');
         cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
+
+        //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
+        //checks the status is showing offline or online
         cy.get('[data-qa="alias"]').should('be.visible');
         cy.get('[data-qa="status"]').should('be.visible').then(($el) => {
 
@@ -33,6 +36,8 @@ describe("ev charger", () => {
                 throw new Error("Error: status is not online or offline");
             }
         });
+
+        //checks editing the charger alias works
         cy.get('[data-qa="button.edit.name"]').should('be.visible').click();
         cy.get('[data-qa="card.dialog.edit"]').should('be.visible');
         cy.get('[data-qa="alias"]').then(($el) => {
@@ -51,6 +56,8 @@ describe("ev charger", () => {
                 }
             })
         });
+
+        //checks images and information is visible and correct
         cy.get('[data-qa="img.evc"]').should('be.visible');
         cy.get('[data-qa="title.powerNow"]').should('be.visible');
         cy.get('[data-qa="powerNowValue"]').should('be.visible');
@@ -83,27 +90,35 @@ describe("ev charger", () => {
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('My EV Chargers');
 
-        //creates alias for energy graph API request
+        //creates alias for ev charger API request
         cy.intercept('**/ev-charger/11288853545688').as('evchargerAPI');
         cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
+
+        //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
+
+        //changes alias back
         cy.get('[data-qa="button.edit.name"]').should('be.visible').click();
         cy.get('[data-qa="field.name"]').clear();
         cy.get('[data-qa="field.name"]').type("545688 (13)");
         cy.get('[data-qa="button.edit.confirm"]').click();
 
+        //navigates to evc settings
         cy.get('div[class="v-tab"]').contains('Settings').should('be.visible').click();
 
+        //checks all modes are visible
         cy.get('[data-qa="card.mode"]').eq(0).should('be.visible').contains('Solar');
         cy.get('[data-qa="card.mode"]').eq(1).should('be.visible').contains('Hybrid');
         cy.get('[data-qa="card.mode"]').eq(2).should('be.visible').contains('Grid');
         cy.get('[data-qa="card.mode"]').eq(3).should('be.visible').contains('Inverter Control');
 
+        //begins to add new schedule
         cy.get('div[class="v-tab"]').contains('Schedule').should('be.visible').click();
         cy.get('[data-qa="select.schedule"]').should('be.visible').click();
         cy.get('div[class="v-list-item__title"]').contains('Please add a new schedule');
         cy.get('[data-qa="button.addSchedule"]').should('be.enabled').contains('Add a New Schedule').click();
 
+        //creates schedule
         cy.get('[data-qa="button.cancel"]').should('be.enabled');
         cy.get('[data-qa="button.save"]').should('be.enabled');
         cy.get('[data-qa="field.scheduleName"]').should('be.visible');
@@ -134,6 +149,7 @@ describe("ev charger", () => {
         cy.get('[data-qa="input.chargeCurrent"]').type('{backspace}');
         cy.get('[data-qa="button.save"]').should('be.enabled').click();
 
+        //checks information from newly created schedule is correct
         cy.get('[data-qa="card.schedule"]').should('be.visible').contains('01:30 to 06:00');
         cy.get('[data-qa="duration"]').contains('04h 30m');
         cy.get('[data-qa="chip.day"]').eq(0).contains('Sat');
@@ -159,14 +175,17 @@ describe("ev charger", () => {
         cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
         dashboardSelect('My EV Chargers');
 
-        //creates alias for energy graph API request
+        //creates alias for ev charger API request
         cy.intercept('**/ev-charger/11288853545688').as('evchargerAPI');
         cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
+        //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
+        //navigates to other
         cy.get('div[class="v-tab"]').contains('Settings').should('be.visible').click();
         cy.get('div[class="v-tab"]').contains('Other').should('be.visible').click();
 
+        //checks LED switch toggles correctly
         cy.get('[data-qa="switch.led"]').parent().next().as('ledLabel');
         cy.get('@ledLabel').then(($el) => {
             const text = $el.text();
@@ -191,6 +210,7 @@ describe("ev charger", () => {
 
         cy.get('[data-qa="button.restart"]').should('be.visible');
 
+        //checks fuze size switch works
         cy.get('[data-qa="switch.fuzeSize"]').then(($el) => {
            const enabled = $el.attr('aria-checked');
             console.log(enabled)
@@ -216,6 +236,7 @@ describe("ev charger", () => {
 
         });
 
+        //checks plug and go switch works
         cy.get('[data-qa="switch.plugAndGo"]').parent().next().as('plugAndGoLabel');
         cy.get('@plugAndGoLabel').then(($el) => {
             const value = $el.text();
@@ -229,6 +250,7 @@ describe("ev charger", () => {
             }
         });
 
+        //checks session limit works
         cy.get('[data-qa="switch.sessionLimit"]').then(($el) => {
             const enabled = $el.attr('aria-checked');
 
@@ -258,6 +280,7 @@ describe("ev charger", () => {
 
         cy.get('[data-qa="button.unlock"]').should('be.visible');
 
+        //checks logs are visible and showing correct information and the filter for logs works
         cy.get('div[class="v-tab"]').last().then(($el) => {
             const value = $el.text();
 

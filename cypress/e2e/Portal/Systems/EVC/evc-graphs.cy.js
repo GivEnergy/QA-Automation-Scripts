@@ -22,10 +22,13 @@ describe("evc graphs", () => {
         //creates alias for energy graph API request
         cy.intercept('**/ev-charger/11288853545688').as('evchargerAPI');
         cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
+        //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
+        //navigates to power graph
         cy.get('div[class="v-tab"]').contains('Power').should('be.visible').click();
 
+        //checks graph, date picker and refresh button are visible
         cy.get('[data-qa="singleDatePicker"]').should('be.visible');
         cy.get('[data-qa="powerGraph"]').should('be.visible');
         cy.get('[data-qa="button.power.refresh"]').should('be.enabled').click();
@@ -43,10 +46,13 @@ describe("evc graphs", () => {
         //creates alias for energy graph API request
         cy.intercept('**/ev-charger/11288853545688').as('evchargerAPI');
         cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
+        //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
+        //navigates to energy graph page
         cy.get('div[class="v-tab"]').contains('Energy').should('be.visible').click();
 
+        //checks energy graph, date picker, date range and refresh button are visible
         cy.get('[data-qa="datePicker"]').should('be.visible');
         cy.get('[data-qa="energyGraph"]').should('be.visible');
         cy.get('[data-qa="dateRange"]').should('be.visible')
