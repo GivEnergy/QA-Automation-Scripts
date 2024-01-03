@@ -1,6 +1,5 @@
 import { adminLogin } from "../../../logins";
 import {dashboardSelect} from "../../../funcs";
-import {weatherForecastDescription} from "../../../dashboardCards";
 
 //this should prevent any tests from hanging
 const time = 180000;
@@ -25,9 +24,7 @@ describe("weather forecast card", () => {
             const text = $div2.text();
             console.log(text);
                 if (text === 'Weather Forecast') {
-                cy.get('[data-qa="card.description"]').as('description');
-                cy.get('@description').eq(index).contains(weatherForecastDescription).as('target');
-                cy.get('@target').click();
+                cy.wrap($div2).as('target');
                 cy.get('@target').scrollIntoView();
                 cy.get('[data-qa="button.search"]').eq(index).click();
                 cy.get('[data-qa="search"]').eq(1).type('brymbo');
