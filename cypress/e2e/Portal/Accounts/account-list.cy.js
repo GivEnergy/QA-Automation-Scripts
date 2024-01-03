@@ -37,7 +37,9 @@ describe("account list", () => {
     cy.get('[data-qa="title.header"]').contains('Account Permissions');
     cy.get('[data-qa="button.update"]').as('update');
     cy.get('@update').contains('Update');
+    cy.intercept('**/internal-api/account/delegate/**').as('updateAPI');
     cy.get('@update').click();
+    cy.wait('@updateAPI', {timeout: 30000});
     cy.get('i[class*="mdi-delete"]').first().click();
     //checks enable and disable button and dialog works
     cy.get('[data-qa="button.change"]').then(($button) => {
