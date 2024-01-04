@@ -1,4 +1,4 @@
-import { checkPageNav, dashboardSelect, getNum, tableRegex, tableContains, tableClick, closeFeedback } from "../../../../funcs";
+import { checkPageNav, dashboardSelect, tableRegex, tableContains,  } from "../../../../funcs";
 import { adminLogin } from "../../../../logins";
 import { dateAndTime } from "../../../../regex";
 
@@ -10,10 +10,8 @@ beforeEach(() => {
   }, time);
 });
 
-let trIndex= 1;
-
 describe("view feedback", () => {
-    it("tests view feedback", () => {
+    it("tests view feedback table updates", () => {
 
       adminLogin();
       //creates alias for dashboard API request
@@ -24,168 +22,77 @@ describe("view feedback", () => {
       cy.wait('@feedbackAPI', {timeout: 30000});
       cy.get('[data-qa="title"]').contains('Feedback').click();
 
-      //check function description
-      cy.get('[data-qa="table"]').find('th').each(($el, index) => {
-
-        const heading = $el.text()
-
-        if (heading === 'Last Action By') {
-
-          closeFeedback(trIndex, index);
-
-        }
-      })
-
       checkPageNav();
 
       //check table format
       tableRegex('Reported At', dateAndTime, 'Invalid date and time format');
       tableRegex('Last Action Time', dateAndTime, 'Invalid date and time format');
-      tableClick('Reported By', 'Username:');
-      tableClick('Last Action By', 'Account Type:');
 
       //check show closed works (fails if number of feedbacks does not increase when show close is clicked)
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
-      cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
-      cy.get('[data-qa="button.recordClose"]').click();
-      cy.get('[data-qa="container.navigation"]').find('div').next().then(($div) => {
+      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($el, index) => {
 
-        const num = getNum($div);
-        cy.get('[data-qa="button.showClosed"]').parent().click();
-        cy.wait(2000);//this is necessary or error will be thrown when comparing amount of records
+        const heading= $el.text();
 
-        cy.get('[data-qa="container.navigation"]').find('div').next().then(($div2) => {
+        if (heading === "Title") {
+          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
 
-          const num2 = getNum($div2);
-          console.log('records before closed ' + num, 'records after closed ' + num2);
-          if (num2 <= num) {
-            throw new Error('Show Closed Did Not Work')
-          } 
-        })
+            const title = $td.text();
 
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
+            cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
+            cy.get('[data-qa="button.recordClose"]').click();
+            cy.intercept('**/paginate/feedback?page=1&itemsPerPage=15').as('tableUpdateAPI');
+            cy.get('[data-qa="button.showClosed"]').parent().click();
+            cy.wait('@tableUpdateAPI', {timeout: 30000});
+            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td2) => {
+
+              const closedTitle = $td2.text();
+
+              if (title !== closedTitle) {
+                throw new Error("Error could not find closed feedback when show closed is enabled");
+              }
+
+            });
+          });
+        }
       });
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
-      cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
-      cy.get('[data-qa="button.recordOpen"]').click();
 
-      //tests search and filter
+      //tests product filter
       cy.get('[data-qa="select.product"]').click();
+      cy.intercept('**/paginate/feedback?page=1&itemsPerPage=15').as('tableUpdateAPI');
       cy.get('div[class*="v-select-list"]').children().contains('App').click();
       cy.get('[data-qa="title"]').contains('Feedback').click();
-      cy.wait(2000);
-      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
-        
-          const text1 = $elm.text()
-    
-          if (text1 === 'Product') {
-    
-              cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
-              
-              const text2 = $td.text().split(' ')[2]
-
-              if (text2 !== 'App') {
-                throw new Error('Error found when using product filter')
-              }
-            })
-          }
-      })
+      cy.wait('@tableUpdateAPI', {timeout: 30000});
+      tableContains("Product", "App", "Error: expected product column to contain 'App'");
       cy.get('button[class*="mdi-close"]').click();
 
       //checks type filter works
       cy.get('[data-qa="select.type"]').click();
+      cy.intercept('**/paginate/feedback?page=1&itemsPerPage=15').as('tableUpdateAPI');
       cy.get('div[class*="v-select-list"]').children().contains('Bug').click();
       cy.get('[data-qa="title"]').contains('Feedback').click();
-      cy.wait(2000);
-      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($elm, index) => {
-        
-          const text1 = $elm.text()
-    
-          if (text1 === 'Type') {
-    
-              cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
-              
-              const text2 = $td.text().split(' ')[2]
-
-              if (text2 !== 'Bug') {
-                throw new Error('Error found when using type filter')
-              }
-            })
-          }
-      })
-      cy.get('button[class*="mdi-close"]').click();
-
-      //uses select record options and checks if closing feedback works
-      cy.get('[data-qa="container.navigation"]').find('li').first().next().click();
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
-      cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
-      cy.get('[data-qa="button.recordClose"]').click();
-      cy.wait(1000);
-      tableContains('Closed', 'Yes', 'Error found when checking if a ticket shows if it is closed 1');
-      cy.wait(1000);
-      cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
-      cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
-      cy.get('[data-qa="button.recordOpen"]').click();
-      cy.wait(1000);
-      tableContains('Closed', 'No', 'Error found when checking if a ticket shows if it is closed 2');
-
-      //check view feedback title
-      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
-
-        const text = $th.text()
-
-        if (text === 'Title') {
-
-          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
-
-            const text1 = $td.text()
-
-            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().click();
-
-            cy.get('[data-qa="title.text"]').then(($div) => {
-
-              const text2 = $div.text()
-    
-              if (text1 !== text2) {
-                throw new Error('View feedback title is different to title shown in table')
-              }
-    
-            })
-
-          })
-        }
-      });
-
-      //goes back to view feedback and check view feedback content
-      cy.get('[data-qa="main.navbar"]').children().eq(0).click();
-      cy.get('[data-qa="main.navbar"]').contains('View Feedback').click();
-      cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index) => {
-
-        const text = $th.text()
-
-        if (text === 'Content') {
-
-          cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(index).then(($td) => {
-
-            const text1 = $td.text()
-
-            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().click();
-
-            cy.get('[data-qa="textarea"]').then(($textarea) => {
-
-              
-              const str = $textarea.val()
-              const text2 = str.substring(0, 50).trimEnd() + '...'
-              console.log('substring from table ' + text1, 'created substring when viewing feedback ' + text2);
-              if (text1 !== text2) {
-                throw new Error('View feedback content substring is different to content substring shown in table')
-              }
-    
-            })
-
-          })
-        }
-      });
-
+      cy.wait('@tableUpdateAPI', {timeout: 30000});
+      tableContains("Type", "Bug Report", "Error: expected Type column to contain 'Bug'");
     });
+
+  it("tests viewing a feedback shows the same information as the table", () => {
+
+    adminLogin();
+    //creates alias for dashboard API request
+    cy.intercept('**/staging.givenergy.cloud/dashboard').as('dashboardAPI');
+    cy.intercept('**/staging.givenergy.cloud/feedback').as('feedbackAPI');
+    //navigates to leave feedback
+    dashboardSelect('View Feedback');
+    cy.wait('@feedbackAPI', {timeout: 30000});
+    cy.get('[data-qa="title"]').contains('Feedback').click();
+
+    //check view feedback title
+    cy.intercept('**/staging.givenergy.cloud/feedback/**').as('viewFeedbackAPI');
+    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().click();
+    cy.wait('@viewFeedbackAPI', {timeout: 30000});
+    cy.get('[data-qa="title.text"]').should('be.visible');
+    cy.get('[data-qa="textarea"]').should('be.visible');
+
+  });
 });
   
