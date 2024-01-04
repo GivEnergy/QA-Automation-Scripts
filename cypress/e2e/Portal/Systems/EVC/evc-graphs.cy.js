@@ -20,8 +20,8 @@ describe("evc graphs", () => {
         dashboardSelect('My EV Chargers');
 
         //creates alias for energy graph API request
-        cy.intercept('**/ev-charger/11288853545688').as('evchargerAPI');
-        cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
+        cy.intercept('**/ev-charger/87023906857014').as('evchargerAPI');
+        cy.visit("https://givenergy.cloud/ev-charger/87023906857014");
         //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
@@ -44,8 +44,8 @@ describe("evc graphs", () => {
         dashboardSelect('My EV Chargers');
 
         //creates alias for energy graph API request
-        cy.intercept('**/ev-charger/11288853545688').as('evchargerAPI');
-        cy.visit("https://staging.givenergy.cloud/ev-charger/11288853545688");
+        cy.intercept('**/ev-charger/87023906857014').as('evchargerAPI');
+        cy.visit("https://givenergy.cloud/ev-charger/87023906857014");
         //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
