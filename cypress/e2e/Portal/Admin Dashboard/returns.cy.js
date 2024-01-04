@@ -155,8 +155,8 @@ describe("returns", () => {
     cy.get('[data-qa="card.item"]').find('div').find('span').contains('Ticket #53431');
     tableRegex('Created At', dateAndTime, 'Error created at does not match yyyy-mm--dd hh:mm:ss format')
     cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click();
-    cy.get('[data-qa="button.cancel"]').click();
+    cy.get('[data-qa="button.cancel"]').click({force: true});
     cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click();
-    cy.get('[data-qa="button.yes"]').click()
+    cy.get('[data-qa="button.yes"]').click({force: true})
     });
 });

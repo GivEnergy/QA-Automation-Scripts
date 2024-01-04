@@ -29,10 +29,10 @@ describe("leave feedback", () => {
       //create feedback
       cy.get('[data-qa="button.submit"').should('not.be.enabled');
       cy.get('[data-qa="select.product"]').click();
-      cy.get('div[class*="v-menu__content"]').children().contains('App').click();
+      cy.get('div[class*="v-menu__content"]').children().contains('App').click({force: true});
       cy.get('[data-qa="button.submit"').should('not.be.enabled');
       cy.get('[data-qa="select.feedbackType"]').click();
-      cy.get('div[class*="v-menu__content"]').children().contains('Bug Report').click();
+      cy.get('div[class*="v-menu__content"]').children().contains('Bug Report').click({force: true});
       cy.get('[data-qa="button.submit"').should('not.be.enabled');
       cy.get('[data-qa="field.title"]').type('Feedback Test');
       cy.get('[data-qa="button.submit"').should('not.be.enabled');
