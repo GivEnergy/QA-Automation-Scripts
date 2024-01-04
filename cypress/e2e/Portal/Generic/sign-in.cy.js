@@ -22,19 +22,21 @@ describe("Admin Sign In", () => {
         cy.get('[data-qa="field.password"]').should('be.visible');
 
         //attempts login with incorrect username and password
+        cy.intercept('**/staging.givenergy.cloud/login').as('loginAPI');
         loginCheck('NotARealUsername123', 'NotARealPassword123!', 'check');
 
+        cy.intercept('**/staging.givenergy.cloud/login').as('loginAPI');
         //attempts login with correct username and incorrect password, then checks error messages
         loginCheck(Cypress.env('adminUsername'), 'NotARealPassword123!', 'check');
 
+        cy.intercept('**/staging.givenergy.cloud/login').as('loginAPI');
         //attempts login with incorrect username and correct password and checks error messages
         loginCheck('NotARealUsername123', Cypress.env('adminPassword'), 'check');
 
         //attempts login with admin username and password and checks dashboard loads
         loginCheck(Cypress.env('adminUsername'), Cypress.env('adminPassword'));
 
-        //clicks on admin dashboard to ensure that the page loads
-        //creates alias for dashboard API request
+        //clicks logout on navbar to ensure that the page loads
         dashboardSelect('Logout');
       
     });

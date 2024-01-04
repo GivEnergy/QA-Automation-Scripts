@@ -87,6 +87,7 @@ export function loginCheck(username, password, check){
     cy.get('[data-qa="button.login"]').click();
     if (check) {
         //checks for invalid credentials message
+        cy.wait('@loginAPI', {timeout: 30000});
         cy.get('[data-qa="field.username"]').parents('.v-input__control').find('.v-messages__message')
             .contains('These credentials do not match our records');
         cy.get('[data-qa="field.password"]').parents('.v-input__control').find('.v-messages__message')
@@ -601,29 +602,6 @@ export function checkWarranty(headingIndex, tableDataIndex) {
             checkWarranty(headingIndex, index);
         }
     });
-}
-
-export function closeFeedback(trIndex, headingIndex) {
-    //if feedback is created/updated by 'You'
-    //increments trIndex until created/updated isn't 'You'
-    //ensures other checks don't fail unnecessarily
-    console.log(trIndex);
-    cy.get('[data-qa="table"]').find('tr').eq(trIndex).find('td').eq(headingIndex).then(($td) => {
-
-        const text = $td.text()
-
-        if (text === 'You') {
-
-            cy.get('[data-qa="container.navigation"]').find('li').first().next().click();
-            cy.get('[data-qa="table"]').find('tr').eq(1).find('td').eq(0).click();
-            cy.get('[data-qa="text.selected"]').contains('1 record(s) selected');
-            cy.get('[data-qa="button.recordClose"]').click();
-            cy.wait(1000);
-            trIndex++;
-
-            closeFeedback(trIndex, headingIndex);
-        }
-    })
 }
 
 export function checkBarChartXAxis() {
