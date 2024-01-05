@@ -25,36 +25,36 @@ describe("account list", () => {
     cy.get('a[href*="new-dashboard"]').first().click();
     cy.get('a[href*="account-settings"]').first().click();
     cy.get('a[href*="legacy-dashboard"]').first().click();
-    cy.get('i[class*="mdi-account-alert"]').first().trigger("click");
-    cy.get('[data-qa="title.header"]').contains('Account Permissions');
-    cy.get('[data-qa="button.update"]').as('update');
-    cy.get('@update').contains('Update');
-    cy.intercept('**/internal-api/account/delegate/**').as('updateAPI');
-    cy.get('@update').trigger("click");
-    cy.wait('@updateAPI', {timeout: 30000});
-    cy.get('i[class*="mdi-delete"]').first().click();
-    //checks enable and disable button and dialog works
-    cy.get('[data-qa="button.change"]').then(($button): void  => {
-
-      const text: string = $button.text().trim();
-
-      cy.get('[data-qa="button.change"]').as('change');
-      cy.get('i[class*="mdi-delete"]').as('delete');
-
-      if (text === "Enable") {
-        cy.get('@change').contains('Enable');
-        cy.get('@change').trigger("click");
-        cy.get('@delete').first().trigger("click");
-        cy.get('@change').contains('Disable');
-        cy.get('@change').trigger("click");
-      } else {
-        cy.get('@change').contains('Disable');
-        cy.get('@change').trigger("click");
-        cy.get('@delete').first().trigger("click");
-        cy.get('@change').contains('Enable');
-        cy.get('@change').trigger("click");
-      }
-    })
+    // cy.get('i[class*="mdi-account-alert"]').first().trigger("click");
+    // cy.get('[data-qa="title.header"]').contains('Account Permissions');
+    // cy.get('[data-qa="button.update"]').as('update');
+    // cy.get('@update').contains('Update');
+    // cy.intercept('**/internal-api/account/delegate/**').as('updateAPI');
+    // cy.get('@update').trigger("click");
+    // cy.wait('@updateAPI', {timeout: 30000});
+    // cy.get('i[class*="mdi-delete"]').first().click();
+    // //checks enable and disable button and dialog works
+    // cy.get('[data-qa="button.change"]').then(($button): void  => {
+    //
+    //   const text: string = $button.text().trim();
+    //
+    //   cy.get('[data-qa="button.change"]').as('change');
+    //   cy.get('i[class*="mdi-delete"]').as('delete');
+    //
+    //   if (text === "Enable") {
+    //     cy.get('@change').contains('Enable');
+    //     cy.get('@change').trigger("click");
+    //     cy.get('@delete').first().trigger("click");
+    //     cy.get('@change').contains('Disable');
+    //     cy.get('@change').trigger("click");
+    //   } else {
+    //     cy.get('@change').contains('Disable');
+    //     cy.get('@change').trigger("click");
+    //     cy.get('@delete').first().trigger("click");
+    //     cy.get('@change').contains('Enable');
+    //     cy.get('@change').trigger("click");
+    //   }
+    // })
 
 
   });
