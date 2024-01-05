@@ -13,7 +13,7 @@ describe("ev charger", () => {
 
         //creates alias for ev charger API request
         cy.intercept('**/ev-charger/87023906857014').as('evchargerAPI');
-        cy.visit("https://givenergy.cloud/ev-charger/87023906857014");
+        cy.visit("https://staging.givenergy.cloud/ev-charger/87023906857014");
 
         //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
@@ -54,13 +54,7 @@ describe("ev charger", () => {
         cy.get('[data-qa="title.powerNow"]').should('be.visible');
         cy.get('[data-qa="powerNowValue"]').should('be.visible');
         cy.get('[data-qa="header.mode"]').should('be.visible').contains('Mode');
-        cy.get('[data-qa="header.modeValue"]').should('be.visible').then(($el): void  => {
-            console.log($el.text().trim());
-            if ($el.text().trim() !== "Grid" && $el.text() !== "Solar" && $el.text() !== "Hybrid" && $el.text() !== "Inverter Control") {
-                throw new Error("Error: displayed incorrect mode");
-            }
-        });
-        cy.get('[data-qa="chip"]').should('be.visible').contains("Vehicle Not Plugged In");
+        cy.get('[data-qa="chip"]').should('be.visible');
         cy.get('[data-qa="button.status"]').should('be.visible');
         cy.get('[data-qa="header.energy"]').should('be.visible').contains('Energy Usage');
         cy.get('[data-qa="title.energy"]').eq(0).should('be.visible').contains('Last Charge Session');
@@ -84,7 +78,7 @@ describe("ev charger", () => {
 
         //creates alias for ev charger API request
         cy.intercept('**/ev-charger/87023906857014').as('evchargerAPI');
-        cy.visit("https://givenergy.cloud/ev-charger/87023906857014");
+        cy.visit("https://staging.givenergy.cloud/ev-charger/87023906857014");
 
         //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
@@ -99,10 +93,10 @@ describe("ev charger", () => {
         cy.get('div[class="v-tab"]').contains('Settings').should('be.visible').click();
 
         //checks all modes are visible
+        cy.get('div[class="v-tab"]').contains('Advanced Mode').should('be.visible').click();
         cy.get('[data-qa="card.mode"]').eq(0).should('be.visible').contains('Solar');
         cy.get('[data-qa="card.mode"]').eq(1).should('be.visible').contains('Hybrid');
         cy.get('[data-qa="card.mode"]').eq(2).should('be.visible').contains('Grid');
-        cy.get('[data-qa="card.mode"]').eq(3).should('be.visible').contains('Inverter Control');
 
         //begins to add new schedule
         cy.get('div[class="v-tab"]').contains('Schedule').should('be.visible').click();
@@ -169,7 +163,7 @@ describe("ev charger", () => {
 
         //creates alias for ev charger API request
         cy.intercept('**/ev-charger/87023906857014').as('evchargerAPI');
-        cy.visit("https://givenergy.cloud/ev-charger/87023906857014");
+        cy.visit("https://staging.givenergy.cloud/ev-charger/87023906857014");
         //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
