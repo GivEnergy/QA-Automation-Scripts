@@ -1,0 +1,12 @@
+export const YYYYMMDD: RegExp = /^\d{4,4}[-]\d{2,2}[-]\d{2,2}/
+export const dateAndTime: RegExp = /^\d{4,4}[-]\d{2,2}[-]\d{2,2}\s\d{2,2}[:]\d{2,2}/
+export const serialNumber: RegExp = /^[A-Z]{2,2}\w{5,5}\d{3,3}/
+export const batteryFW: RegExp = /^\d{1,4}$/
+export const inverterFW: RegExp = /^[D][0][.]{1,1}\d{3,3}[-]{1,1}[A][0][.]{1,1}\d{3,3}$/
+export const positiveOrNegativeNumber: RegExp = /^\d{1,}$|^[-]\d{1,}$/
+export const positiveNumber: RegExp = /^\d{1,}$/
+export const evcSerialNumber: RegExp = /^\d{14}$/
+export const numOrDecimal: RegExp = /^\d{1,}[.]\d{1,}$|^\d{1,}$/
+export const smartPLugUUID: RegExp = /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/
+export const smartPlugSN: RegExp = /^SP\w{12}$/
+export const deviceID: RegExp = /^\w{16}$/
