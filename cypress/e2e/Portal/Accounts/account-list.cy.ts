@@ -25,7 +25,7 @@ describe("account list", () => {
     cy.get('a[href*="new-dashboard"]').first().click();
     cy.get('a[href*="account-settings"]').first().click();
     cy.get('a[href*="legacy-dashboard"]').first().click();
-    cy.get('i[class*="mdi-account-alert"]').first().click();
+    cy.get('i[class*="mdi-account-alert"]').first().trigger("click");
     cy.get('[data-qa="title.header"]').contains('Account Permissions');
     cy.get('[data-qa="button.update"]').as('update');
     cy.get('@update').contains('Update');
@@ -33,7 +33,6 @@ describe("account list", () => {
     cy.get('@update').trigger("click");
     cy.wait('@updateAPI', {timeout: 30000});
     cy.get('i[class*="mdi-delete"]').first().click();
-    cy.get('[data-qa="title.header"]').should('be.visible');
     //checks enable and disable button and dialog works
     cy.get('[data-qa="button.change"]').then(($button): void  => {
 

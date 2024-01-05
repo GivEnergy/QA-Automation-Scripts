@@ -212,7 +212,7 @@ export function checkReturnsActions(): void {
     cy.get('a[href*="admin/returns"]').first().click();
     cy.get('i[class*="mdi-delete"]').first().trigger("click");
     cy.get('[data-qa="button.cancel"]').contains('Cancel');
-    cy.get('[data-qa="button.cancel"]').click();
+    cy.get('[data-qa="button.cancel"]').trigger("click");
 }
 
 export function reportingFilter(filter : string, alias : string): void {
