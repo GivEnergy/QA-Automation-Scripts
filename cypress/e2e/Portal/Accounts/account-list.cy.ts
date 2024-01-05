@@ -33,6 +33,7 @@ describe("account list", () => {
     cy.get('@update').trigger("click");
     cy.wait('@updateAPI', {timeout: 30000});
     cy.get('i[class*="mdi-delete"]').first().click();
+    cy.get('[data-qa="title.header"]').should('be.visible');
     //checks enable and disable button and dialog works
     cy.get('[data-qa="button.change"]').then(($button): void  => {
 
