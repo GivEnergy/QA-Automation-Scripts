@@ -13,7 +13,7 @@ describe("ev charger", () => {
 
         //creates alias for ev charger API request
         cy.intercept('**/ev-charger/87023906857014').as('evchargerAPI');
-        cy.visit("https://givenergy.cloud/ev-charger/87023906857014");
+        cy.visit("https://staging.givenergy.cloud/ev-charger/87023906857014");
 
         //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
@@ -84,7 +84,7 @@ describe("ev charger", () => {
 
         //creates alias for ev charger API request
         cy.intercept('**/ev-charger/87023906857014').as('evchargerAPI');
-        cy.visit("https://givenergy.cloud/ev-charger/87023906857014");
+        cy.visit("https://staging.givenergy.cloud/ev-charger/87023906857014");
 
         //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
@@ -169,7 +169,7 @@ describe("ev charger", () => {
 
         //creates alias for ev charger API request
         cy.intercept('**/ev-charger/87023906857014').as('evchargerAPI');
-        cy.visit("https://givenergy.cloud/ev-charger/87023906857014");
+        cy.visit("https://staging.givenergy.cloud/ev-charger/87023906857014");
         //waits for ev charger page to load
         cy.wait('@evchargerAPI', {timeout: 30000});
 
