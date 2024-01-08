@@ -15,6 +15,7 @@ module.exports = defineConfig({
             openMode: 0
         },
         testIsolation: true,
+        screenshotOnRunFailure: false
     },
     //DO NOT COMMIT ENV VARIABLES
     env: {}

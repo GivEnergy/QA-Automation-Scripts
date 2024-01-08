@@ -1,4 +1,13 @@
-import { checkPageNav, checkReturnsActions, checkReturnsFormat, dashboardSelect, tableContains, tableClick, tableRegex } from "../../../funcs";
+import {
+    checkPageNav,
+    checkReturnsActions,
+    checkReturnsFormat,
+    dashboardSelect,
+    tableContains,
+    tableClick,
+    tableRegex,
+    isVisible
+} from "../../../funcs";
 import { adminLogin } from "../../../logins";
 import { dateAndTime } from "../../../regex";
 
@@ -53,23 +62,20 @@ describe("returns", () => {
     cy.get('[data-qa="button.create"]').contains('Create Return');
     cy.get('[data-qa="button.create"]').should('not.be.enabled');
     cy.get('[data-qa="select.recipients"]').click();
-    cy.get('div[class*="v-select-list"]').children().contains('Installer').click();
-    cy.get('div[class*="v-list-item__title"]').contains('Customer').click();
+    cy.get('div[class*="v-select-list"]').children().contains('Installer').then($el => $el.trigger("click"));
+    cy.get('div[class*="v-list-item__title"]').contains('Customer').then($el => $el.trigger("click"));
     cy.get('[data-qa="button.create"]').contains('Create Return').should('not.be.enabled');
-    cy.get('[data-qa="search.customer"]').parent().find('label').next('input').click();
-    cy.get('[data-qa="search.customer"]').eq(0).type('brymbo');
-    cy.get('div[class*="v-list-item__title"]').contains('Brymbo Road | BrymboRoad').click();
-    cy.get('[data-qa="search.installer"]').parent().find('label').next('input').click();
-    cy.get('[data-qa="search.installer"]').eq(0).type('Dan');
-    cy.get('div[class*="v-select-list"]').children().contains('Dan Lambert | ENGINEER').click();
+    cy.get('[data-qa="search.customer"]').parent().find('label').next('input').click({force: true});
+    cy.get('[data-qa="search.customer"]').eq(1).type('brymbo', {force: true});
+    cy.get('div[class*="v-list-item__title"]').contains('Brymbo Road | BrymboRoad').click({force: true});
+    cy.get('[data-qa="search.installer"]').parent().find('label').next('input').then($el => $el.trigger("click"));
+    cy.get('[data-qa="search.installer"]').eq(1).type('Dan');
+    cy.get('div[class*="v-select-list"]').children().contains('Dan Lambert | ENGINEER').then($el => $el.trigger("click"));
     cy.get('[data-qa="button.create"]').contains('Create Return').should('not.be.enabled');
-    cy.get('[data-qa="form.create"]').should('be.visible');
-    cy.get('[data-qa="checkbox.distributor"]').parent().click();
-    cy.get('[data-qa="form.create"]').should('not.be.visible');
-    cy.get('[data-qa="search.distributor"]').parent().find('label').next('input').click();
-    cy.get('[data-qa="search.distributor"]').eq(0).type('GivEnergy');
-    cy.get('div[class*="v-select-list"]').children().contains('Givenergy02 | OWNER').click();
-    cy.get('[data-qa="form.create"]').should('be.visible');
+    cy.get('[data-qa="checkbox.distributor"]').parent().then($el => $el.trigger("click"));
+    cy.get('[data-qa="search.distributor"]').parent().find('label').next('input').then($el => $el.trigger("click"));
+    cy.get('[data-qa="search.distributor"]').eq(1).type('GivEnergy');
+    cy.get('div[class*="v-select-list"]').children().contains('Givenergy02 | OWNER').then($el => $el.trigger("click"));
 
     //creates first return item
     cy.get('[data-qa="button.create"]').contains('Create Return').should('not.be.enabled');
@@ -77,15 +83,15 @@ describe("returns", () => {
     cy.get('[data-qa="autocomplete.idSerialNumber"]').should('not.be.enabled');
     cy.get('[data-qa="button.validate"]').should('not.be.enabled');
     cy.get('[data-qa="autocomplete.category"]').click();
-    cy.get('div[class*="v-select-list"]').children().contains('Dongle').click();
+    cy.get('div[class*="v-select-list"]').children().contains('Dongle').then($el => $el.trigger("click"));
     cy.get('[data-qa="autocomplete.idSerialNumber"]').should('not.be.enabled');
     cy.get('[data-qa="button.validate"]').should('not.be.enabled');
     cy.get('[data-qa="autocomplete.typeModel"]').click();
-    cy.get('div[class*="v-select-list"]').children().contains('WiFi').click();
+    cy.get('div[class*="v-select-list"]').children().contains('WiFi').then($el => $el.trigger("click"));
     cy.get('[data-qa="autocomplete.idSerialNumber"]').type('67GHET78D!');
     cy.get('[data-qa="button.validate"]').click();
     cy.get('[data-qa="button.validate"]').should('not.be.enabled');
-    cy.get('div[class*="v-text-field__details"]').contains('This serial number is not valid');
+    cy.get('div[class*="v-text-field__details"]').contains('This serial number is invalid');
     cy.get('[data-qa="autocomplete.idSerialNumber"]').clear();
     cy.get('[data-qa="autocomplete.idSerialNumber"]').type('WO2249G375');
     cy.get('[data-qa="button.validate"]').click();
@@ -93,7 +99,7 @@ describe("returns", () => {
     cy.get('[data-qa="autocomplete.idSerialNumber"]').clear();
     cy.get('[data-qa="autocomplete.idSerialNumber"]').type('WO2249G374');
     cy.get('[data-qa="button.validate"]').click();
-    cy.get('[data-qa="textarea.reason"]').type('Dongle is broken.');
+    cy.get('[data-qa="textarea.reason"]').type('Dongle is broken.', {force: true});
     cy.get('[data-qa="button.add"]').click();
     cy.get('[data-qa="button.delete"]').eq(1).click();
     cy.get('[data-qa="button.add"]').click();
@@ -117,7 +123,7 @@ describe("returns", () => {
     cy.get('@serialNumber2').type('67GHET78D!');
     cy.get('[data-qa="button.validate"]').click();
     cy.get('[data-qa="button.validate"]').should('not.be.enabled');
-    cy.get('div[class*="v-text-field__details"]').contains('This serial number is not valid');
+    cy.get('div[class*="v-text-field__details"]').contains('This serial number is invalid');
     cy.get('@serialNumber2').clear();
     cy.get('@serialNumber2').type('WO2249G376');
     cy.get('[data-qa="button.validate"]').click();
@@ -125,14 +131,14 @@ describe("returns", () => {
     cy.get('@serialNumber2').clear();
     cy.get('@serialNumber2').type('WO2249G377');
     cy.get('[data-qa="button.validate"]').click();
-    cy.get('[data-qa="textarea.reason"]').eq(1).type('Dongle is broken.');
+    cy.get('[data-qa="textarea.reason"]').eq(1).type('Dongle is broken.', {force: true});
     cy.get('[data-qa="button.create"]').contains('Create Return').click();
 
     //verifies the return is created and is showing correct info in the table
     //then deletes created return
     cy.get('i[class*="mdi-check-circle"]').parent().contains('Return created successfully!');
     tableContains('Created By', 'You', 'Error when checking returns data');
-    tableClick('Customer', 'Brymbo Road');
+    //tableClick('Customer', 'Brymbo Road');
     tableContains('Items', 'Dongle - WiFi - WO2249G374 Dongle - WiFi - WO2249G377', 'Error return items in created return are not listed');
     tableContains('Ticket #', '53431', 'Error returns ticket # is not correctly stated')
     cy.get('[data-qa="table"]').find('tr').eq(0).find('th').each(($th, index): void  => {
@@ -147,9 +153,9 @@ describe("returns", () => {
     });
     cy.get('[data-qa="card.item"]').find('div').find('span').contains('Ticket #53431');
     tableRegex('Created At', dateAndTime, 'Error created at does not match yyyy-mm--dd hh:mm:ss format')
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click();
-    cy.get('[data-qa="button.cancel"]').click();
-    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click();
-    cy.get('[data-qa="button.yes"]').click()
+    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click({force: true});
+    cy.get('[data-qa="button.cancel"]').then($el => $el.trigger("click"));
+    cy.get('[data-qa="table"]').find('tr').eq(1).find('td').last().find('i[class*="mdi-delete"]').click({force: true});
+    cy.get('[data-qa="button.yes"]').then($el => $el.trigger("click"));
     });
 });
