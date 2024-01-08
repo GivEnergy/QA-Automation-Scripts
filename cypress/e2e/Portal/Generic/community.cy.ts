@@ -9,6 +9,7 @@ describe("Community", () => {
         cy.wait('@dashboardAPI', {timeout: 30000});
         cy.get('[data-qa="main.navbar"]').children().eq(0).click();
         cy.get('[data-qa="main.navbar"]').contains("Community").as('communityTab');
+        cy.get('@communityTab').should('be.visible');
         cy.get('@communityTab').then(($el) : void => {
 
             const url: string = $el.attr('href');
