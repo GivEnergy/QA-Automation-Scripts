@@ -1,7 +1,7 @@
 import { dashboardSelect } from "../../../funcs";
 import { engineerLogin } from "../../../logins";
 import {positiveNumber} from "../../../regex";
-import {rewardsValues, voucherValues} from "../../../listOfValues";
+import {voucherValues} from "../../../listOfValues";
 
 describe("installer incentive", () => {
     it("tests engineer installer incentive page", () => {
@@ -36,11 +36,21 @@ describe("installer incentive", () => {
         cy.get('[data-qa="list.values"]').as('list');
         cy.get('[data-qa="value"]').as('value');
         cy.get('@list').should('have.length', 15);
-        for (var i = 0; i < 15; i++) {
-
-            cy.get('@list').eq(i).contains(rewardsValues[i]);
-
-        }
+        cy.get('@list').contains('9.5kWh');
+        cy.get('@list').contains('Single-Phase Hybrid');
+        cy.get('@list').contains('Single-Phase AC Coupled');
+        cy.get('@list').contains('Three-Phase Hybrid');
+        cy.get('@list').contains('Three-Phase AC Coupled');
+        cy.get('@list').contains('Gateway');
+        cy.get('@list').contains('All-In-One');
+        cy.get('@list').contains('2.6kWh');
+        cy.get('@list').contains('5.2kWh');
+        cy.get('@list').contains('8.2kWh');
+        cy.get('@list').contains('100 points');
+        cy.get('@list').contains('200 points');
+        cy.get('@list').contains('300 points');
+        cy.get('@list').contains('400 points');
+        cy.get('@list').contains('500 points');
         cy.get('@value').eq(10).contains(voucherValues[0]);
         cy.get('@value').eq(11).contains(voucherValues[1]);
         cy.get('@value').eq(12).contains(voucherValues[2]);
